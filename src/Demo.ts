@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import Body from './Body'
 
 export default class Demo {
 	private renderer!: THREE.WebGLRenderer;
@@ -13,7 +14,6 @@ export default class Demo {
 	private controls!: OrbitControls;
 	private stats!: any;
 
-	private cube!: THREE.Mesh;
 	private plane!: THREE.Mesh;
 
 	constructor() {
@@ -70,11 +70,19 @@ export default class Demo {
 		this.lightPoint.shadow.camera.far = cameraFar;
 
 		// Add a cube
-		const geometryBox = new THREE.BoxGeometry();
-		const materialBox = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-		this.cube = new THREE.Mesh(geometryBox, materialBox);
-		this.cube.castShadow = true;
-		this.scene.add(this.cube);
+		// const geometryBox = new THREE.BoxGeometry();
+		// const materialBox = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+		// this.cube = new THREE.Mesh(geometryBox, materialBox);
+		// this.cube.castShadow = true;
+		// this.scene.add(this.cube);
+
+		// #### ADD PLANET ###
+        let r = new THREE.Vector3(0, 0, 0);
+        let v = new THREE.Vector3(0, 0, 0);
+        let mass = 5;
+        let planet = new Body(r, v, mass);
+        this.scene.add(planet.mesh);
+        console.log("added planet");
 
 		// Add a plane
 		const geometryPlane = new THREE.PlaneBufferGeometry(6, 6, 1, 1);
@@ -127,9 +135,6 @@ export default class Demo {
 		requestAnimationFrame(() => {
 			this.animate();
 		});
-
-		this.cube.rotation.x += 0.01;
-		this.cube.rotation.y += 0.01;
 
 		if (this.stats) this.stats.update();
 
