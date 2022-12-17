@@ -1,9 +1,16 @@
 import './style.scss';
+import SceneManager from './SceneManager';
 
-// Toggle commented out code to run alternate demo.
-import Demo from './Demo';
-// import Demo from './Shader';
+let sceneManager: SceneManager;
 
 window.addEventListener('DOMContentLoaded', () => {
-	new Demo();
+	
+	sceneManager = new SceneManager();
+	render();
 });
+
+
+function render() {
+	requestAnimationFrame(render);
+	sceneManager.update();
+}

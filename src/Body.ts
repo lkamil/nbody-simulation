@@ -17,9 +17,9 @@ export default class Body {
 
     constructor(r: THREE.Vector3, v: THREE.Vector3, mass: number) {
 
-        let acc_x: number = Math.random();
-        let acc_y: number = Math.random();
-        let acc_z: number = Math.random();
+        let acc_x: number = Math.random() * 0.001;
+        let acc_y: number = 0;
+        let acc_z: number = -0.001;
 
         this.r = r;
         this.v = v;
@@ -32,7 +32,7 @@ export default class Body {
         this.mass = mass;
 
         // Planet Geometry
-        const geometry = new THREE.SphereGeometry(0.8, 10, 10);
+        const geometry = new THREE.SphereGeometry(0.02, 10, 10);
         const material = new THREE.MeshLambertMaterial();
 
         this.mesh = new THREE.Mesh(geometry, material)
