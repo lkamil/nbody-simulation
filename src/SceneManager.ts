@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Body from './Body';
+import NBodySimulation from './NBodySimulation';
 
 export default class SceneManager {
 
@@ -10,7 +11,7 @@ export default class SceneManager {
     
     private orbitControls: OrbitControls;
 
-    private planet: Body;
+    private simulation: NBodySimulation
 
     constructor() {
         console.log("initializing scene manager");
@@ -19,15 +20,16 @@ export default class SceneManager {
         this.camera = this.setupCamera(this.scene);
         this.orbitControls = this.setupOrbitControls(this.camera, this.renderer.domElement);
 
+        this.simulation = this.addSimulation(this.scene);
+
         this.addLight(this.scene);
-        this.planet = this.addObject();
     }
 
     update() {
         this.orbitControls.update();
         this.renderer.render(this.scene, this.camera);
 
-        this.planet.update();
+        this.simulation.update();
     }
 
     // - SETUP -
@@ -81,14 +83,9 @@ export default class SceneManager {
         scene.add(ambientLight);
     }
 
-    private addObject(): Body {
-        let r = new THREE.Vector3(0, 0, 0);
-        let v = new THREE.Vector3(0, 0, 0);
-        let mass = 5;
-        let planet = new Body(r, v, mass);
-        this.scene.add(planet.mesh);
-        console.log("added planet");
+    private addSimulation(scene: THREE.Scene): NBodySimulation {
+        let simulation = new NBodySimulation(scene);
 
-        return planet;
+        return simulation;
     }
 }
