@@ -1,21 +1,9 @@
 import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
 import Body from './Body';
+import Config from './Config';
 import { randomFromInterval, perpendicularOf } from './helper';
 
-abstract class Config {
-    static sunMass = 500;
-    static planetMass = 20;
-
-    static numberOfPlanets = 5;
-
-    static minHorizontalAngle = 0;
-    static maxHorizontalAngle = 359;
-    static minPolarAngle = 0;
-    static maxPolarAngle = 180;
-    static minDistanceToSun = 0.001;
-    static distanceBetweenPlanets = 0.001;
-}
 
 export default class NBodySimulation {
 
