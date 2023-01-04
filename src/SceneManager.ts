@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Body from './Body';
 import NBodySimulation from './NBodySimulation';
 
 export default class SceneManager {
@@ -45,11 +44,11 @@ export default class SceneManager {
         const fov = 45;
         const aspect = window.innerWidth / window.innerHeight;
         const near = 0.0001;
-        const far = 1000;
+        const far = 3000;
 
         let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-        const initialPosition = new THREE.Vector3(-0.8, -0.3, 0.5);
+        const initialPosition = new THREE.Vector3(50, 40, 50);
         camera.position.copy(initialPosition);
 
         camera.lookAt(scene.position);

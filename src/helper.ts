@@ -27,7 +27,12 @@ function perpendicularOf(v: THREE.Vector3): THREE.Vector3 {
     return v_perp.normalize();
 }
 
+function printVector(v: THREE.Vector3) {
+    console.log("x: " + v.x + ", y: " + v.y + ", z: " + v.z);
+}
+
 export {
     randomFromInterval,
-    perpendicularOf
+    perpendicularOf,
+    printVector
 }

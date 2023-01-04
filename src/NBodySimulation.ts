@@ -22,10 +22,10 @@ export default class NBodySimulation {
     }
 
     update() {
-        this.star.update();
+        // this.star.update(this.bodies());
 
         for (let planet of this.planets) {
-            planet.update();
+            planet.update(this.bodies());
         }
     }
 
@@ -36,6 +36,7 @@ export default class NBodySimulation {
         let d = Config.minDistanceToSun;
         let gap = Config.distanceBetweenPlanets;
         for (let i = 0; i < Config.numberOfPlanets; i++) {
+
             let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
             let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
 
@@ -54,5 +55,9 @@ export default class NBodySimulation {
         }
 
         return planets;
+    }
+
+    private bodies(): Body[] {
+        return this.planets.concat([this.star])
     }
 }

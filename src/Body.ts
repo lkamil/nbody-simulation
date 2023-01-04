@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { randomFromInterval } from './helper';
+import Config from './Config';
 
 export default class Body {
 
@@ -18,12 +18,8 @@ export default class Body {
 
     constructor(mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
 
-        let acc_x: number = randomFromInterval(-0.003, 0.003);
-        let acc_y: number = randomFromInterval(-0.002, 0.002);
-        let acc_z: number = randomFromInterval(-0.002, 0.002);
-
         this.r = r;
-        this.v = new THREE.Vector3(acc_x, acc_y, acc_z);
+        this.v = v;
         this.a = new THREE.Vector3();
 
         this.r_new = this.r;
@@ -33,7 +29,7 @@ export default class Body {
         this.mass = mass;
 
         // Planet Geometry
-        const geometry = new THREE.SphereGeometry(0.01, 10, 10);
+        const geometry = new THREE.SphereGeometry(1, 10, 10);
         const material = new THREE.MeshLambertMaterial();
 
         this.mesh = new THREE.Mesh(geometry, material)
@@ -41,12 +37,54 @@ export default class Body {
         this.mesh.receiveShadow = true
     }
 
-    update() {
-        this.v.add(this.a)
-        this.r.add(this.v)
+    update(bodies: Body[]) {
+        // Kick
+        this.v_new.add(this.a_new.clone().multiplyScalar(Config.DT / 2));
 
-        this.mesh.position.x = this.r.x
-        this.mesh.position.y = this.r.y
-        this.mesh.position.z = this.r.z
+        // Drift
+        this.r_new.add(this.v_new.clone().multiplyScalar(Config.DT));
+
+        // Update Acc
+        this.a_new = this.getAcceleration(bodies);
+
+        // Kick
+        this.v_new.add(this.a_new.clone().multiplyScalar(Config.DT / 2));
+
+        this.r = this.r_new;
+        this.v = this.v_new;
+        this.a = this.a_new;
+
+        this.mesh.position.x = this.r.x;
+        this.mesh.position.y = this.r.y;
+        this.mesh.position.z = this.r.z;
+    }
+
+    // Calculates the acceleration of one body relative to all other bodies
+    getAcceleration(bodies: Body[]): THREE.Vector3 {
+
+        let acc = new THREE.Vector3();
+
+        // Loop through all elements
+        for (let bn of bodies) {
+
+            if (this.equals(bn)) {
+                continue;
+            }
+
+            let dx = bn.r.x - this.r_new.x;
+            let dy = bn.r.y - this.r_new.y;
+            let dz = bn.r.z - this.r_new.z;
+            
+            let inv_r3 = Math.pow( (Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2) + Math.pow(Config.softening, 2)), (-1.5));
+
+            acc.x += Config.G * (dx * inv_r3) * bn.mass;
+            acc.y += Config.G * (dy * inv_r3) * bn.mass;
+            acc.z += Config.G * (dz * inv_r3) * bn.mass;
+        }
+        return acc;
+    }
+
+    equals(body: Body): Boolean {
+        return this.r == body.r && this.v == body.v && this.a == body.a;
     }
 }
