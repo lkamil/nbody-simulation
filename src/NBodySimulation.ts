@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import Body from './Body';
 import Config from './Config';
 import { randomFromInterval, perpendicularOf } from './helper';
+import { BodyType } from './BodyType';
 
 
 export default class NBodySimulation {
@@ -12,7 +13,8 @@ export default class NBodySimulation {
 
     constructor(scene: THREE.Scene) {
 
-        this.star = new Body(Config.sunMass);
+        // this.star = new Body(Config.sunMass);
+        this.star = new Body(BodyType.sun)
         this.planets = this.createPlanets();
 
         scene.add(this.star.mesh);
@@ -47,8 +49,7 @@ export default class NBodySimulation {
             let r = new THREE.Vector3(x, y, z);
             let v = perpendicularOf(r);
 
-            let planet = new Body(Config.planetMass, r, v);
-            console.log(planet);
+            let planet = new Body(BodyType.planet, r, v);
             planets.push(planet);
 
             d += gap;

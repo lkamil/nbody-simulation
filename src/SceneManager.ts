@@ -13,7 +13,6 @@ export default class SceneManager {
     private simulation: NBodySimulation
 
     constructor() {
-        console.log("initializing scene manager");
         this.scene = this.setupScene();
         this.renderer = this.setupRenderer();
         this.camera = this.setupCamera(this.scene);

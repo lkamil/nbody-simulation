@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Config from './Config';
+import { BodyType } from './BodyType';
 
 export default class Body {
 
@@ -16,7 +17,7 @@ export default class Body {
     // Display Properties
     mesh: THREE.Mesh
 
-    constructor(mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
+    constructor(type: BodyType, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
 
         this.r = r;
         this.v = v;
@@ -26,15 +27,30 @@ export default class Body {
         this.v_new = this.v;
         this.a_new = this.a;
 
-        this.mass = mass;
+        this.mass = (type == BodyType.sun) ? Config.sun.mass : Config.planet.mass;
+
+        this.mesh = this.setupMesh(type);
+        this.mesh.castShadow = true
+        this.mesh.receiveShadow = true
+    }
+
+    private setupMesh(type: BodyType): THREE.Mesh {
+
+        let material: THREE.MeshLambertMaterial
+        switch (type as BodyType) {
+            case BodyType.sun:
+                material = new THREE.MeshLambertMaterial({ color: new THREE.Color(Config.sun.color) });
+                break
+
+            case BodyType.planet:
+                material = new THREE.MeshLambertMaterial({ color: new THREE.Color(Config.planet.color) });
+                break
+        }  
 
         // Planet Geometry
         const geometry = new THREE.SphereGeometry(1, 10, 10);
-        const material = new THREE.MeshLambertMaterial();
 
-        this.mesh = new THREE.Mesh(geometry, material)
-        this.mesh.castShadow = true
-        this.mesh.receiveShadow = true
+        return new THREE.Mesh(geometry, material);
     }
 
     update(bodies: Body[]) {

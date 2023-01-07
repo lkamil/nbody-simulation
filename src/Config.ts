@@ -1,9 +1,7 @@
 
 export default abstract class Config {
     // Simulation Settings
-    static readonly sunMass = 150;
-    static readonly planetMass = 20;
-    static readonly numberOfPlanets = 4;
+    static readonly numberOfPlanets = 500;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 0;
@@ -11,12 +9,22 @@ export default abstract class Config {
     static readonly minPolarAngle = 0;
     static readonly maxPolarAngle = 180;
     static readonly minDistanceToSun = 50;
-    static readonly distanceBetweenPlanets = 5;
+    static readonly distanceBetweenPlanets = 1;
 
     // Simulation Constants
     static readonly softening = 5;
     static readonly G = 1;
 
     // Time Passing Speed
-    static readonly DT = 1;
+    static readonly DT = 0.3;
+
+    static sun = {
+        color: 0xffff00,
+        mass: 150
+    }
+
+    static planet = {
+        color: 0x9872ff,
+        mass: 20
+    }
 }
