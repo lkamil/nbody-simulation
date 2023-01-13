@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Config from './Config';
 import { BodyType } from './BodyType';
+import Trajectory from './Trajectory';
 
 export default class Body {
 
@@ -10,10 +11,12 @@ export default class Body {
 
     mass: number;
 
+    private trajectory: Trajectory;
+
     // Display Properties
     mesh: THREE.Mesh
 
-    constructor(type: BodyType, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
+    constructor(type: BodyType, scene: THREE.Scene, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
 
         this.r = r;
         this.v = v;
@@ -24,6 +27,9 @@ export default class Body {
         this.mesh = this.setupMesh(type);
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
+
+        const trajectoryLength = 200;
+        this.trajectory = new Trajectory(trajectoryLength, scene);
     }
 
     private setupMesh(type: BodyType): THREE.Mesh {
@@ -55,6 +61,8 @@ export default class Body {
         this.mesh.position.x = this.r.x;
         this.mesh.position.y = this.r.y;
         this.mesh.position.z = this.r.z;
+
+        this.trajectory.addPosition(this.r);
     }
 
     getNewVectors(bodies: Body[]): THREE.Vector3[] {

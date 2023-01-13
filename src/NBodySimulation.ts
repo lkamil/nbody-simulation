@@ -13,8 +13,8 @@ export default class NBodySimulation {
 
     constructor(scene: THREE.Scene) {
 
-        this.star = new Body(BodyType.sun)
-        this.planets = this.createPlanets();
+        this.star = new Body(BodyType.sun, scene);
+        this.planets = this.createPlanets(scene);
 
         scene.add(this.star.mesh);
         for (let i = 0; i < this.planets.length; i++) {
@@ -35,7 +35,7 @@ export default class NBodySimulation {
         }
     }
 
-    private createPlanets(): Body[] {
+    private createPlanets(scene: THREE.Scene): Body[] {
 
         let planets: Body[] = [];
 
@@ -53,7 +53,7 @@ export default class NBodySimulation {
             let r = new THREE.Vector3(x, y, z);
             let v = perpendicularOf(r);
 
-            let planet = new Body(BodyType.planet, r, v);
+            let planet = new Body(BodyType.planet, scene, r, v);
             planets.push(planet);
 
             d += gap;
