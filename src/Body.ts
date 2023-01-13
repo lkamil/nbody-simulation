@@ -8,10 +8,6 @@ export default class Body {
     v: THREE.Vector3; // Velocity
     a: THREE.Vector3; // Accelaration
 
-    r_new: THREE.Vector3;
-    v_new: THREE.Vector3;
-    a_new: THREE.Vector3;
-
     mass: number;
 
     // Display Properties
@@ -22,10 +18,6 @@ export default class Body {
         this.r = r;
         this.v = v;
         this.a = new THREE.Vector3();
-
-        this.r_new = this.r;
-        this.v_new = this.v;
-        this.a_new = this.a;
 
         this.mass = (type == BodyType.sun) ? Config.sun.mass : Config.planet.mass;
 
@@ -53,30 +45,36 @@ export default class Body {
         return new THREE.Mesh(geometry, material);
     }
 
-    update(bodies: Body[]) {
-        // Kick
-        this.v_new.add(this.a_new.clone().multiplyScalar(Config.DT / 2));
+    update(bodies: Body[], shift: THREE.Vector3 = new THREE.Vector3(0, 0, 0)) {
+        let newVectors = this.getNewVectors(bodies);
 
-        // Drift
-        this.r_new.add(this.v_new.clone().multiplyScalar(Config.DT));
-
-        // Update Acc
-        this.a_new = this.getAcceleration(bodies);
-
-        // Kick
-        this.v_new.add(this.a_new.clone().multiplyScalar(Config.DT / 2));
-
-        this.r = this.r_new;
-        this.v = this.v_new;
-        this.a = this.a_new;
+        this.r = newVectors[0].add(shift);
+        this.v = newVectors[1].add(shift);
+        this.a = newVectors[2].add(shift);
 
         this.mesh.position.x = this.r.x;
         this.mesh.position.y = this.r.y;
         this.mesh.position.z = this.r.z;
     }
 
+    getNewVectors(bodies: Body[]): THREE.Vector3[] {
+        // Kick
+        let velocity = this.v.clone().add(this.a.clone().multiplyScalar(Config.DT / 2));
+
+        // Drift
+        let newPosition = this.r.clone().add(velocity.clone().multiplyScalar(Config.DT));
+
+        // Acceleration
+        let acceleration = this.getAcceleration(bodies, newPosition);
+
+        // Kick
+        velocity.add(acceleration.multiplyScalar(Config.DT / 2));
+
+        return [newPosition, velocity, acceleration];
+    }
+
     // Calculates the acceleration of one body relative to all other bodies
-    getAcceleration(bodies: Body[]): THREE.Vector3 {
+    getAcceleration(bodies: Body[], r_new: THREE.Vector3): THREE.Vector3 {
 
         let acc = new THREE.Vector3();
 
@@ -87,9 +85,9 @@ export default class Body {
                 continue;
             }
 
-            let dx = bn.r.x - this.r_new.x;
-            let dy = bn.r.y - this.r_new.y;
-            let dz = bn.r.z - this.r_new.z;
+            let dx = bn.r.x - r_new.x;
+            let dy = bn.r.y - r_new.y;
+            let dz = bn.r.z - r_new.z;
             
             let inv_r3 = Math.pow( (Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2) + Math.pow(Config.softening, 2)), (-1.5));
 

@@ -13,7 +13,6 @@ export default class NBodySimulation {
 
     constructor(scene: THREE.Scene) {
 
-        // this.star = new Body(Config.sunMass);
         this.star = new Body(BodyType.sun)
         this.planets = this.createPlanets();
 
@@ -24,10 +23,15 @@ export default class NBodySimulation {
     }
 
     update() {
-        // this.star.update(this.bodies());
+
+        // Keep sun centered
+        let newSunPosition = this.star.getNewVectors(this.bodies())[0];
+        let shift = newSunPosition.clone().negate();
+
+        this.star.update(this.bodies(), shift);
 
         for (let planet of this.planets) {
-            planet.update(this.bodies());
+            planet.update(this.bodies(), shift);
         }
     }
 

@@ -1,7 +1,7 @@
 
 export default abstract class Config {
     // Simulation Settings
-    static readonly numberOfPlanets = 500;
+    static readonly numberOfPlanets = 5;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 0;
@@ -16,7 +16,7 @@ export default abstract class Config {
     static readonly G = 1;
 
     // Time Passing Speed
-    static readonly DT = 0.3;
+    static readonly DT = 0.2;
 
     static sun = {
         color: 0xffff00,
