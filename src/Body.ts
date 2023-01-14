@@ -28,7 +28,7 @@ export default class Body {
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
 
-        const trajectoryLength = 200;
+        const trajectoryLength = 800;
         this.trajectory = new Trajectory(trajectoryLength, scene);
     }
 

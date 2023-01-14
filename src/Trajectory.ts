@@ -1,6 +1,6 @@
 
 import * as THREE from 'three';
-import Config from './Config';
+import { BufferAttribute } from 'three';
 
 export default class Trajectory {
 
@@ -23,11 +23,15 @@ export default class Trajectory {
     }
 
     private setupLine(): THREE.Line {
-        const geometry = new THREE.BufferGeometry();
-        
-        geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
 
-        const material = new THREE.LineBasicMaterial({ color: Config.trajectory.color });
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+        const colors = this.gradientArray();
+        geometry.setAttribute('color', new BufferAttribute(colors, 3));
+
+        const material = new THREE.LineBasicMaterial({ 
+            vertexColors: true // Geometry provides color info
+        });
 
         return new THREE.Line(geometry, material);
     }
@@ -49,5 +53,22 @@ export default class Trajectory {
         }
         this.line.geometry.setDrawRange(0, this.drawRange);
         this.line.geometry.attributes.position.needsUpdate = true
+    }
+
+    private gradientArray(): Float32Array {
+        let step = 1 / this.maxPoints;
+        let dec = step;
+
+        const colors = new Float32Array(this.maxPoints * 3);
+        for (let i = 0; i < colors.length - 2; i += 3) {
+            colors[i] = 1 - dec;
+            colors[i + 1] = 1 - dec;
+            colors[i + 2] = 1 - dec;
+
+            dec += step;
+        }
+
+        return colors
+
     }
 }
