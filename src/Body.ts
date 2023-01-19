@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Config from './Config';
 import { BodyType } from './BodyType';
 import Trajectory from './Trajectory';
+import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
 
 export default class Body {
 
@@ -30,6 +31,8 @@ export default class Body {
 
         const trajectoryLength = 800;
         this.trajectory = new Trajectory(trajectoryLength, scene);
+
+        this.setupLabel();
     }
 
     private setupMesh(type: BodyType): THREE.Mesh {
@@ -49,6 +52,15 @@ export default class Body {
         const geometry = new THREE.SphereGeometry(1, 10, 10);
 
         return new THREE.Mesh(geometry, material);
+    }
+
+    private setupLabel() {
+        const planetDiv = document.createElement('div');
+        planetDiv.className = "label";
+        planetDiv.textContent = "name";
+        let label = new CSS2DObject(planetDiv);
+
+        this.mesh.add(label);
     }
 
     update(bodies: Body[], shift: THREE.Vector3 = new THREE.Vector3(0, 0, 0)) {

@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import NBodySimulation from './NBodySimulation';
+import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 
 export default class SceneManager {
 
     private scene: THREE.Scene;
     private renderer: THREE.Renderer;
+    private labelRenderer: CSS2DRenderer;
     private camera: THREE.PerspectiveCamera;
     
     private orbitControls: OrbitControls;
@@ -15,6 +17,7 @@ export default class SceneManager {
     constructor() {
         this.scene = this.setupScene();
         this.renderer = this.setupRenderer();
+        this.labelRenderer = this.setupLabelRenderer();
         this.camera = this.setupCamera(this.scene);
         this.orbitControls = this.setupOrbitControls(this.camera, this.renderer.domElement);
 
@@ -26,6 +29,7 @@ export default class SceneManager {
     update() {
         this.orbitControls.update();
         this.renderer.render(this.scene, this.camera);
+        this.labelRenderer.render(this.scene, this.camera);
 
         this.simulation.update();
     }
@@ -63,10 +67,20 @@ export default class SceneManager {
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // canvas.appendChild(renderer.domElement);
         document.body.appendChild(renderer.domElement);
 
         return renderer
+    }
+
+    private setupLabelRenderer(): CSS2DRenderer {
+        let labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '-12px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        return labelRenderer;
     }
 
     private setupOrbitControls(camera: THREE.PerspectiveCamera, domElement: HTMLCanvasElement): OrbitControls {
