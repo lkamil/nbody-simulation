@@ -1,50 +1,54 @@
 import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
-import Body from './Body';
+import Body from './Objects/Body';
 import Config from './Config';
 import { randomFromInterval, perpendicularOf } from './helper';
-import { BodyType } from './BodyType';
+import Planet from './Objects/Planet';
+import Star from './Objects/Star';
 
 
 export default class NBodySimulation {
 
     private star: Body;
-    private planets: Body[];
+    private planets: Planet[];
 
     constructor(scene: THREE.Scene) {
 
-        this.star = new Body(BodyType.sun, scene);
+        this.star = new Star(scene);
         this.planets = this.createPlanets(scene);
 
-        scene.add(this.star.mesh);
-        for (let i = 0; i < this.planets.length; i++) {
-            scene.add(this.planets[i].mesh);
-        }
+        // scene.add(this.star.mesh);
+        // for (let i = 0; i < this.planets.length; i++) {
+        //     scene.add(this.planets[i].mesh);
+        // }
     }
 
     update() {
 
         // Keep sun centered
-        let newSunPosition = this.star.getNewVectors(this.bodies())[0];
+        let newSunPosition = this.star.getNewVectors(this.planets)[0];
+
         let shift = newSunPosition.clone().negate();
 
-        this.star.update(this.bodies(), shift);
+        this.star.update(this.planets, shift);
 
         for (let planet of this.planets) {
             planet.update(this.bodies(), shift);
         }
     }
 
-    private createPlanets(scene: THREE.Scene): Body[] {
+    private createPlanets(scene: THREE.Scene): Planet[] {
 
-        let planets: Body[] = [];
+        let planets: Planet[] = [];
 
-        let d = Config.minDistanceToSun;
+        let d = Config.minDistanceToStar;
         let gap = Config.distanceBetweenPlanets;
         for (let i = 0; i < Config.numberOfPlanets; i++) {
 
             let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
             let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
+            // let horizontalAngle = 5;
+            // let polarAngle = i*2;
 
             let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
             let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);
@@ -53,7 +57,8 @@ export default class NBodySimulation {
             let r = new THREE.Vector3(x, y, z);
             let v = perpendicularOf(r);
 
-            let planet = new Body(BodyType.planet, scene, r, v);
+            let name = "planet " + (i+1);
+            let planet = new Planet(scene, r, v, name);
             planets.push(planet);
 
             d += gap;
@@ -63,6 +68,6 @@ export default class NBodySimulation {
     }
 
     private bodies(): Body[] {
-        return this.planets.concat([this.star])
+        return [this.star].concat(this.planets)
     }
 }

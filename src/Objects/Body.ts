@@ -1,69 +1,58 @@
 import * as THREE from 'three';
-import Config from './Config';
-import { BodyType } from './BodyType';
-import Trajectory from './Trajectory';
+import Config from '../Config';
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
 
 export default class Body {
 
     r: THREE.Vector3; // Position
-    v: THREE.Vector3; // Velocity
-    a: THREE.Vector3; // Accelaration
+    private v: THREE.Vector3; // Velocity
+    private a: THREE.Vector3; // Accelaration
 
-    mass: number;
+    private mass: number;
 
-    private trajectory: Trajectory;
-
-    // Display Properties
+    private label: CSS2DObject;
     mesh: THREE.Mesh
 
-    constructor(type: BodyType, scene: THREE.Scene, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
+    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
 
         this.r = r;
         this.v = v;
         this.a = new THREE.Vector3();
 
-        this.mass = (type == BodyType.sun) ? Config.sun.mass : Config.planet.mass;
+        this.mass = mass;
 
-        this.mesh = this.setupMesh(type);
+        this.mesh = this.setupMesh();
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
+        scene.add(this.mesh);
 
-        const trajectoryLength = 800;
-        this.trajectory = new Trajectory(trajectoryLength, scene);
-
-        this.setupLabel();
+        this.label = this.setupLabel();
     }
 
-    private setupMesh(type: BodyType): THREE.Mesh {
+    private setupMesh(): THREE.Mesh {
 
-        let material: THREE.MeshLambertMaterial
-        switch (type as BodyType) {
-            case BodyType.sun:
-                material = new THREE.MeshLambertMaterial({ color: new THREE.Color(Config.sun.color) });
-                break
-
-            case BodyType.planet:
-                material = new THREE.MeshLambertMaterial({ color: new THREE.Color(Config.planet.color) });
-                break
-        }  
-
-        // Planet Geometry
+        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();
         const geometry = new THREE.SphereGeometry(1, 10, 10);
 
         return new THREE.Mesh(geometry, material);
     }
 
-    private setupLabel() {
+    private setupLabel(): CSS2DObject {
         const planetDiv = document.createElement('div');
         planetDiv.className = "label";
-        planetDiv.textContent = "name";
+        planetDiv.textContent = "";
         let label = new CSS2DObject(planetDiv);
 
         this.mesh.add(label);
+        return label
     }
 
     update(bodies: Body[], shift: THREE.Vector3 = new THREE.Vector3(0, 0, 0)) {
+        this.updateVectors(bodies, shift);
+    }
+
+    updateVectors(bodies: Body[], shift: THREE.Vector3) {
+
         let newVectors = this.getNewVectors(bodies);
 
         this.r = newVectors[0].add(shift);
@@ -73,8 +62,6 @@ export default class Body {
         this.mesh.position.x = this.r.x;
         this.mesh.position.y = this.r.y;
         this.mesh.position.z = this.r.z;
-
-        this.trajectory.addPosition(this.r);
     }
 
     getNewVectors(bodies: Body[]): THREE.Vector3[] {
@@ -118,7 +105,11 @@ export default class Body {
         return acc;
     }
 
-    equals(body: Body): Boolean {
+    setLabelText(text: string) {
+        this.label.element.innerHTML = text;
+    }
+
+    private equals(body: Body): Boolean {
         return this.r == body.r && this.v == body.v && this.a == body.a;
     }
 }

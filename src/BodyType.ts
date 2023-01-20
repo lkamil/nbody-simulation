@@ -1,5 +1,5 @@
 
 export enum BodyType {
-    sun,
+    star,
     planet
 }
