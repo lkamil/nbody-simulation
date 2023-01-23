@@ -42,8 +42,6 @@ export default class NBodySimulation {
 
             let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
             let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
-            // let horizontalAngle = 5;
-            // let polarAngle = i*2;
 
             let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
             let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);

@@ -12,7 +12,7 @@ export default abstract class Config {
     static readonly distanceBetweenPlanets = 20;
 
     // Simulation Constants
-    static readonly softening = 3;
+    static readonly softening = 2;
     static readonly G = 1;
 
     // Time Passing Speed

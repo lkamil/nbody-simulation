@@ -95,8 +95,13 @@ export default class Body {
             let dx = bn.r.x - r_new.x;
             let dy = bn.r.y - r_new.y;
             let dz = bn.r.z - r_new.z;
+
+            if (bn.r.distanceTo(r_new) <= Config.DT) {
+                console.log("[!] CRASH: " + bn.label.element.innerText + " and " + this.label.element.innerText + " collided");
+            }
             
             let inv_r3 = Math.pow( (Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2) + Math.pow(Config.softening, 2)), (-1.5));
+            
 
             acc.x += Config.G * (dx * inv_r3) * bn.mass;
             acc.y += Config.G * (dy * inv_r3) * bn.mass;
