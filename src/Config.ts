@@ -1,7 +1,7 @@
 
 export default abstract class Config {
     // Simulation Settings
-    static readonly numberOfPlanets = 8;
+    static readonly numberOfPlanets = 4;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 30;
@@ -24,11 +24,11 @@ export default abstract class Config {
     }
 
     static planet = {
-        color: 0x9872ff,
+        color: 0x555555,
         mass: 10
     }
 
     static trajectory = {
-        color: 0xa3a3a3
+        color: 0xffffff
     }
 }

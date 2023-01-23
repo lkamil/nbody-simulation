@@ -2,17 +2,24 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import NBodySimulation from './NBodySimulation';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { GUI } from 'dat.gui';
 
 export default class SceneManager {
 
     private scene: THREE.Scene;
-    private renderer: THREE.Renderer;
+    private renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
     private camera: THREE.PerspectiveCamera;
+    private datGui: GUI;
     
     private orbitControls: OrbitControls;
+    private composer: EffectComposer;
+    private bloomPass: UnrealBloomPass;
 
-    private simulation: NBodySimulation
+    private simulation: NBodySimulation;
 
     constructor() {
         this.scene = this.setupScene();
@@ -20,15 +27,28 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.camera = this.setupCamera(this.scene);
         this.orbitControls = this.setupOrbitControls(this.camera, this.renderer.domElement);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
+        this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
 
         this.simulation = this.addSimulation(this.scene);
 
         this.addLight(this.scene);
+        this.datGui = this.setupDatGui();
+
+        this.animate();
     }
 
-    update() {
-        this.orbitControls.update();
-        this.renderer.render(this.scene, this.camera);
+    private animate() {
+        requestAnimationFrame(() => {
+            this.animate();
+        });
+        
+        this.update();
+
+    }
+
+    private update() {
+        this.composer.render();
         this.labelRenderer.render(this.scene, this.camera);
 
         this.simulation.update();
@@ -47,7 +67,7 @@ export default class SceneManager {
         const fov = 45;
         const aspect = window.innerWidth / window.innerHeight;
         const near = 0.0001;
-        const far = 3000;
+        const far = 8000;
 
         let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
@@ -99,5 +119,30 @@ export default class SceneManager {
         let simulation = new NBodySimulation(scene);
 
         return simulation;
+    }
+
+    private setupComposer(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera): EffectComposer {
+        let composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+
+        this.bloomPass.renderToScreen = true;
+        composer.addPass(this.bloomPass);
+    
+        composer.setSize(window.innerWidth, window.innerHeight);
+
+        return composer        
+    }
+
+    private setupDatGui(): GUI {
+        let gui = new GUI;
+        gui.domElement.id = 'gui';
+        let folder = gui.addFolder('Bloompass');
+
+        folder.add(this.bloomPass, 'strength', 0, 5);
+        folder.add(this.bloomPass, 'radius', 0, 1);
+        folder.add(this.bloomPass, 'threshold', 0, 1);
+        
+
+        return gui
     }
 }

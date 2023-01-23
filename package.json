@@ -8,8 +8,10 @@
 		"pretty": "prettier --write 'src/**/*.{ts,html,scss}'"
 	},
 	"devDependencies": {
+		"@types/dat.gui": "^0.7.7",
 		"@types/three": "^0.134.0",
 		"autoprefixer": "^10.4.0",
+		"dat.gui": "^0.7.9",
 		"prettier": "^2.5.0",
 		"sass": "^1.43.5",
 		"typescript": "^4.3.2",
