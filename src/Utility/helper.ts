@@ -1,7 +1,8 @@
 import * as THREE from 'three';
+import { RAND } from '../Randomizer';
 
 function randomFromInterval(min: number, max: number): number {
-    return Math.random() * (max - min) + min
+    return RAND.number() * (max - min) + min;
 }
 
 // Calculate a vector that is perpendicular to a given vector

@@ -9,6 +9,7 @@
 	},
 	"devDependencies": {
 		"@types/dat.gui": "^0.7.7",
+		"@types/seedrandom": "^3.0.4",
 		"@types/three": "^0.134.0",
 		"autoprefixer": "^10.4.0",
 		"dat.gui": "^0.7.9",
@@ -18,6 +19,7 @@
 		"vite": "^2.6.14"
 	},
 	"dependencies": {
+		"seedrandom": "^3.0.5",
 		"three": "^0.134.0"
 	}
 }

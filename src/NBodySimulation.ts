@@ -2,7 +2,7 @@ import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
 import Body from './Objects/Body';
 import Config from './Config';
-import { randomFromInterval, perpendicularOf } from './helper';
+import { randomFromInterval, perpendicularOf } from './Utility/helper';
 import Planet from './Objects/Planet';
 import Star from './Objects/Star';
 
@@ -16,11 +16,6 @@ export default class NBodySimulation {
 
         this.star = new Star(scene);
         this.planets = this.createPlanets(scene);
-
-        // scene.add(this.star.mesh);
-        // for (let i = 0; i < this.planets.length; i++) {
-        //     scene.add(this.planets[i].mesh);
-        // }
     }
 
     update() {
