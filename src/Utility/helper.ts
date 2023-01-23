@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { RAND } from '../Randomizer';
+import { RAND } from './Randomizer';
 
 function randomFromInterval(min: number, max: number): number {
     return RAND.number() * (max - min) + min;
