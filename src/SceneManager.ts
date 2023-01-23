@@ -59,7 +59,24 @@ export default class SceneManager {
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();
 
+        this.setBackgroundTexture(scene);
+
         return scene;
+    }
+
+    private setBackgroundTexture(scene: THREE.Scene) {
+        let geometry = new THREE.SphereGeometry(2000, 16, 16);
+        geometry.scale(-1, 1, 1);
+        let material = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('../assets/8k_stars.jpg'),
+            // map: new THREE.TextureLoader().load('../assets/celestial_grid.jpg'),
+            transparent: true,
+            opacity: 0.4
+        });
+        let mesh = new THREE.Mesh(geometry, material);
+        mesh.name = "sceneTexture";
+
+        scene.add(mesh);
     }
 
     private setupCamera(scene: THREE.Scene): THREE.PerspectiveCamera {
