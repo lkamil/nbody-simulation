@@ -9,8 +9,8 @@ import Star from './Objects/Star';
 
 export default class NBodySimulation {
 
-    private star: Body;
-    private planets: Planet[];
+    readonly star: Body;
+    readonly planets: Planet[];
 
     constructor(scene: THREE.Scene) {
 
@@ -62,5 +62,19 @@ export default class NBodySimulation {
 
     private bodies(): Body[] {
         return [this.star].concat(this.planets)
+    }
+
+    getObjectData() {
+
+        let data = []
+        let entry = { Object: "Star", Mass: Config.star.mass, Distance: "0" }
+        data.push(entry);
+
+        for (let i in this.planets) {
+            let entry = { Object: ("Planet " + i), Mass: Config.planet.mass, Distance: this.planets[i].r.distanceTo(this.star.r).toFixed(0)}
+            data.push(entry);
+        }  
+
+        return data
     }
 }

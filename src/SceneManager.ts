@@ -34,6 +34,7 @@ export default class SceneManager {
 
         this.addLight(this.scene);
         this.datGui = this.setupDatGui();
+        this.setDataTable();
 
         this.animate();
     }
@@ -52,6 +53,7 @@ export default class SceneManager {
         this.labelRenderer.render(this.scene, this.camera);
 
         this.simulation.update();
+        this.setDataTable();
     }
 
     // - SETUP -
@@ -161,5 +163,23 @@ export default class SceneManager {
         
 
         return gui
+    }
+
+    private setDataTable() {
+
+        let data = this.simulation.getObjectData();
+
+        const tableData = data.map(value => {
+            return (
+                `<tr>
+                    <td>${value.Object}</td>
+                    <td>${value.Mass}</td>
+                    <td>${value.Distance}</td>
+                </tr>`
+            );
+        }).join('');
+
+        const tableBody = document.querySelector("#data-table-body")!;
+        tableBody.innerHTML = tableData;
     }
 }

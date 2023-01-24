@@ -1,7 +1,7 @@
 
 export default abstract class Config {
     // Simulation Settings
-    static readonly numberOfPlanets = 4;
+    static readonly numberOfPlanets = 5;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 30;
@@ -9,7 +9,7 @@ export default abstract class Config {
     static readonly minPolarAngle = 0;
     static readonly maxPolarAngle = 180;
     static readonly minDistanceToStar = 100;
-    static readonly distanceBetweenPlanets = 20;
+    static readonly distanceBetweenPlanets = 30;
 
     // Simulation Constants
     static readonly softening = 2;
