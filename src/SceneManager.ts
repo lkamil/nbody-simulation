@@ -6,6 +6,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GUI } from 'dat.gui';
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 export default class SceneManager {
 
@@ -13,7 +14,9 @@ export default class SceneManager {
     private renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
     private camera: THREE.PerspectiveCamera;
+
     private datGui: GUI;
+    private stats: Stats
     
     private orbitControls: OrbitControls;
     private composer: EffectComposer;
@@ -35,6 +38,8 @@ export default class SceneManager {
         this.addLight(this.scene);
         this.datGui = this.setupDatGui();
         this.setDataTable();
+        this.stats = Stats();
+        document.body.appendChild(this.stats.dom);
 
         this.animate();
     }
@@ -54,6 +59,7 @@ export default class SceneManager {
 
         this.simulation.update();
         this.setDataTable();
+        this.stats.update();
     }
 
     // - SETUP -
