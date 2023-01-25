@@ -6,7 +6,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GUI } from 'dat.gui';
-import Stats from 'three/examples/jsm/libs/stats.module'
+import Stats from 'three/examples/jsm/libs/stats.module';
 
 export default class SceneManager {
 
@@ -59,6 +59,7 @@ export default class SceneManager {
 
         this.simulation.update();
         this.setDataTable();
+        this.logEvents();
         this.stats.update();
     }
 
@@ -187,5 +188,20 @@ export default class SceneManager {
 
         const tableBody = document.querySelector("#data-table-body")!;
         tableBody.innerHTML = tableData;
+    }
+
+    private logEvents() {
+        let logs = this.simulation.events.log;
+        logs.splice(5);
+
+        const consoleData = logs.map(event => {
+            return (
+                `<tr>
+                    <td>${event}</td>
+                 </tr>`
+            );
+        }).join('');
+        const consoleBody = document.querySelector("#console-body")!;
+        consoleBody.innerHTML = consoleData;
     }
 }

@@ -7,7 +7,7 @@ class Random {
 
     constructor() {
         this.seed = Math.round((Math.random() * 10000) * 1e0) / 1e0;
-        // this.seed = 6159;
+        // this.seed = 950;
 
         this.randomiser = new alea(this.seed.toFixed(2));
 

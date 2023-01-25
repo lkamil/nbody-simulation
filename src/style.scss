@@ -32,9 +32,15 @@ body {
 }
 
 #data-table {
-	position: fixed;
 	top: 20px;
 	left: 20px;
+	// display: none;
+}
+
+#console {
+	right: 0px;
+	bottom: 0px;
+	width: 40%;
 }
 
 table, th, td {
@@ -45,6 +51,7 @@ table, th, td {
 
 table {
 	border: 1px dashed var(--grey);
+	position: fixed;
 }
 
 th  {	

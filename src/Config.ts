@@ -9,7 +9,7 @@ export default abstract class Config {
     static readonly minPolarAngle = 0;
     static readonly maxPolarAngle = 180;
     static readonly minDistanceToStar = 100;
-    static readonly distanceBetweenPlanets = 30;
+    static readonly distanceBetweenPlanets = 20;
 
     // Simulation Constants
     static readonly softening = 2;

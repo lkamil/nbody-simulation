@@ -11,7 +11,9 @@ export default class Body {
     private mass: number;
 
     private label: CSS2DObject;
-    mesh: THREE.Mesh
+    mesh: THREE.Mesh;
+
+    events: string[] = [];
 
     constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
 
@@ -97,7 +99,7 @@ export default class Body {
             let dz = bn.r.z - r_new.z;
 
             if (bn.r.distanceTo(r_new) <= Config.DT) {
-                console.log("[!] CRASH: " + bn.label.element.innerText + " and " + this.label.element.innerText + " collided");
+                this.events.unshift(`[!] ${bn.label.element.innerText} and ${this.label.element.innerText} crashed into each other.`);
             }
             
             let inv_r3 = Math.pow( (Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2) + Math.pow(Config.softening, 2)), (-1.5));
@@ -112,9 +114,16 @@ export default class Body {
 
     setLabelText(text: string) {
         this.label.element.innerHTML = text;
+        this.events.unshift(`[*] ${this.label.element.innerText} instantiated`);
     }
 
     private equals(body: Body): Boolean {
         return this.r == body.r && this.v == body.v && this.a == body.a;
+    }
+
+    getAndClearCurrentEvents(): Array <string> {
+        let currentEvents = this.events;
+        this.events = [];
+        return currentEvents;
     }
 }

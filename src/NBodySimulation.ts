@@ -6,11 +6,18 @@ import { randomFromInterval, perpendicularOf } from './Utility/helper';
 import Planet from './Objects/Planet';
 import Star from './Objects/Star';
 
-
 export default class NBodySimulation {
 
     readonly star: Body;
     readonly planets: Planet[];
+
+    events = {
+        set current(name: string) {
+            this.log.unshift(name);
+        },
+        log: ([] as Array<string>),
+    };
+
 
     constructor(scene: THREE.Scene) {
 
@@ -20,15 +27,20 @@ export default class NBodySimulation {
 
     update() {
 
-        // Keep sun centered
-        let newSunPosition = this.star.getNewVectors(this.planets)[0];
+        // Keep star centered
+        let newStarPosition = this.star.getNewVectors(this.planets)[0];
 
-        let shift = newSunPosition.clone().negate();
+        let shift = newStarPosition.clone().negate();
 
         this.star.update(this.planets, shift);
+        
 
         for (let planet of this.planets) {
             planet.update(this.bodies(), shift);
+
+            planet.getAndClearCurrentEvents().forEach(event => {
+                this.events.current = event;
+            });
         }
     }
 
