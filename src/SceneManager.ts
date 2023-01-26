@@ -7,6 +7,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
+import TimeController from './TimeController';
 
 export default class SceneManager {
 
@@ -14,6 +15,7 @@ export default class SceneManager {
     private renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
     private camera: THREE.PerspectiveCamera;
+    private timeController: TimeController;
 
     private datGui: GUI;
     private stats: Stats
@@ -32,6 +34,7 @@ export default class SceneManager {
         this.orbitControls = this.setupOrbitControls(this.camera, this.renderer.domElement);
         this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
+        this.timeController = new TimeController();
 
         this.simulation = this.addSimulation(this.scene);
 
@@ -40,20 +43,17 @@ export default class SceneManager {
         this.setDataTable();
         this.stats = Stats();
         document.body.appendChild(this.stats.dom);
-
-        this.animate();
     }
 
     private animate() {
-        requestAnimationFrame(() => {
-            this.animate();
-        });
-        
+        requestAnimationFrame(this.animate);
         this.update();
 
     }
 
-    private update() {
+    update() {
+        this.timeController.timer.update();
+        // this.clock.getDelta()
         this.composer.render();
         this.labelRenderer.render(this.scene, this.camera);
 
@@ -61,6 +61,25 @@ export default class SceneManager {
         this.setDataTable();
         this.logEvents();
         this.stats.update();
+
+        this.checkTime();
+    }
+
+    private checkTime() {
+
+        if (this.timeController.timer.getElapsed() > 5) {
+            console.log("RESET");
+            this.timeController.timer.hardReset();
+            this.simulation.removeObjectsFrom(this.scene);
+
+            // TODO: reset label renderer correctly
+            let labelRenderer = document.getElementById("label-renderer");
+            if (labelRenderer != null) {
+                labelRenderer.parentNode.removeChild(labelRenderer);
+            }
+
+            this.simulation = new NBodySimulation(this.scene);
+        }
     }
 
     // - SETUP -
@@ -112,7 +131,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-
+        // renderer.setPixelRatio(2);
         document.body.appendChild(renderer.domElement);
 
         return renderer
@@ -124,6 +143,7 @@ export default class SceneManager {
         labelRenderer.domElement.style.position = 'absolute';
         labelRenderer.domElement.style.top = '-12px';
         labelRenderer.domElement.style.pointerEvents = 'none';
+        labelRenderer.domElement.id = "label-renderer";
         document.body.appendChild(labelRenderer.domElement);
 
         return labelRenderer;
@@ -136,7 +156,6 @@ export default class SceneManager {
     }
 
     private addLight(scene: THREE.Scene) {
-        console.log("added Light");
         let ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(ambientLight);
     }

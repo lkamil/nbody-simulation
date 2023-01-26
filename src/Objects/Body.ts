@@ -31,6 +31,10 @@ export default class Body {
         this.label = this.setupLabel();
     }
 
+    private removeObjectsFromScene() {
+        
+    }
+
     private setupMesh(): THREE.Mesh {
 
         let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();

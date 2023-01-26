@@ -16,7 +16,7 @@ export default abstract class Config {
     static readonly G = 1;
 
     // Time Passing Speed
-    static readonly DT = 1;
+    static readonly DT = 0.5;
 
     static star = {
         color: 0xffff00,

@@ -23,4 +23,11 @@ export default class Planet extends Body {
 
         this.trajectory.addPosition(this.r);
     }
+
+    removeTrajectory(scene: THREE.Scene) {
+        scene.remove(this.trajectory.line);
+
+        this.trajectory.line.geometry.dispose();
+        this.trajectory.line.material.dispose();
+    }
 }

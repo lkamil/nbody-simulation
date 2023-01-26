@@ -7,7 +7,7 @@ export default class Trajectory {
     positions: Float32Array;
     private maxPoints: number;
     drawRange: number;
-    private line: THREE.Line;
+    line: THREE.Line;
 
     constructor(length: number, scene: THREE.Scene) {
 
