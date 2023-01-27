@@ -8,14 +8,15 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import TimeController from './TimeController';
+import CameraController from './CameraController';
 
 export default class SceneManager {
 
     private scene: THREE.Scene;
     private renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
-    private camera: THREE.PerspectiveCamera;
     private timeController: TimeController;
+    private cameraController: CameraController;
 
     // private datGui: GUI;
     private stats: Stats
@@ -30,10 +31,10 @@ export default class SceneManager {
         this.scene = this.setupScene();
         this.renderer = this.setupRenderer();
         this.labelRenderer = this.setupLabelRenderer();
-        this.camera = this.setupCamera(this.scene);
-        this.setupOrbitControls(this.camera, this.renderer.domElement);
+        this.cameraController = new CameraController(this.scene);
+        this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
         this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.5, 0);
-        this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
+        this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
         this.simulation = this.addSimulation(this.scene);
@@ -47,9 +48,9 @@ export default class SceneManager {
 
     update() {
         this.timeController.timer.update();
-        // this.clock.getDelta()
         this.composer.render();
-        this.labelRenderer.render(this.scene, this.camera);
+        this.cameraController.update(this.timeController.timer.getElapsed());
+        this.labelRenderer.render(this.scene, this.cameraController.camera);
 
         this.simulation.update();
         this.setDataTable();
@@ -101,23 +102,6 @@ export default class SceneManager {
         scene.add(mesh);
     }
 
-    private setupCamera(scene: THREE.Scene): THREE.PerspectiveCamera {
-
-        const fov = 45;
-        const aspect = window.innerWidth / window.innerHeight;
-        const near = 0.0001;
-        const far = 8000;
-
-        let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-        const initialPosition = new THREE.Vector3(50, 40, 50);
-        camera.position.copy(initialPosition);
-
-        camera.lookAt(scene.position);
-
-        return camera;
-    }
-
     private setupRenderer(): THREE.WebGLRenderer {
         let renderer = new THREE.WebGLRenderer();
 
@@ -125,7 +109,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        // renderer.setPixelRatio(2);
+        renderer.setPixelRatio(2);
         document.body.appendChild(renderer.domElement);
 
         return renderer
