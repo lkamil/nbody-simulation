@@ -17,11 +17,8 @@ export default class SceneManager {
     private labelRenderer: CSS2DRenderer;
     private timeController: TimeController;
     private cameraController: CameraController;
-
-    // private datGui: GUI;
     private stats: Stats
     
-    // private orbitControls: OrbitControls;
     private composer: EffectComposer;
     private bloomPass: UnrealBloomPass;
 
@@ -33,15 +30,14 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
         this.simulation = this.addSimulation(this.scene);
 
         this.addLight(this.scene);
-        this.setupDatGui();
-        this.setDataTable();
+        // this.setupDatGui();
         this.stats = Stats();
         document.body.appendChild(this.stats.dom);
     }
@@ -66,12 +62,6 @@ export default class SceneManager {
             console.log("RESET");
             this.timeController.timer.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
-
-            // TODO: reset label renderer correctly
-            let labelRenderer = document.getElementById("label-renderer");
-            if (labelRenderer != null) {
-                labelRenderer.parentNode?.removeChild(labelRenderer);
-            }
 
             this.simulation = new NBodySimulation(this.scene);
         }

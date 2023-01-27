@@ -49,6 +49,10 @@ export default class Body {
         return label
     }
 
+    removeLabel() {
+        this.label.element.parentNode?.removeChild(this.label.element);
+    }
+
     update(bodies: Body[], shift: THREE.Vector3 = new THREE.Vector3(0, 0, 0)) {
         this.updateVectors(bodies, shift);
     }

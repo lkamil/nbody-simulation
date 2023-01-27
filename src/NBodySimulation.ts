@@ -97,6 +97,7 @@ export default class NBodySimulation {
 
         this.planets.forEach(planet => {
             planet.removeTrajectory(scene);
+            planet.removeLabel();
             let uuid = planet.mesh.uuid;
             let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
             object?.geometry.dispose();
