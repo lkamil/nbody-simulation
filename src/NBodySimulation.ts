@@ -82,8 +82,8 @@ export default class NBodySimulation {
         let entry = { Object: "Star", Mass: Config.star.mass, Distance: "0" }
         data.push(entry);
 
-        for (let i in this.planets) {
-            let entry = { Object: ("Planet " + i), Mass: Config.planet.mass, Distance: this.planets[i].r.distanceTo(this.star.r).toFixed(0)}
+        for (let planet of this.planets) {
+            let entry = { Object: planet.label.element.innerHTML, Mass: Config.planet.mass, Distance: planet.r.distanceTo(this.star.r).toFixed(0)}
             data.push(entry);
         }  
 
@@ -93,7 +93,8 @@ export default class NBodySimulation {
     removeObjectsFrom(scene: THREE.Scene) {
         scene.remove(this.star.mesh);
         this.star.mesh.geometry.dispose();
-        // this.star.mesh.material.dispose();
+        // @ts-ignore
+        this.star.mesh.material.dispose();
 
         this.planets.forEach(planet => {
             planet.removeTrajectory(scene);
@@ -101,7 +102,8 @@ export default class NBodySimulation {
             let uuid = planet.mesh.uuid;
             let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
             object?.geometry.dispose();
-            // object?.material.dispose();
+            // @ts-ignore
+            object?.material.dispose();
             scene.remove(object!);
         });
     }

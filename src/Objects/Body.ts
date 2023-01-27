@@ -10,7 +10,7 @@ export default class Body {
 
     private mass: number;
 
-    private label: CSS2DObject;
+    label: CSS2DObject;
     mesh: THREE.Mesh;
 
     events: string[] = [];

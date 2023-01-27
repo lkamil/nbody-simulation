@@ -30,7 +30,7 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -146,6 +146,7 @@ export default class SceneManager {
         return composer        
     }
 
+    // @ts-ignore
     private setupDatGui(): GUI {
         let gui = new GUI;
         gui.domElement.id = 'gui';
