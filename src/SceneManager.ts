@@ -32,7 +32,7 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.camera = this.setupCamera(this.scene);
         this.setupOrbitControls(this.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
         this.timeController = new TimeController();
 
@@ -61,7 +61,7 @@ export default class SceneManager {
 
     private checkTime() {
 
-        if (this.timeController.timer.getElapsed() > 5) {
+        if (this.timeController.timer.getElapsed() > 300) {
             console.log("RESET");
             this.timeController.timer.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
