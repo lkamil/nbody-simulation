@@ -15,7 +15,7 @@ export default class Body {
 
     events: string[] = [];
 
-    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3()) {
+    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), color: THREE.Color = new THREE.Color(Config.planet.color)) {
 
         this.r = r;
         this.v = v;
@@ -23,7 +23,7 @@ export default class Body {
 
         this.mass = mass;
 
-        this.mesh = this.setupMesh();
+        this.mesh = this.setupMesh(color);
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
         scene.add(this.mesh);
@@ -31,13 +31,9 @@ export default class Body {
         this.label = this.setupLabel();
     }
 
-    private removeObjectsFromScene() {
-        
-    }
+    private setupMesh(color: THREE.Color): THREE.Mesh {
 
-    private setupMesh(): THREE.Mesh {
-
-        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();
+        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color });
         const geometry = new THREE.SphereGeometry(1, 10, 10);
 
         return new THREE.Mesh(geometry, material);

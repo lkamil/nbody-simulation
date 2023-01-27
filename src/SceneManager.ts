@@ -17,10 +17,10 @@ export default class SceneManager {
     private camera: THREE.PerspectiveCamera;
     private timeController: TimeController;
 
-    private datGui: GUI;
+    // private datGui: GUI;
     private stats: Stats
     
-    private orbitControls: OrbitControls;
+    // private orbitControls: OrbitControls;
     private composer: EffectComposer;
     private bloomPass: UnrealBloomPass;
 
@@ -31,7 +31,7 @@ export default class SceneManager {
         this.renderer = this.setupRenderer();
         this.labelRenderer = this.setupLabelRenderer();
         this.camera = this.setupCamera(this.scene);
-        this.orbitControls = this.setupOrbitControls(this.camera, this.renderer.domElement);
+        this.setupOrbitControls(this.camera, this.renderer.domElement);
         this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
         this.timeController = new TimeController();
@@ -39,16 +39,10 @@ export default class SceneManager {
         this.simulation = this.addSimulation(this.scene);
 
         this.addLight(this.scene);
-        this.datGui = this.setupDatGui();
+        this.setupDatGui();
         this.setDataTable();
         this.stats = Stats();
         document.body.appendChild(this.stats.dom);
-    }
-
-    private animate() {
-        requestAnimationFrame(this.animate);
-        this.update();
-
     }
 
     update() {
@@ -75,7 +69,7 @@ export default class SceneManager {
             // TODO: reset label renderer correctly
             let labelRenderer = document.getElementById("label-renderer");
             if (labelRenderer != null) {
-                labelRenderer.parentNode.removeChild(labelRenderer);
+                labelRenderer.parentNode?.removeChild(labelRenderer);
             }
 
             this.simulation = new NBodySimulation(this.scene);

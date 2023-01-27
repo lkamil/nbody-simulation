@@ -8,10 +8,9 @@ export default class Planet extends Body {
     private trajectory: Trajectory;
 
     constructor(scene: THREE.Scene, r: THREE.Vector3, v: THREE.Vector3, name: string = "") {
-        super(scene, Config.planet.mass, r, v);
-
-        this.mesh.material.color = new THREE.Color(Config.planet.color);
-
+        let color = new THREE.Color(Config.planet.color)
+        super(scene, Config.planet.mass, r, v, color);
+        
         const trajectoryLength = 3000;
         this.trajectory = new Trajectory(trajectoryLength, scene);
 
@@ -28,6 +27,6 @@ export default class Planet extends Body {
         scene.remove(this.trajectory.line);
 
         this.trajectory.line.geometry.dispose();
-        this.trajectory.line.material.dispose();
+        // this.trajectory.line.material.dispose();
     }
 }

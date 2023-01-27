@@ -93,14 +93,14 @@ export default class NBodySimulation {
     removeObjectsFrom(scene: THREE.Scene) {
         scene.remove(this.star.mesh);
         this.star.mesh.geometry.dispose();
-        this.star.mesh.material.dispose();
+        // this.star.mesh.material.dispose();
 
         this.planets.forEach(planet => {
             planet.removeTrajectory(scene);
             let uuid = planet.mesh.uuid;
-            let object = scene.getObjectByProperty('uuid', uuid);
+            let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
             object?.geometry.dispose();
-            object?.material.dispose();
+            // object?.material.dispose();
             scene.remove(object!);
         });
     }
