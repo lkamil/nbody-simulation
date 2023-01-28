@@ -74,11 +74,6 @@ export default class Body {
         this.mesh.position.x = this.r.x;
         this.mesh.position.y = this.r.y;
         this.mesh.position.z = this.r.z;
-
-        // let center = new THREE.Vector3(0, 0, 0);
-        // if (this.r.distanceTo(center) > 500) {
-        //     console.log(this.label.element.innerHTML + " drifted away");
-        // }
     }
 
     getNewVectors(bodies: Body[]): THREE.Vector3[] {

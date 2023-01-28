@@ -33,7 +33,7 @@ export default class Planet extends Body {
     }
 
     checkDistance(starPostion: THREE.Vector3) {
-        let threshold = 1000;
+        let threshold = 1500;
 
         let distToStar = this.r.distanceTo(starPostion);
         if (this.state != ObjectState.away && distToStar > threshold) {
