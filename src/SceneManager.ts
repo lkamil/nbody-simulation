@@ -72,7 +72,6 @@ export default class SceneManager {
 
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();
-
         this.setBackgroundTexture(scene);
 
         return scene;
@@ -99,7 +98,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(2);
+        renderer.setPixelRatio(1);
         document.body.appendChild(renderer.domElement);
 
         return renderer
