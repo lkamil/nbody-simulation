@@ -9,6 +9,7 @@ import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import TimeController from './TimeController';
 import CameraController from './CameraController';
+import texture from '../assets/images/stars.jpg';
 
 export default class SceneManager {
 
@@ -30,7 +31,7 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -80,9 +81,9 @@ export default class SceneManager {
     private setBackgroundTexture(scene: THREE.Scene) {
         let geometry = new THREE.SphereGeometry(2000, 16, 16);
         geometry.scale(-1, 1, 1);
+        console.log(texture);
         let material = new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load('../assets/8k_stars.jpg'),
-            // map: new THREE.TextureLoader().load('../assets/celestial_grid.jpg'),
+            map: new THREE.TextureLoader().load(texture),
             transparent: true,
             opacity: 0.4
         });
