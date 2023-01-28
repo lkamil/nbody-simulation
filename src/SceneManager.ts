@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import NBodySimulation from './NBodySimulation';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
@@ -30,8 +30,8 @@ export default class SceneManager {
         this.renderer = this.setupRenderer();
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
-        this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0.5, 0);
+        // this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.3, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -81,7 +81,6 @@ export default class SceneManager {
     private setBackgroundTexture(scene: THREE.Scene) {
         let geometry = new THREE.SphereGeometry(2000, 16, 16);
         geometry.scale(-1, 1, 1);
-        console.log(texture);
         let material = new THREE.MeshBasicMaterial({
             map: new THREE.TextureLoader().load(texture),
             transparent: true,
@@ -118,11 +117,11 @@ export default class SceneManager {
         return labelRenderer;
     }
 
-    private setupOrbitControls(camera: THREE.PerspectiveCamera, domElement: HTMLCanvasElement): OrbitControls {
-        let orbitControls = new OrbitControls(camera, domElement);
+    // private setupOrbitControls(camera: THREE.PerspectiveCamera, domElement: HTMLCanvasElement): OrbitControls {
+    //     let orbitControls = new OrbitControls(camera, domElement);
 
-        return orbitControls
-    }
+    //     return orbitControls
+    // }
 
     private addLight(scene: THREE.Scene) {
         let ambientLight = new THREE.AmbientLight(0xffffff);

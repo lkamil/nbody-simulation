@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Config from '../Config';
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
+import { ObjectState } from './ObjectState';
 
 export default class Body {
 
@@ -14,6 +15,7 @@ export default class Body {
     mesh: THREE.Mesh;
 
     events: string[] = [];
+    state: ObjectState;
 
     constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), color: THREE.Color = new THREE.Color(Config.planet.color)) {
 
@@ -28,6 +30,7 @@ export default class Body {
         this.mesh.receiveShadow = true
         scene.add(this.mesh);
 
+        this.state = ObjectState.default;
         this.label = this.setupLabel();
     }
 
@@ -54,7 +57,10 @@ export default class Body {
     }
 
     update(bodies: Body[], shift: THREE.Vector3 = new THREE.Vector3(0, 0, 0)) {
-        this.updateVectors(bodies, shift);
+
+        if (this.state == ObjectState.default) {
+            this.updateVectors(bodies, shift);
+        }
     }
 
     updateVectors(bodies: Body[], shift: THREE.Vector3) {
@@ -68,6 +74,11 @@ export default class Body {
         this.mesh.position.x = this.r.x;
         this.mesh.position.y = this.r.y;
         this.mesh.position.z = this.r.z;
+
+        // let center = new THREE.Vector3(0, 0, 0);
+        // if (this.r.distanceTo(center) > 500) {
+        //     console.log(this.label.element.innerHTML + " drifted away");
+        // }
     }
 
     getNewVectors(bodies: Body[]): THREE.Vector3[] {
@@ -104,6 +115,8 @@ export default class Body {
 
             if (bn.r.distanceTo(r_new) <= Config.DT) {
                 this.events.unshift(`[!] ${bn.label.element.innerText} and ${this.label.element.innerText} crashed into each other.`);
+                this.state = ObjectState.crashed;
+                bn.state = ObjectState.crashed;
             }
             
             let inv_r3 = Math.pow( (Math.pow(dx, 2) + Math.pow(dy, 2) + Math.pow(dz, 2) + Math.pow(Config.softening, 2)), (-1.5));

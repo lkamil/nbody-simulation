@@ -5,6 +5,7 @@ import Config from './Config';
 import { randomFromInterval, perpendicularOf } from './Utility/helper';
 import Planet from './Objects/Planet';
 import Star from './Objects/Star';
+import { ObjectState } from './Objects/ObjectState';
 
 export default class NBodySimulation {
 
@@ -36,8 +37,12 @@ export default class NBodySimulation {
         
 
         for (let planet of this.planets) {
+            if (planet.state == ObjectState.crashed) {
+                const i = this.planets.indexOf(planet);
+                this.planets.splice(i, 1);
+            }
             planet.update(this.bodies(), shift);
-
+            planet.checkDistance(this.star.r);
             planet.getAndClearCurrentEvents().forEach(event => {
                 this.events.current = event;
             });
