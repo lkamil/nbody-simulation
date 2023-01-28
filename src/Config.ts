@@ -1,7 +1,7 @@
 
 export default abstract class Config {
     // Simulation Settings
-    static readonly numberOfPlanets = 7;
+    static readonly numberOfPlanets = 5;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 0;
