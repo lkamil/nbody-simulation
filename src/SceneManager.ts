@@ -31,7 +31,7 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
         // this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.3, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -40,6 +40,7 @@ export default class SceneManager {
         this.addLight(this.scene);
         // this.setupDatGui();
         this.stats = Stats();
+        this.stats.domElement.id = "cpu";
         document.body.appendChild(this.stats.dom);
     }
 
@@ -98,7 +99,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(1);
+        // renderer.setPixelRatio(1);
         document.body.appendChild(renderer.domElement);
 
         return renderer
