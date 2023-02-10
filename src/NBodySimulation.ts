@@ -1,11 +1,10 @@
 import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
-import Body from './Objects/Body';
-import Config from './Config';
+import Body from './Models/Body';
+import Config from './Enums/Config';
 import { randomFromInterval, perpendicularOf } from './Utility/helper';
-import Planet from './Objects/Planet';
-import Star from './Objects/Star';
-import { ObjectState } from './Objects/ObjectState';
+import Planet from './Models/Planet';
+import Star from './Models/Star';
 
 export default class NBodySimulation {
 
@@ -26,59 +25,25 @@ export default class NBodySimulation {
         this.planets = this.createPlanets(scene);
     }
 
+
+    /* -------------- PUBLIC METHODS -------------- */
+
     update() {
 
         // Keep star centered
-        let newStarPosition = this.star.getNewVectors(this.planets)[0];
+        let newStarPosition = this.star.getNewVectors(this.planets).position;
 
         let shift = newStarPosition.clone().negate();
 
         this.star.update(this.planets, shift);
         
-
         for (let planet of this.planets) {
-            if (planet.state == ObjectState.crashed) {
-                const i = this.planets.indexOf(planet);
-                this.planets.splice(i, 1);
-            }
-            planet.update(this.bodies(), shift);
+            planet.update.call(planet, this.bodies(), shift);
             planet.checkDistance(this.star.r);
             planet.getAndClearCurrentEvents().forEach(event => {
                 this.events.current = event;
             });
         }
-    }
-
-    private createPlanets(scene: THREE.Scene): Planet[] {
-
-        let planets: Planet[] = [];
-
-        let d = Config.minDistanceToStar;
-        let gap = Config.distanceBetweenPlanets;
-        for (let i = 0; i < Config.numberOfPlanets; i++) {
-
-            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
-            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
-
-            let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
-            let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);
-            let z = d * Math.cos(polarAngle);
-
-            let r = new THREE.Vector3(x, y, z);
-            let v = perpendicularOf(r);
-
-            let name = "planet " + (i+1);
-            let planet = new Planet(scene, r, v, name);
-            planets.push(planet);
-
-            d += gap;
-        }
-
-        return planets;
-    }
-
-    private bodies(): Body[] {
-        return [this.star].concat(this.planets)
     }
 
     getObjectData() {
@@ -102,14 +67,52 @@ export default class NBodySimulation {
         this.star.mesh.material.dispose();
 
         this.planets.forEach(planet => {
-            planet.removeTrajectory(scene);
-            planet.removeLabel();
-            let uuid = planet.mesh.uuid;
-            let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
-            object?.geometry.dispose();
-            // @ts-ignore
-            object?.material.dispose();
-            scene.remove(object!);
+            this.removePlanetFromScene(planet, scene);
         });
+    }
+
+    removePlanetFromScene(planet: Planet, scene: THREE.Scene) {
+        planet.removeTrajectory(scene);
+        planet.removeLabel();
+        let uuid = planet.mesh.uuid;
+        let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
+        object?.geometry.dispose();
+        // @ts-ignore
+        object?.material.dispose();
+        scene.remove(object!);
+    }
+
+    /* -------------- PRIVATE METHODS ------------- */
+
+    private createPlanets(scene: THREE.Scene): Planet[] {
+
+        let planets: Planet[] = [];
+
+        let d = Config.minDistanceToStar;
+        let gap = Config.distanceBetweenPlanets;
+        for (let i = 0; i < Config.numberOfPlanets; i++) {
+
+            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
+            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
+
+            let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
+            let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);
+            let z = d * Math.cos(polarAngle);
+
+            let r = new THREE.Vector3(x, y, z);
+            let v = perpendicularOf(r);
+
+            let name = "planet " + (i + 1);
+            let planet = new Planet(scene, r, v, name);
+            planets.push(planet);
+
+            d += gap;
+        }
+
+        return planets;
+    }
+
+    private bodies(): Body[] {
+        return [this.star].concat(this.planets)
     }
 }

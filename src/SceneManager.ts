@@ -7,9 +7,10 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
-import TimeController from './TimeController';
-import CameraController from './CameraController';
+import TimeController from './Controllers/TimeController';
+import CameraController from './Controllers/CameraController';
 import texture from '../assets/images/stars.jpg';
+import Config from './Enums/Config';
 
 export default class SceneManager {
 
@@ -60,7 +61,7 @@ export default class SceneManager {
 
     private checkTime() {
 
-        if (this.timeController.timer.getElapsed() > 300) {
+        if (this.timeController.timer.getElapsed() > Config.runTime) {
             console.log("RESET");
             this.timeController.timer.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
@@ -69,7 +70,7 @@ export default class SceneManager {
         }
     }
 
-    // - SETUP -
+    /* ------------------- SETUP ------------------ */
 
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();

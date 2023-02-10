@@ -1,5 +1,5 @@
 import Body from "./Body";
-import Config from "../Config";
+import Config from "../Enums/Config";
 import * as THREE from 'three';
 
 export default class Star extends Body {

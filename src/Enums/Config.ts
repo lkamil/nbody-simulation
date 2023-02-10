@@ -2,6 +2,8 @@
 export default abstract class Config {
     // Simulation Settings
     static readonly numberOfPlanets = 10;
+    static readonly runTime = 200;
+    static readonly outOfSystemThreshold = 1500;
 
     // Inital Planet Positioning
     static readonly minHorizontalAngle = 0;
@@ -12,7 +14,7 @@ export default abstract class Config {
     static readonly distanceBetweenPlanets = 20;
 
     // Simulation Constants
-    static readonly softening = 2;
+    static readonly softening = 4;
     static readonly G = 1;
 
     // Time Passing Speed
