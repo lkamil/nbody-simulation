@@ -5,22 +5,26 @@ import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { PixelShader } from 'three/examples/jsm/shaders/PixelShader';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
-import TimeController from './TimeController';
+import TimeController from './Controllers/TimeController';
+import CameraController from './Controllers/CameraController';
+import texture from '../assets/images/stars.jpg';
+import Config from './Enums/Config';
 
 export default class SceneManager {
 
     private scene: THREE.Scene;
-    private renderer: THREE.WebGLRenderer;
+    renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
-    private camera: THREE.PerspectiveCamera;
     private timeController: TimeController;
-
-    // private datGui: GUI;
+    // private orbitControls: OrbitControls;
+    cameraController: CameraController;
     private stats: Stats
     
-    // private orbitControls: OrbitControls;
     private composer: EffectComposer;
     private bloomPass: UnrealBloomPass;
 
@@ -29,27 +33,28 @@ export default class SceneManager {
     constructor() {
         this.scene = this.setupScene();
         this.renderer = this.setupRenderer();
+        this.addPointLight(this.scene);
         this.labelRenderer = this.setupLabelRenderer();
-        this.camera = this.setupCamera(this.scene);
-        this.setupOrbitControls(this.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
-        this.composer = this.setupComposer(this.renderer, this.scene, this.camera);
+        this.cameraController = new CameraController(this.scene);
+        this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0.5, 0);
+        this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
         this.simulation = this.addSimulation(this.scene);
 
         this.addLight(this.scene);
-        this.setupDatGui();
-        this.setDataTable();
+        // this.setupDatGui();
         this.stats = Stats();
+        this.stats.domElement.id = "cpu";
         document.body.appendChild(this.stats.dom);
     }
 
     update() {
         this.timeController.timer.update();
-        // this.clock.getDelta()
         this.composer.render();
-        this.labelRenderer.render(this.scene, this.camera);
+        // this.cameraController.update(this.timeController.timer.getElapsed());
+        this.labelRenderer.render(this.scene, this.cameraController.camera);
 
         this.simulation.update();
         this.setDataTable();
@@ -59,63 +64,51 @@ export default class SceneManager {
         this.checkTime();
     }
 
+    resizeScene() {
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+
+        this.cameraController.camera.aspect = w / h;
+        this.cameraController.camera.updateProjectionMatrix();
+
+        this.renderer.setSize(w, h);
+        this.labelRenderer.setSize(w, h);
+    }
+
     private checkTime() {
 
-        if (this.timeController.timer.getElapsed() > 5) {
+        if (this.timeController.timer.getElapsed() > Config.runTime) {
             console.log("RESET");
             this.timeController.timer.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
-
-            // TODO: reset label renderer correctly
-            let labelRenderer = document.getElementById("label-renderer");
-            if (labelRenderer != null) {
-                labelRenderer.parentNode?.removeChild(labelRenderer);
-            }
 
             this.simulation = new NBodySimulation(this.scene);
         }
     }
 
-    // - SETUP -
+    /* ------------------- SETUP ------------------ */
 
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();
-
         this.setBackgroundTexture(scene);
+
+        // scene.fog = new THREE.Fog(0x333333, 700, 1300); 
 
         return scene;
     }
 
     private setBackgroundTexture(scene: THREE.Scene) {
-        let geometry = new THREE.SphereGeometry(2000, 16, 16);
+        let geometry = new THREE.SphereGeometry(3000, 16, 16);
         geometry.scale(-1, 1, 1);
         let material = new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load('../assets/8k_stars.jpg'),
-            // map: new THREE.TextureLoader().load('../assets/celestial_grid.jpg'),
+            map: new THREE.TextureLoader().load(texture),
             transparent: true,
-            opacity: 0.4
+            opacity: 0.8
         });
         let mesh = new THREE.Mesh(geometry, material);
         mesh.name = "sceneTexture";
 
         scene.add(mesh);
-    }
-
-    private setupCamera(scene: THREE.Scene): THREE.PerspectiveCamera {
-
-        const fov = 45;
-        const aspect = window.innerWidth / window.innerHeight;
-        const near = 0.0001;
-        const far = 8000;
-
-        let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-        const initialPosition = new THREE.Vector3(50, 40, 50);
-        camera.position.copy(initialPosition);
-
-        camera.lookAt(scene.position);
-
-        return camera;
     }
 
     private setupRenderer(): THREE.WebGLRenderer {
@@ -125,10 +118,16 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        // renderer.setPixelRatio(2);
+        renderer.setPixelRatio(1);
         document.body.appendChild(renderer.domElement);
 
         return renderer
+    }
+
+    private addPointLight(scene: THREE.Scene) {
+        const light = new THREE.PointLight(Config.star.color, 10, 1000);
+        light.position.set(0, 0, 0);
+        scene.add(light);
     }
 
     private setupLabelRenderer(): CSS2DRenderer {
@@ -150,7 +149,7 @@ export default class SceneManager {
     }
 
     private addLight(scene: THREE.Scene) {
-        let ambientLight = new THREE.AmbientLight(0xffffff);
+        let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
     }
 
@@ -166,12 +165,26 @@ export default class SceneManager {
 
         this.bloomPass.renderToScreen = true;
         composer.addPass(this.bloomPass);
+
+        // let pixelPass = new ShaderPass(PixelShader);
+        // pixelPass.uniforms['resolution'].value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+        // pixelPass.uniforms['resolution'].value.multiplyScalar(0.8);
+        // composer.addPass(pixelPass);
+
+        const filmPass = new FilmPass(
+            0.1,   // noise intensity
+            0.0,  // scanline intensity
+            0,    // scanline count
+            0,  // grayscale
+        );
+        composer.addPass(filmPass);
     
         composer.setSize(window.innerWidth, window.innerHeight);
 
         return composer        
     }
 
+    // @ts-ignore
     private setupDatGui(): GUI {
         let gui = new GUI;
         gui.domElement.id = 'gui';

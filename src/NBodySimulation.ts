@@ -1,15 +1,17 @@
 import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
-import Body from './Objects/Body';
-import Config from './Config';
-import { randomFromInterval, perpendicularOf } from './Utility/helper';
-import Planet from './Objects/Planet';
-import Star from './Objects/Star';
+import Body from './Models/Body';
+import Config from './Enums/Config';
+import { randomFromInterval, perpendicularOf, vectorFromSphericalCoords } from './Utility/helper';
+import Planet from './Models/Planet';
+import Star from './Models/Star';
+import Planetesimal from './Models/Planetesimal';
 
 export default class NBodySimulation {
 
     readonly star: Body;
     readonly planets: Planet[];
+    readonly planetesimals: Body[];
 
     events = {
         set current(name: string) {
@@ -23,57 +25,32 @@ export default class NBodySimulation {
 
         this.star = new Star(scene);
         this.planets = this.createPlanets(scene);
+        this.planetesimals = this.createPlanetesimals(scene);
     }
+
+
+    /* -------------- PUBLIC METHODS -------------- */
 
     update() {
 
         // Keep star centered
-        let newStarPosition = this.star.getNewVectors(this.planets)[0];
+        let newStarPosition = this.star.getNewVectors(this.planets).position;
 
         let shift = newStarPosition.clone().negate();
 
         this.star.update(this.planets, shift);
         
-
         for (let planet of this.planets) {
-            planet.update(this.bodies(), shift);
-
+            planet.update.call(planet, this.bodies(), shift);
+            planet.checkDistance(this.star.r);
             planet.getAndClearCurrentEvents().forEach(event => {
                 this.events.current = event;
             });
         }
-    }
 
-    private createPlanets(scene: THREE.Scene): Planet[] {
-
-        let planets: Planet[] = [];
-
-        let d = Config.minDistanceToStar;
-        let gap = Config.distanceBetweenPlanets;
-        for (let i = 0; i < Config.numberOfPlanets; i++) {
-
-            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
-            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
-
-            let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
-            let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);
-            let z = d * Math.cos(polarAngle);
-
-            let r = new THREE.Vector3(x, y, z);
-            let v = perpendicularOf(r);
-
-            let name = "planet " + (i+1);
-            let planet = new Planet(scene, r, v, name);
-            planets.push(planet);
-
-            d += gap;
+        for (let planetesimal of this.planetesimals) {
+            planetesimal.update(this.bodies(), shift);
         }
-
-        return planets;
-    }
-
-    private bodies(): Body[] {
-        return [this.star].concat(this.planets)
     }
 
     getObjectData() {
@@ -82,8 +59,8 @@ export default class NBodySimulation {
         let entry = { Object: "Star", Mass: Config.star.mass, Distance: "0" }
         data.push(entry);
 
-        for (let i in this.planets) {
-            let entry = { Object: ("Planet " + i), Mass: Config.planet.mass, Distance: this.planets[i].r.distanceTo(this.star.r).toFixed(0)}
+        for (let planet of this.planets) {
+            let entry = { Object: planet.label.element.innerHTML, Mass: planet.mass.toFixed(2), Distance: planet.r.distanceTo(this.star.r).toFixed(0)}
             data.push(entry);
         }  
 
@@ -93,15 +70,66 @@ export default class NBodySimulation {
     removeObjectsFrom(scene: THREE.Scene) {
         scene.remove(this.star.mesh);
         this.star.mesh.geometry.dispose();
-        // this.star.mesh.material.dispose();
+        // @ts-ignore
+        this.star.mesh.material.dispose();
 
         this.planets.forEach(planet => {
-            planet.removeTrajectory(scene);
-            let uuid = planet.mesh.uuid;
-            let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
-            object?.geometry.dispose();
-            // object?.material.dispose();
-            scene.remove(object!);
+            this.removePlanetFromScene(planet, scene);
         });
+    }
+
+    removePlanetFromScene(planet: Planet, scene: THREE.Scene) {
+        planet.removeTrajectory(scene);
+        planet.removeLabel();
+        let uuid = planet.mesh.uuid;
+        let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
+        object?.geometry.dispose();
+        // @ts-ignore
+        object?.material.dispose();
+        scene.remove(object!);
+    }
+
+    /* -------------- PRIVATE METHODS ------------- */
+
+    private createPlanets(scene: THREE.Scene): Planet[] {
+
+        let planets: Planet[] = [];
+        for (let i = 0; i < Config.numberOfPlanets; i++) {
+            let d = randomFromInterval(Config.minDistanceToStar, Config.maxDistanceToStar);
+            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
+            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
+
+            let r = vectorFromSphericalCoords(d, horizontalAngle, polarAngle);
+            let v = perpendicularOf(r);
+
+            let name = "planet " + (i + 1);
+            let planet = new Planet(scene, r, v, name);
+            planets.push(planet);
+        }
+
+        return planets;
+    }
+
+    private createPlanetesimals(scene: THREE.Scene): Body[] {
+        let planetesimals: Planetesimal[] = [];
+
+        for (let i = 0; i < Config.numberOfPlanetesimals; i++) {
+            let mass = randomFromInterval(Config.minPlanetesimalMass, Config.maxPlanetesimalMass);
+            let distance = randomFromInterval(Config.minDistanceToStar, Config.minDistanceToStar * 2);
+            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
+            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
+
+            let r = vectorFromSphericalCoords(distance, horizontalAngle, polarAngle);
+            let v = perpendicularOf(r);
+
+            let planetesimal = new Planetesimal(scene, mass, r, v);
+            planetesimals.push(planetesimal);
+        }
+
+        return planetesimals;
+    }
+
+    private bodies(): Body[] {
+        return [this.star].concat(this.planets).concat(this.planetesimals);
     }
 }

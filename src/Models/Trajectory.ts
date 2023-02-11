@@ -30,7 +30,7 @@ export default class Trajectory {
         geometry.setAttribute('color', new BufferAttribute(colors, 3));
 
         const material = new THREE.LineBasicMaterial({ 
-            vertexColors: true // Geometry provides color info
+            vertexColors: true, // Geometry provides color info
         });
 
         return new THREE.Line(geometry, material);

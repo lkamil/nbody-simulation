@@ -1,4 +1,4 @@
-import { Timer } from './js/Timer/Timer';
+import { Timer } from '../js/Timer/Timer';
 
 export default class TimeController {
 
