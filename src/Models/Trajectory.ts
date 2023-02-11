@@ -31,7 +31,6 @@ export default class Trajectory {
 
         const material = new THREE.LineBasicMaterial({ 
             vertexColors: true, // Geometry provides color info
-            linewidth: 100
         });
 
         return new THREE.Line(geometry, material);

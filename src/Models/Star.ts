@@ -8,10 +8,8 @@ export default class Star extends Body {
         let r = new THREE.Vector3(0, 0, 0);
         let v = new THREE.Vector3(0, 0, 0);
         let color = new THREE.Color(Config.star.color)
-        super(scene, Config.star.mass, r, v, color);
+        super(scene, Config.star.mass, r, v, BodyType.star, color);
 
         this.setLabelText("star");
-
-        super.bodytype = BodyType.star;
     }
 }

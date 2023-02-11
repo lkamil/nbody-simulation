@@ -60,7 +60,7 @@ export default class NBodySimulation {
         data.push(entry);
 
         for (let planet of this.planets) {
-            let entry = { Object: planet.label.element.innerHTML, Mass: Config.planet.mass, Distance: planet.r.distanceTo(this.star.r).toFixed(0)}
+            let entry = { Object: planet.label.element.innerHTML, Mass: planet.mass.toFixed(2), Distance: planet.r.distanceTo(this.star.r).toFixed(0)}
             data.push(entry);
         }  
 
@@ -94,10 +94,8 @@ export default class NBodySimulation {
     private createPlanets(scene: THREE.Scene): Planet[] {
 
         let planets: Planet[] = [];
-        let d = Config.minDistanceToStar;
-        let gap = Config.distanceBetweenPlanets;
         for (let i = 0; i < Config.numberOfPlanets; i++) {
-
+            let d = randomFromInterval(Config.minDistanceToStar, Config.maxDistanceToStar);
             let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
             let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
 
@@ -107,8 +105,6 @@ export default class NBodySimulation {
             let name = "planet " + (i + 1);
             let planet = new Planet(scene, r, v, name);
             planets.push(planet);
-
-            d += gap;
         }
 
         return planets;

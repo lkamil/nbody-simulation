@@ -12,11 +12,12 @@ export default abstract class Config {
     static readonly minPolarAngle = 0;
     static readonly maxPolarAngle = 360;
     static readonly minDistanceToStar = 100;
+    static readonly maxDistanceToStar = 300;
     static readonly distanceBetweenPlanets = 20;
 
     // Initial Planetesimal Positioning
-    static readonly minPlanetesimalMass = 0.1;
-    static readonly maxPlanetesimalMass = 2;
+    static readonly minPlanetesimalMass = 0.05;
+    static readonly maxPlanetesimalMass = 0.1;
 
     // Simulation Constants
     static readonly softening = 4;
@@ -26,16 +27,21 @@ export default abstract class Config {
     static readonly DT = 1;
 
     static star = {
-        color: 0xffff00,
-        mass: 400
+        color: 0xffffe0,
+        mass: 300
     }
 
     static planet = {
         color: 0x555555,
-        mass: 10
+        minMass: 1,
+        maxMass: 5
     }
 
     static trajectory = {
         color: 0xffffff
+    }
+
+    static planetesimal = {
+        color: 0x3e3e3e
     }
 }

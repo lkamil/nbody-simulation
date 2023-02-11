@@ -18,19 +18,21 @@ export default class Body {
     v: THREE.Vector3; // Velocity
     a: THREE.Vector3; // Accelaration
 
-    private mass: number;
+    mass: number;
 
     label: CSS2DObject;
     mesh: THREE.Mesh;
-    bodytype?: BodyType
+    bodytype: BodyType
 
     events: SimulationEvent[] = [];
 
-    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), color: THREE.Color = new THREE.Color(Config.planet.color)) {
+    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), bodyType: BodyType = BodyType.planet, color: THREE.Color = new THREE.Color(Config.planet.color)) {
 
         this.r = r;
         this.v = v;
         this.a = new THREE.Vector3();
+
+        this.bodytype = bodyType;
 
         this.mass = mass;
 
@@ -137,8 +139,19 @@ export default class Body {
     private setupMesh(color: THREE.Color): THREE.Mesh {
 
         let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color });
-        const geometry = new THREE.SphereGeometry(1, 10, 10);
+        const geometry = new THREE.SphereGeometry(1, 15, 15);
 
+        if (this.bodytype == BodyType.star) {
+            let scale = 0.015;
+            geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
+        } else if (this.bodytype == BodyType.planetesimal) {
+            let scale = 10;
+            geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
+        } else {
+            let scale = 0.7;
+            geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
+        }
+        
         return new THREE.Mesh(geometry, material);
     }
 
