@@ -18,6 +18,7 @@ function render() {
 // Event listener
 
 document.addEventListener('keydown', toggleCPUMonitor);
+window.addEventListener('resize', resizeScene);
 
 function toggleCPUMonitor(e: KeyboardEvent) {
 
@@ -34,4 +35,9 @@ function toggleCPUMonitor(e: KeyboardEvent) {
 			cpuMonitor.style.display = "none";
 		}
 	}
+}
+
+function resizeScene() {
+	console.log("resize");
+	sceneManager.resizeScene();
 }

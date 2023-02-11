@@ -17,10 +17,10 @@ import Config from './Enums/Config';
 export default class SceneManager {
 
     private scene: THREE.Scene;
-    private renderer: THREE.WebGLRenderer;
+    renderer: THREE.WebGLRenderer;
     private labelRenderer: CSS2DRenderer;
     private timeController: TimeController;
-    private cameraController: CameraController;
+    cameraController: CameraController;
     private stats: Stats
     
     private composer: EffectComposer;
@@ -58,6 +58,17 @@ export default class SceneManager {
         this.stats.update();
 
         this.checkTime();
+    }
+
+    resizeScene() {
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+
+        this.cameraController.camera.aspect = w / h;
+        this.cameraController.camera.updateProjectionMatrix();
+
+        this.renderer.setSize(w, h);
+        this.labelRenderer.setSize(w, h);
     }
 
     private checkTime() {
