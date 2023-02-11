@@ -3,6 +3,7 @@ import Config from '../Enums/Config';
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import {DistanceEvent, Collision, Default, SimulationEvent} from '../Enums/SimulationEvent'
 import EventDescription from '../Enums/EventDescriptions';
+import { BodyType } from '../Enums/BodyType';
 
 interface NewValues {
     position: THREE.Vector3,
@@ -21,6 +22,7 @@ export default class Body {
 
     label: CSS2DObject;
     mesh: THREE.Mesh;
+    bodytype?: BodyType
 
     events: SimulationEvent[] = [];
 
@@ -100,7 +102,7 @@ export default class Body {
             let dy = bn.r.y - r_new.y;
             let dz = bn.r.z - r_new.z;
 
-            if (bn.r.distanceTo(r_new) <= Config.DT) {
+            if (bn.bodytype != BodyType.planetesimal && bn.r.distanceTo(r_new) <= Config.DT) {
                 let collision: Collision = {object: this, objectN: bn, kind: "collision"}
                 events.push(collision);
             }

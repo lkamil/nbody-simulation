@@ -5,6 +5,8 @@ import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { PixelShader } from 'three/examples/jsm/shaders/PixelShader';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import TimeController from './Controllers/TimeController';
@@ -31,8 +33,7 @@ export default class SceneManager {
         this.renderer = this.setupRenderer();
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
-        // this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -74,7 +75,7 @@ export default class SceneManager {
 
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();
-        this.setBackgroundTexture(scene);
+        // this.setBackgroundTexture(scene);
 
         return scene;
     }
@@ -141,6 +142,11 @@ export default class SceneManager {
 
         this.bloomPass.renderToScreen = true;
         composer.addPass(this.bloomPass);
+
+        // let pixelPass = new ShaderPass(PixelShader);
+        // pixelPass.uniforms['resolution'].value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+        // pixelPass.uniforms['resolution'].value.multiplyScalar(0.8);
+        // composer.addPass(pixelPass);
     
         composer.setSize(window.innerWidth, window.innerHeight);
 

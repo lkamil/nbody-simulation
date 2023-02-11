@@ -2,6 +2,7 @@
 export default abstract class Config {
     // Simulation Settings
     static readonly numberOfPlanets = 10;
+    static readonly numberOfPlanetesimals = 100;
     static readonly runTime = 200;
     static readonly outOfSystemThreshold = 1500;
 
@@ -13,6 +14,10 @@ export default abstract class Config {
     static readonly minDistanceToStar = 100;
     static readonly distanceBetweenPlanets = 20;
 
+    // Initial Planetesimal Positioning
+    static readonly minPlanetesimalMass = 0.1;
+    static readonly maxPlanetesimalMass = 2;
+
     // Simulation Constants
     static readonly softening = 4;
     static readonly G = 1;
@@ -22,7 +27,7 @@ export default abstract class Config {
 
     static star = {
         color: 0xffff00,
-        mass: 500
+        mass: 400
     }
 
     static planet = {

@@ -4,6 +4,7 @@ import Trajectory from "./Trajectory";
 import * as THREE from 'three';
 import { ObjectState } from "../Enums/ObjectState";
 import { SimulationEvent, DistanceEvent } from "../Enums/SimulationEvent";
+import { BodyType } from "../Enums/BodyType";
 
 export default class Planet extends Body {
 
@@ -20,6 +21,8 @@ export default class Planet extends Body {
 
         this.state = ObjectState.default
         this.setLabelText(name);
+
+        super.bodytype = BodyType.planet;
     }
 
     /* -------------- PUBLIC METHODS -------------- */

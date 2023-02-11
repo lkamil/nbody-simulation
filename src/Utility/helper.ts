@@ -28,6 +28,15 @@ function perpendicularOf(v: THREE.Vector3): THREE.Vector3 {
     return v_perp.normalize();
 }
 
+function vectorFromSphericalCoords(distance: number, horizontalAngle: number, polarAngle: number): THREE.Vector3 {
+
+    let x = distance * Math.sin(polarAngle) * Math.cos(horizontalAngle);
+    let y = distance * Math.sin(polarAngle) * Math.sin(horizontalAngle);
+    let z = distance * Math.cos(polarAngle);
+
+    return new THREE.Vector3(x, y, z);
+}
+
 function printVector(v: THREE.Vector3) {
     console.log("x: " + v.x + ", y: " + v.y + ", z: " + v.z);
 }
@@ -35,5 +44,6 @@ function printVector(v: THREE.Vector3) {
 export {
     randomFromInterval,
     perpendicularOf,
-    printVector
+    printVector,
+    vectorFromSphericalCoords
 }

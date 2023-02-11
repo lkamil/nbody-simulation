@@ -2,14 +2,16 @@ import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
 import Body from './Models/Body';
 import Config from './Enums/Config';
-import { randomFromInterval, perpendicularOf } from './Utility/helper';
+import { randomFromInterval, perpendicularOf, vectorFromSphericalCoords } from './Utility/helper';
 import Planet from './Models/Planet';
 import Star from './Models/Star';
+import Planetesimal from './Models/Planetesimal';
 
 export default class NBodySimulation {
 
     readonly star: Body;
     readonly planets: Planet[];
+    readonly planetesimals: Body[];
 
     events = {
         set current(name: string) {
@@ -23,6 +25,7 @@ export default class NBodySimulation {
 
         this.star = new Star(scene);
         this.planets = this.createPlanets(scene);
+        this.planetesimals = this.createPlanetesimals(scene);
     }
 
 
@@ -43,6 +46,10 @@ export default class NBodySimulation {
             planet.getAndClearCurrentEvents().forEach(event => {
                 this.events.current = event;
             });
+        }
+
+        for (let planetesimal of this.planetesimals) {
+            planetesimal.update(this.bodies(), shift);
         }
     }
 
@@ -87,7 +94,6 @@ export default class NBodySimulation {
     private createPlanets(scene: THREE.Scene): Planet[] {
 
         let planets: Planet[] = [];
-
         let d = Config.minDistanceToStar;
         let gap = Config.distanceBetweenPlanets;
         for (let i = 0; i < Config.numberOfPlanets; i++) {
@@ -95,11 +101,7 @@ export default class NBodySimulation {
             let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
             let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
 
-            let x = d * Math.sin(polarAngle) * Math.cos(horizontalAngle);
-            let y = d * Math.sin(polarAngle) * Math.sin(horizontalAngle);
-            let z = d * Math.cos(polarAngle);
-
-            let r = new THREE.Vector3(x, y, z);
+            let r = vectorFromSphericalCoords(d, horizontalAngle, polarAngle);
             let v = perpendicularOf(r);
 
             let name = "planet " + (i + 1);
@@ -112,7 +114,26 @@ export default class NBodySimulation {
         return planets;
     }
 
+    private createPlanetesimals(scene: THREE.Scene): Body[] {
+        let planetesimals: Planetesimal[] = [];
+
+        for (let i = 0; i < Config.numberOfPlanetesimals; i++) {
+            let mass = randomFromInterval(Config.minPlanetesimalMass, Config.maxPlanetesimalMass);
+            let distance = randomFromInterval(Config.minDistanceToStar, Config.minDistanceToStar * 2);
+            let horizontalAngle = degToRad(randomFromInterval(Config.minHorizontalAngle, Config.maxHorizontalAngle));
+            let polarAngle = degToRad(randomFromInterval(Config.minPolarAngle, Config.maxPolarAngle));
+
+            let r = vectorFromSphericalCoords(distance, horizontalAngle, polarAngle);
+            let v = perpendicularOf(r);
+
+            let planetesimal = new Planetesimal(scene, mass, r, v);
+            planetesimals.push(planetesimal);
+        }
+
+        return planetesimals;
+    }
+
     private bodies(): Body[] {
-        return [this.star].concat(this.planets)
+        return [this.star].concat(this.planets).concat(this.planetesimals);
     }
 }

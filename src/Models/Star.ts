@@ -1,6 +1,7 @@
 import Body from "./Body";
 import Config from "../Enums/Config";
 import * as THREE from 'three';
+import { BodyType } from "../Enums/BodyType";
 
 export default class Star extends Body {
     constructor(scene: THREE.Scene) {
@@ -10,5 +11,7 @@ export default class Star extends Body {
         super(scene, Config.star.mass, r, v, color);
 
         this.setLabelText("star");
+
+        super.bodytype = BodyType.star;
     }
 }
