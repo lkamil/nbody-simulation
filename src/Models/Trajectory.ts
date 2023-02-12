@@ -22,6 +22,14 @@ export default class Trajectory {
         scene.add(this.line);
     }
 
+    show() {
+        this.line.visible = true;
+    }
+
+    hide() {
+        this.line.visible = false;
+    }
+
     private setupLine(): THREE.Line {
 
         const geometry = new THREE.BufferGeometry();

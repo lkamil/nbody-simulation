@@ -44,7 +44,7 @@ export const views: ViewSetting[] = [
         },
         left: 0,
         bottom: 0,
-        width: 1,
+        width: 0.5,
         height: 1,
         updateCamera: function (camera: THREE.PerspectiveCamera,  elapsedTime: number): void {
             let speed = elapsedTime * 0.1;
@@ -87,32 +87,32 @@ export const views: ViewSetting[] = [
             fov: 45,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.75,
-        width: 0.25,
+        left: 0.5,
+        width: 0.5,
         bottom: 0.25,
-        height: 0.25,
+        height: 0.75,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
         }
     },
-    {
-        type: ViewType.test,
-        background: new THREE.Color(0.5, 0.7, 0.7),
-        cameraSettings: {
-            distance: 800,
-            near: 0.001,
-            far: 8000,
-            phi: degToRad(90),
-            theta: degToRad(225),
-            fov: 45,
-            lookAt: new THREE.Vector3(0, 0, 0)
-        },
-        left: 0.75,
-        width: 0.25,
-        bottom: 0.75,
-        height: 0.25,
-        updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
-            camera.lookAt(this.cameraSettings.lookAt);
-        }
-    }
+    // {
+    //     type: ViewType.test,
+    //     background: new THREE.Color(0.5, 0.7, 0.7),
+    //     cameraSettings: {
+    //         distance: 800,
+    //         near: 0.001,
+    //         far: 8000,
+    //         phi: degToRad(90),
+    //         theta: degToRad(225),
+    //         fov: 45,
+    //         lookAt: new THREE.Vector3(0, 0, 0)
+    //     },
+    //     left: 0.75,
+    //     width: 0.25,
+    //     bottom: 0.75,
+    //     height: 0.25,
+    //     updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
+    //         camera.lookAt(this.cameraSettings.lookAt);
+    //     }
+    // }
 ]

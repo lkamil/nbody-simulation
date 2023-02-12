@@ -6,10 +6,13 @@ import { ObjectState } from "../Enums/ObjectState";
 import { SimulationEvent, DistanceEvent } from "../Enums/SimulationEvent";
 import { BodyType } from "../Enums/BodyType";
 import { randomFromInterval } from "../Utility/helper";
+import { XZProjection } from "./XZProjection";
 
 export default class Planet extends Body {
 
-    private trajectory: Trajectory;
+    trajectory: Trajectory;
+    // private xzProjection
+    xzProjection: XZProjection;
 
     state: ObjectState;
 
@@ -20,6 +23,8 @@ export default class Planet extends Body {
         
         const trajectoryLength = 3000;
         this.trajectory = new Trajectory(trajectoryLength, scene);
+
+        this.xzProjection = new XZProjection(scene);
 
         this.state = ObjectState.default
         this.setLabelText(name);
@@ -35,7 +40,8 @@ export default class Planet extends Body {
             this.handleEvents.call(this, this.events);
             
             super.updateVectors(newValues, shift);
-            this.trajectory.addPosition(this.r);
+            this.trajectory.addPosition(this.r.clone());
+            this.xzProjection.update(this.r.clone());
         }
     }
 

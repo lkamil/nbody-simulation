@@ -41,7 +41,7 @@ export default class SceneManager {
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0.5, 0);
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
@@ -58,7 +58,7 @@ export default class SceneManager {
 
     update() {
         this.timeController.timer.update();
-        this.composer.render();
+        // this.composer.render();
         // this.cameraController.update(this.timeController.timer.getElapsed());
         // this.labelRenderer.render(this.scene, this.cameraController.camera);
 
@@ -98,6 +98,9 @@ export default class SceneManager {
                 this.renderer.setScissor(left, bottom, width, height);
                 this.renderer.setScissorTest(true);
                 this.renderer.setClearColor(view.background);
+
+                // this.composer.setSize(width, height);
+                // this.composer.render();
 
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
