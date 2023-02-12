@@ -27,10 +27,13 @@ export default class Trajectory {
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
         const colors = this.gradientArray();
-        geometry.setAttribute('color', new BufferAttribute(colors, 3));
+        geometry.setAttribute('color', new BufferAttribute(colors, 4));
+        // geometry.setAttribute('tr')
 
         const material = new THREE.LineBasicMaterial({ 
             vertexColors: true, // Geometry provides color info
+            transparent: true,
+            // opacity: 0.1,
         });
 
         return new THREE.Line(geometry, material);
@@ -59,11 +62,12 @@ export default class Trajectory {
         let step = 1 / this.maxPoints;
         let dec = step;
 
-        const colors = new Float32Array(this.maxPoints * 3);
-        for (let i = 0; i < colors.length - 2; i += 3) {
-            colors[i] = 1 - dec;
-            colors[i + 1] = 1 - dec;
-            colors[i + 2] = 1 - dec;
+        const colors = new Float32Array(this.maxPoints * 4);
+        for (let i = 0; i < colors.length - 3; i += 4) {
+            colors[i] = 1; // r
+            colors[i + 1] = 1;  // g
+            colors[i + 2] = 1; // b
+            colors[i + 3] = 1 - dec; // alpha
 
             dec += step;
         }

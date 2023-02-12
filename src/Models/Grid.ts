@@ -3,13 +3,23 @@ import * as THREE from 'three';
 export default class Grid {
 
     readonly size = 8000;
+    gridMesh: THREE.Group
 
     constructor(scene: THREE.Scene) {
         // this.initAxes(scene);
-        this.addGrid(scene);
+        this.gridMesh = this.addGrid(scene);
     }
 
-    private addGrid(scene: THREE.Scene) {
+    show() {
+        this.gridMesh.visible = true;
+    }
+
+    hide () {
+        this.gridMesh.visible = false;
+    }
+
+    private addGrid(scene: THREE.Scene): THREE.Group {
+        let gridMeshes = new THREE.Group();
 
         let size = 800;
 
@@ -19,7 +29,7 @@ export default class Grid {
         let grXY = new THREE.LineSegments(gXY, mXY);
         grXY.scale.set(size, size, 1);
         grXY.position.set(0, 0, size / 2);
-        scene.add(grXY);
+        gridMeshes.add(grXY);
 
         let gXZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gXZ);
@@ -28,7 +38,7 @@ export default class Grid {
         grXZ.scale.set(size, size, 1);
         grXZ.rotation.x = Math.PI * -0.5;
         grXZ.position.set(0, -size / 2, 0);
-        scene.add(grXZ);
+        gridMeshes.add(grXZ);
 
         let gYZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gYZ);
@@ -37,7 +47,11 @@ export default class Grid {
         grYZ.scale.set(size,size, 1);
         grYZ.rotation.y = Math.PI * -0.5;
         grYZ.position.set(size / 2, 0, 0);
-        scene.add(grYZ);
+        gridMeshes.add(grYZ);
+
+        scene.add(gridMeshes);
+
+        return gridMeshes;
     }
 
     private toQuads(g: THREE.PlaneGeometry) {

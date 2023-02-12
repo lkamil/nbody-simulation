@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { views } from '../Enums/Viewports';
 
 export default class CameraController {
 
@@ -23,6 +24,20 @@ export default class CameraController {
         this.camera.lookAt(this.center);
 
         scene.add(this.camera);
+
+        this.setupFromArray();
+    }
+
+    private setupFromArray() {
+
+        for (const view of views) {
+            let settings = view.cameraSettings;
+            const camera = new THREE.PerspectiveCamera(settings.fov,(window.innerWidth / window.innerHeight), settings.near, settings.far);
+            camera.position.setFromSphericalCoords(settings.distance, settings.phi, settings.theta);
+            camera.lookAt(settings.lookAt);
+
+            view.camera = camera;
+        }
     }
 
     update(elapsedTime: number) {

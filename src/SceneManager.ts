@@ -16,6 +16,7 @@ import CameraController from './Controllers/CameraController';
 import texture from '../assets/images/stars.jpg';
 import Config from './Enums/Config';
 import Grid from './Models/Grid';
+import { views, ViewType } from './Enums/Viewports';
 
 export default class SceneManager {
 
@@ -26,6 +27,7 @@ export default class SceneManager {
     // private orbitControls: OrbitControls;
     cameraController: CameraController;
     private stats: Stats
+    private grid: Grid;
     
     private composer: EffectComposer;
     private bloomPass: UnrealBloomPass;
@@ -50,7 +52,7 @@ export default class SceneManager {
         this.stats = Stats();
         this.stats.domElement.id = "cpu";
 
-        new Grid(this.scene);
+        this.grid = new Grid(this.scene);
         document.body.appendChild(this.stats.dom);
     }
 
@@ -58,14 +60,52 @@ export default class SceneManager {
         this.timeController.timer.update();
         this.composer.render();
         // this.cameraController.update(this.timeController.timer.getElapsed());
-        this.labelRenderer.render(this.scene, this.cameraController.camera);
+        // this.labelRenderer.render(this.scene, this.cameraController.camera);
 
         this.simulation.update();
         this.setDataTable();
         this.logEvents();
         this.stats.update();
-
+        this.renderViewports();
         this.checkTime();
+    }
+
+    private renderViewports() {
+
+        for (const view of views) {
+            
+            if (view.type == ViewType.main) {
+                this.grid.hide();
+            } else {
+                this.grid.show();
+            }
+            const camera = view.camera;
+            if (camera != undefined) {
+                view.updateCamera(camera, this.timeController.timer.getElapsed());
+
+                let w = window.innerWidth;
+                let h = window.innerHeight;
+                const left = Math.floor(w * view.left);
+                const bottom = Math.floor(h * view.bottom);
+                const width = Math.floor(w * view.width);
+                const height = Math.floor(h * view.height);
+
+                if (view.type == ViewType.main) { 
+                    this.labelRenderer.setSize(width, height);
+                    this.labelRenderer.render(this.scene, camera);
+                }
+                this.renderer.setViewport(left, bottom, width, height);
+                this.renderer.setScissor(left, bottom, width, height);
+                this.renderer.setScissorTest(true);
+                this.renderer.setClearColor(view.background);
+
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+
+                this.renderer.render(this.scene, camera);
+            }
+            
+        }
     }
 
     resizeScene() {
