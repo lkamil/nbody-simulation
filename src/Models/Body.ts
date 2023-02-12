@@ -138,7 +138,7 @@ export default class Body {
 
     private setupMesh(color: THREE.Color): THREE.Mesh {
 
-        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color });
+        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color, wireframe: true });
         const geometry = new THREE.SphereGeometry(1, 15, 15);
 
         if (this.bodytype == BodyType.star) {
@@ -151,7 +151,7 @@ export default class Body {
             let scale = 0.7;
             geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
         }
-        
+
         return new THREE.Mesh(geometry, material);
     }
 

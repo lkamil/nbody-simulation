@@ -7,6 +7,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { PixelShader } from 'three/examples/jsm/shaders/PixelShader';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+// import { DotScreenShader } from 'three/examples/jsm/shaders/DotScreenShader.js';
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
 import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
@@ -14,6 +15,7 @@ import TimeController from './Controllers/TimeController';
 import CameraController from './Controllers/CameraController';
 import texture from '../assets/images/stars.jpg';
 import Config from './Enums/Config';
+import Grid from './Models/Grid';
 
 export default class SceneManager {
 
@@ -47,6 +49,8 @@ export default class SceneManager {
         // this.setupDatGui();
         this.stats = Stats();
         this.stats.domElement.id = "cpu";
+
+        new Grid(this.scene);
         document.body.appendChild(this.stats.dom);
     }
 
@@ -98,7 +102,7 @@ export default class SceneManager {
     }
 
     private setBackgroundTexture(scene: THREE.Scene) {
-        let geometry = new THREE.SphereGeometry(3000, 16, 16);
+        let geometry = new THREE.SphereGeometry(8000, 16, 16);
         geometry.scale(-1, 1, 1);
         let material = new THREE.MeshBasicMaterial({
             map: new THREE.TextureLoader().load(texture),
@@ -118,7 +122,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(1);
+        renderer.setPixelRatio(0.5);
         document.body.appendChild(renderer.domElement);
 
         return renderer
