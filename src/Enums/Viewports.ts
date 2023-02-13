@@ -20,7 +20,10 @@ interface ViewSetting {
     bottom: number,
     width: number,
     height: number,
-    updateCamera: (camera: THREE.PerspectiveCamera, elapsedTime: number) => void
+    updateCamera: (camera: THREE.PerspectiveCamera, elapsedTime: number) => void,
+    showTrajectories: boolean,
+    showOrbits: boolean,
+    showGrid: boolean
 }
 
 export enum ViewType {
@@ -53,18 +56,21 @@ export const views: ViewSetting[] = [
             camera.position.y = (this.cameraSettings.distance * 3 * Math.sin(speed) * 0.3) + 100;
 
             camera.lookAt(this.cameraSettings.lookAt);
-        }
+        },
+        showTrajectories: true,
+        showOrbits: false,
+        showGrid: false
     },
     {
         type: ViewType.top,
         background: new THREE.Color(0.7, 0.5, 0.7),
         cameraSettings: {
-            distance: 800,
+            distance: 2000,
             near: 0.001,
             far: 8000,
             phi: 0,
             theta: 0,
-            fov: 45,
+            fov: 20,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
         left: 0.75,
@@ -73,13 +79,16 @@ export const views: ViewSetting[] = [
         height: 0.25,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
-        }
+        },
+        showTrajectories: false,
+        showGrid: true,
+        showOrbits: false
     },
     {
         type: ViewType.test,
         background: new THREE.Color(0.5, 0.7, 0.7),
         cameraSettings: {
-            distance: 800,
+            distance: 1000,
             near: 0.001,
             far: 8000,
             phi: degToRad(90),
@@ -93,7 +102,10 @@ export const views: ViewSetting[] = [
         height: 0.75,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
-        }
+        },
+        showTrajectories: false,
+        showGrid: true,
+        showOrbits: true
     },
     // {
     //     type: ViewType.test,

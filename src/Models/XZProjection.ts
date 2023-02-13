@@ -30,10 +30,12 @@ export class XZProjection {
 
     show() {
         this.line.visible = true;
+        this.circle.visible = true;
     }
 
     hide () {
         this.line.visible = false;
+        this.circle.visible = false;
     }
 
     private updateLine(r: THREE.Vector3) {

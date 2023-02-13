@@ -89,6 +89,30 @@ export default class NBodySimulation {
         scene.remove(object!);
     }
 
+    displayTrajectories(on: boolean) {
+        if (on) {
+            this.planets.forEach(planet => {
+                planet.trajectory.show();
+            });
+        } else {
+            this.planets.forEach(planet => {
+                planet.trajectory.hide();
+            });
+        }
+    }
+
+    displayOrbits(on: boolean) {
+        if (on) {
+            this.planets.forEach(planet => {
+                planet.xzProjection.show();
+            });
+        } else {
+            this.planets.forEach(planet => {
+                planet.xzProjection.hide();
+            });
+        }
+    }
+
     /* -------------- PRIVATE METHODS ------------- */
 
     private createPlanets(scene: THREE.Scene): Planet[] {
