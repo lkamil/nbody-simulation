@@ -77,6 +77,7 @@ export const views: ViewSetting[] = [
         width: 0.25,
         bottom: 0,
         height: 0.25,
+        // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
         },
@@ -100,6 +101,7 @@ export const views: ViewSetting[] = [
         width: 0.5,
         bottom: 0.25,
         height: 0.75,
+        // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
         },

@@ -75,10 +75,11 @@ export default class Grid {
             if ((index12 + segmentsX + 1) <= ((segmentsX + 1) * (segmentsY + 1) - 1)) {
                 indices.push(index12, index12 + segmentsX + 1);
             }
+        }
+        g.setIndex(indices);
     }
-    g.setIndex(indices);
-}
 
+    // @ts-ignore
     private initAxes(scene: THREE.Scene) {
         let axes = new THREE.Group();
 

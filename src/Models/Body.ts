@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Config from '../Enums/Config';
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
-import {DistanceEvent, Collision, Default, SimulationEvent} from '../Enums/SimulationEvent'
+import {Collision, SimulationEvent} from '../Enums/SimulationEvent'
 import EventDescription from '../Enums/EventDescriptions';
 import { BodyType } from '../Enums/BodyType';
 

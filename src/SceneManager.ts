@@ -5,8 +5,8 @@ import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { PixelShader } from 'three/examples/jsm/shaders/PixelShader';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+// import { PixelShader } from 'three/examples/jsm/shaders/PixelShader';
+// import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 // import { DotScreenShader } from 'three/examples/jsm/shaders/DotScreenShader.js';
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass';
 import { GUI } from 'dat.gui';
@@ -29,7 +29,7 @@ export default class SceneManager {
     private stats: Stats
     private grid: Grid;
     
-    private composer: EffectComposer;
+    // private composer: EffectComposer;
     private bloomPass: UnrealBloomPass;
 
     private simulation: NBodySimulation;
@@ -42,7 +42,7 @@ export default class SceneManager {
         this.cameraController = new CameraController(this.scene);
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
         this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
-        this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
+        // this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
         this.timeController = new TimeController();
 
         this.simulation = this.addSimulation(this.scene);
@@ -222,6 +222,7 @@ export default class SceneManager {
         return simulation;
     }
 
+    // @ts-ignore
     private setupComposer(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera): EffectComposer {
         let composer = new EffectComposer(renderer);
         composer.addPass(new RenderPass(scene, camera));
