@@ -3,7 +3,7 @@ export default abstract class Config {
     // Simulation Settings
     static readonly numberOfPlanets = 10;
     static readonly numberOfPlanetesimals = 100;
-    static readonly runTime = 200;
+    static readonly runTime = 100;
     static readonly outOfSystemThreshold = 1500;
 
     // Inital Planet Positioning

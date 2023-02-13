@@ -76,17 +76,10 @@ export default class NBodySimulation {
         this.planets.forEach(planet => {
             this.removePlanetFromScene(planet, scene);
         });
-    }
 
-    removePlanetFromScene(planet: Planet, scene: THREE.Scene) {
-        planet.removeTrajectory(scene);
-        planet.removeLabel();
-        let uuid = planet.mesh.uuid;
-        let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
-        object?.geometry.dispose();
-        // @ts-ignore
-        object?.material.dispose();
-        scene.remove(object!);
+        this.planetesimals.forEach(planetesimal => {
+            this.removePlanetesimalsFromScene(planetesimal, scene);
+        });
     }
 
     displayTrajectories(on: boolean) {
@@ -151,6 +144,28 @@ export default class NBodySimulation {
         }
 
         return planetesimals;
+    }
+
+    private removePlanetFromScene(planet: Planet, scene: THREE.Scene) {
+        planet.removeTrajectory(scene);
+        planet.removeXZProjection(scene);
+        planet.removeLabel();
+        let uuid = planet.mesh.uuid;
+        let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
+        object?.geometry.dispose();
+        // @ts-ignore
+        object?.material.dispose();
+        scene.remove(object!);
+    }
+
+    private removePlanetesimalsFromScene(planetesimal: Planetesimal, scene: THREE.Scene) {
+        let uuid = planetesimal.mesh.uuid;
+        let object = scene.getObjectByProperty('uuid', uuid) as THREE.Mesh;
+
+        object?.geometry.dispose();
+        // @ts-ignore
+        object?.material.dispose();
+        scene.remove(object!);
     }
 
     private bodies(): Body[] {

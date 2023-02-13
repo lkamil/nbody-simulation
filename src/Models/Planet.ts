@@ -53,6 +53,19 @@ export default class Planet extends Body {
         this.trajectory.line.material.dispose();
     }
 
+    removeXZProjection(scene: THREE.Scene) {
+        scene.remove(this.xzProjection.line);
+        scene.remove(this.xzProjection.circle);
+
+        this.xzProjection.line.geometry.dispose();
+        this.xzProjection.circle.geometry.dispose();
+
+        // @ts-ignore
+        this.xzProjection.line.material.dispose();
+        // @ts-ignore
+        this.xzProjection.circle.material.dispose();
+    }
+
     checkDistance(starPostion: THREE.Vector3): void {
 
         let distToStar = this.r.distanceTo(starPostion);
