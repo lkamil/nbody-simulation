@@ -89,6 +89,12 @@ export default class Planet extends Body {
             switch (e.kind) {
                 case "collision":
                     this.state = ObjectState.crashed;
+                    if (e.objectN.bodytype == BodyType.planet) {
+                        let pn = e.objectN as Planet;
+                        pn.state = ObjectState.crashed
+                        pn.halt();
+                    }
+                   
                     this.halt();
                     break
     

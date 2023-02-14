@@ -7,24 +7,37 @@
 		<title>✧ nbody ✧</title>
 	</head>
 	<body>
-		<table id="data-table">
-			<thead>
-				<tr>
-					<th scope="col">Object</th>
-					<th scope="col">Mass</th>
-					<th scope="col">Distance</th>
-				</tr>
-			</thead>
-			<tbody id="data-table-body">
-		
-			</tbody>
-		</table>
+		<div class="line"></div>
+		<h1>seed 71798</h1>
+		<div id="tables">
+			<table id="data-table">
+				<thead>
+					<tr>
+						<th scope="col">Object</th>
+						<th scope="col">Mass</th>
+						<th scope="col">Distance</th>
+					</tr>
+				</thead>
+				<tbody id="data-table-body">
 
-		<table id="console">
-			<thead>
-			</thead>
-			<tbody id="console-body"></tbody>
-		</table>
+				</tbody>
+			</table>
+
+			<table id="console">
+				<thead>
+					<tr>
+						<th>Logs</th>
+					</tr>
+				</thead>
+				<tbody id="console-body">
+				</tbody>
+			</table>
+		</div>
+		
+
+		<div id="time-container">
+			Elapsed Time: <span id="time"></span>
+		</div>
 		<script type="module" src="/src/main.ts"></script>
 	</body>
 </html>

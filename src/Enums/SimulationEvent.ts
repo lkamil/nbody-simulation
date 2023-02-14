@@ -16,11 +16,17 @@ interface Default {
     object: Body
 }
 
-type SimulationEvent = Collision | Default | DistanceEvent
+interface Init {
+    kind: "initSimulation" | "initPlanets"
+    count: number
+}
+
+type SimulationEvent = Collision | Default | DistanceEvent | Init
 
 export {
     DistanceEvent,
     Collision,
     Default,
+    Init,
     SimulationEvent
 }

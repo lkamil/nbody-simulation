@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { degToRad } from 'three/src/math/MathUtils';
+import Config from '../Enums/Config';
 
 export class XZProjection {
 
@@ -9,7 +10,7 @@ export class XZProjection {
     circle: THREE.Line
 
     readonly opacity = 1;
-    readonly color = new THREE.Color(0x328f11);
+    // readonly color = new THREE.Color(0x328f11);
 
     constructor(scene: THREE.Scene) {
         this.linePositions = new Float32Array(2 * 3); // 3 vertices for starting- and endpoint
@@ -59,7 +60,7 @@ export class XZProjection {
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(this.linePositions, 3));
         const material = new THREE.LineBasicMaterial({
-            color: this.color,
+            color: Config.viewPortColors.orbitColor,
             opacity: this.opacity,
             transparent: true
         });
@@ -92,7 +93,7 @@ export class XZProjection {
 
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const material = new THREE.LineBasicMaterial({
-            color: this.color,
+            color: Config.viewPortColors.orbitColor,
             opacity: this.opacity,
             transparent: true,
         });

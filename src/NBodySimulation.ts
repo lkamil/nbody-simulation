@@ -6,6 +6,8 @@ import { randomFromInterval, perpendicularOf, vectorFromSphericalCoords } from '
 import Planet from './Models/Planet';
 import Star from './Models/Star';
 import Planetesimal from './Models/Planetesimal';
+import { Init } from './Enums/SimulationEvent';
+import EventDescription from './Enums/EventDescriptions';
 
 export default class NBodySimulation {
 
@@ -15,7 +17,7 @@ export default class NBodySimulation {
 
     events = {
         set current(name: string) {
-            this.log.unshift(name);
+            this.log.push(name);
         },
         log: ([] as Array<string>),
     };
@@ -26,6 +28,14 @@ export default class NBodySimulation {
         this.star = new Star(scene);
         this.planets = this.createPlanets(scene);
         this.planetesimals = this.createPlanetesimals(scene);
+
+        
+        let planetsEvent: Init = {kind: 'initPlanets', count: this.planets.length};
+        this.events.current = EventDescription.getDescriptionOf(planetsEvent);
+
+        let simulationInit: Init = {kind: 'initSimulation', count: 0};
+        this.events.current = EventDescription.getDescriptionOf(simulationInit);
+        
     }
 
 

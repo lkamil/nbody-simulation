@@ -16,7 +16,7 @@ import CameraController from './Controllers/CameraController';
 import texture from '../assets/images/stars.jpg';
 import Config from './Enums/Config';
 import Grid from './Models/Grid';
-import { views, ViewType } from './Enums/Viewports';
+import { views, ViewSetting, ViewType } from './Enums/Viewports';
 
 export default class SceneManager {
 
@@ -61,7 +61,7 @@ export default class SceneManager {
         // this.composer.render();
         // this.cameraController.update(this.timeController.timer.getElapsed());
         // this.labelRenderer.render(this.scene, this.cameraController.camera);
-
+        this.displayTime(this.timeController.timer.getElapsed());
         this.simulation.update();
         this.setDataTable();
         this.logEvents();
@@ -74,7 +74,9 @@ export default class SceneManager {
 
         for (const view of views) {
             
-            this.showElementsAccordingTo(view.type);
+            // this.showElementsAccordingTo(view.type);
+
+            this.showElementsWith(view);
             const camera = view.camera;
             if (camera != undefined) {
                 view.updateCamera(camera, this.timeController.timer.getElapsed());
@@ -107,7 +109,29 @@ export default class SceneManager {
         }
     }
 
+    private showElementsWith(settings: ViewSetting) {
+
+        if (settings.showTrajectories) {
+            this.simulation.displayTrajectories(true);
+        } else {
+            this.simulation.displayTrajectories(false);
+        }
+
+        if (settings.showGrid) {
+            this.grid.show();
+        } else {
+            this.grid.hide();
+        }
+
+        if (settings.showOrbits) {
+            this.simulation.displayOrbits(true);
+        } else {
+            this.simulation.displayOrbits(false);
+        }
+    }
+
     private showElementsAccordingTo(viewType: ViewType) {
+
         switch (viewType) {
             case ViewType.main:
                 this.grid.hide();
@@ -280,8 +304,20 @@ export default class SceneManager {
         tableBody.innerHTML = tableData;
     }
 
+    private displayTime(elapsed: number) {
+        let timeContainer = document.getElementById("time")!;
+        timeContainer.innerHTML = elapsed.toFixed(2);
+    }
+
+    
+
     private logEvents() {
         let logs = this.simulation.events.log;
+
+        logs = logs.filter(log => log != "[>] ...");
+        logs.push("[*] " + this.generateDots());
+        
+
         logs.splice(5);
 
         const consoleData = logs.map(event => {
@@ -293,5 +329,33 @@ export default class SceneManager {
         }).join('');
         const consoleBody = document.querySelector("#console-body")!;
         consoleBody.innerHTML = consoleData;
+    }
+
+    private dotAmount = 0;
+    private maxDots = 3;
+    private frameCount = 0;
+    private dots = "";
+
+    private generateDots(): string {
+
+        if (this.frameCount > Config.framerate) {
+            this.frameCount = 0;
+            if (this.dotAmount > this.maxDots) {
+                this.dotAmount = 0;
+            }
+
+            this.dots = "";
+            for (let i = 0; i < this.dotAmount; i++) {
+                this.dots = this.dots.concat(".");
+            }
+
+            this.dotAmount += 1;
+
+        }
+
+
+        this.frameCount += 1;
+
+        return this.dots;
     }
 }

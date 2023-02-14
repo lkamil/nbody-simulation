@@ -1,5 +1,8 @@
+import * as THREE from 'three';
 
 export default abstract class Config {
+
+    static readonly framerate = 40;
     // Simulation Settings
     static readonly numberOfPlanets = 10;
     static readonly numberOfPlanetesimals = 100;
@@ -43,5 +46,14 @@ export default abstract class Config {
 
     static planetesimal = {
         color: 0x3e3e3e
+    }
+
+    static viewPortColors = {
+        orbitColor: new THREE.Color(0x1257af),
+        mainBackground: new THREE.Color(0x7F7FB2),
+        miniBackground: new THREE.Color(0x7F7FB2),
+        topOrbitsBackground: new THREE.Color(0x313235),
+        topTrajectoriesBackground: new THREE.Color(0x3F3F52),
+        sideOrbitsBackground: new THREE.Color(0x9292b7)
     }
 }
