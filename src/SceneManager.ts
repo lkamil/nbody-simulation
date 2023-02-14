@@ -74,9 +74,8 @@ export default class SceneManager {
 
         for (const view of views) {
             
-            // this.showElementsAccordingTo(view.type);
-
             this.showElementsWith(view);
+
             const camera = view.camera;
             if (camera != undefined) {
                 view.updateCamera(camera, this.timeController.timer.getElapsed());
@@ -127,27 +126,6 @@ export default class SceneManager {
             this.simulation.displayOrbits(true);
         } else {
             this.simulation.displayOrbits(false);
-        }
-    }
-
-    private showElementsAccordingTo(viewType: ViewType) {
-
-        switch (viewType) {
-            case ViewType.main:
-                this.grid.hide();
-                this.simulation.displayTrajectories(true);
-                this.simulation.displayOrbits(false);
-                break;
-            case ViewType.top:
-                this.grid.show();
-                this.simulation.displayTrajectories(true);
-                this.simulation.displayOrbits(false);
-                break;
-            case ViewType.test:
-                this.grid.show();
-                this.simulation.displayTrajectories(false);
-                this.simulation.displayOrbits(true);
-                break;
         }
     }
 
