@@ -79,6 +79,7 @@ export default class NBodySimulation {
 
     removeObjectsFrom(scene: THREE.Scene) {
         scene.remove(this.star.mesh);
+        this.star.removeLabel();
         this.star.mesh.geometry.dispose();
         // @ts-ignore
         this.star.mesh.material.dispose();

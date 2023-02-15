@@ -142,13 +142,13 @@ export default class Body {
         const geometry = new THREE.SphereGeometry(1, 15, 15);
 
         if (this.bodytype == BodyType.star) {
-            let scale = 0.015;
+            let scale = 0.02;
             geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
         } else if (this.bodytype == BodyType.planetesimal) {
-            let scale = 10;
+            let scale = 15;
             geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
         } else {
-            let scale = 0.7;
+            let scale = 0.5;
             geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
         }
 
