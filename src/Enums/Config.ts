@@ -42,7 +42,7 @@ export default abstract class Config {
     static colors = {
         grid: {
             XY: new THREE.Color(0x4287f5),
-            XZ: new THREE.Color(0x7c84cc),
+            XZ: new THREE.Color(0x9f84ec),
             YZ: new THREE.Color(0x408c9c),
         },
         orbitColor: new THREE.Color(0x1257af),
