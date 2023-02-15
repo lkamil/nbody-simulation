@@ -30,30 +30,36 @@ export default abstract class Config {
     static readonly DT = 1;
 
     static star = {
-        color: 0xffffe0,
         mass: 300
     }
 
     static planet = {
-        color: 0x555555,
         minMass: 1,
         maxMass: 5
     }
 
-    static trajectory = {
-        color: 0xffffff
-    }
-
-    static planetesimal = {
-        color: 0x3e3e3e
-    }
-
-    static viewPortColors = {
+    static colors = {
+        grid: {
+            XY: new THREE.Color(0x4287f5),
+            XZ: new THREE.Color(0x7c84cc),
+            YZ: new THREE.Color(0x408c9c),
+        },
         orbitColor: new THREE.Color(0x1257af),
-        mainBackground: new THREE.Color(0x7F7FB2),
-        miniBackground: new THREE.Color(0x7F7FB2),
+        planet: new THREE.Color(0x00c284),
+        star: new THREE.Color(0xffffe0),
+        starLight: new THREE.Color(0xffffff),
+        trajectory: {
+            r: 0,
+            g: 0.76,
+            b: 0.52
+            // 00c284
+        },
+        planetesimal: new THREE.Color(0x357d5b), // 3e3e3e
+        // Backgrounds
+        mainBackground: new THREE.Color(0x3f3c48),
+        miniBackground: new THREE.Color(0x3d3c41),
         topOrbitsBackground: new THREE.Color(0x313235),
-        topTrajectoriesBackground: new THREE.Color(0x3F3F52),
+        topTrajectoriesBackground: new THREE.Color(0x57565e),
         sideOrbitsBackground: new THREE.Color(0x9292b7)
     }
 }

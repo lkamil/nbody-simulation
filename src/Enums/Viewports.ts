@@ -36,7 +36,7 @@ export enum ViewType {
 export const views: ViewSetting[] = [
     {   
         type: ViewType.main,
-        background: Config.viewPortColors.mainBackground,
+        background: Config.colors.mainBackground,
         cameraSettings: {
             distance: 400,
             near: 0.001,
@@ -64,7 +64,7 @@ export const views: ViewSetting[] = [
     },
     {
         type: ViewType.top,
-        background: Config.viewPortColors.topTrajectoriesBackground,
+        background: Config.colors.topTrajectoriesBackground,
         cameraSettings: {
             distance: 2000,
             near: 0.001,
@@ -88,7 +88,7 @@ export const views: ViewSetting[] = [
     },
     {
         type: ViewType.test,
-        background: Config.viewPortColors.sideOrbitsBackground,
+        background: Config.colors.sideOrbitsBackground,
         cameraSettings: {
             distance: 1000,
             near: 0.001,
@@ -112,7 +112,7 @@ export const views: ViewSetting[] = [
     },
     {
         type: ViewType.test,
-        background: Config.viewPortColors.topOrbitsBackground,
+        background: Config.colors.topOrbitsBackground,
         cameraSettings: {
             distance: 2000,
             near: 0.001,
@@ -136,7 +136,7 @@ export const views: ViewSetting[] = [
     },
     {
         type: ViewType.top,
-        background: new THREE.Color(0.5, 0.5, 0.7),
+        background: Config.colors.miniBackground,
         cameraSettings: {
             distance: 800,
             near: 0.001,

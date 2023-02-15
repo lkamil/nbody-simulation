@@ -26,7 +26,7 @@ export default class Body {
 
     events: SimulationEvent[] = [];
 
-    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), bodyType: BodyType = BodyType.planet, color: THREE.Color = new THREE.Color(Config.planet.color)) {
+    constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3 = new THREE.Vector3(), v: THREE.Vector3 = new THREE.Vector3(), bodyType: BodyType = BodyType.planet, color: THREE.Color = new THREE.Color(Config.colors.planet)) {
 
         this.r = r;
         this.v = v;
@@ -138,7 +138,7 @@ export default class Body {
 
     private setupMesh(color: THREE.Color): THREE.Mesh {
 
-        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color, wireframe: true });
+        let material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial({ color: color});
         const geometry = new THREE.SphereGeometry(1, 15, 15);
 
         if (this.bodytype == BodyType.star) {

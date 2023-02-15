@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Config from '../Enums/Config';
 
 export default class Grid {
 
@@ -25,7 +26,7 @@ export default class Grid {
 
         let gXY = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gXY);
-        let mXY = new THREE.LineBasicMaterial({ color: 0x4287f5, opacity: 0.2, transparent: true });
+        let mXY = new THREE.LineBasicMaterial({ color: Config.colors.grid.XY, opacity: 0.2, transparent: true });
         let grXY = new THREE.LineSegments(gXY, mXY);
         grXY.scale.set(size, size, 1);
         grXY.position.set(0, 0, size / 2);
@@ -33,7 +34,7 @@ export default class Grid {
 
         let gXZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gXZ);
-        let mXZ = new THREE.LineBasicMaterial({ color: 0x7c84cc, opacity: 0.2, transparent: true });
+        let mXZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.XZ, opacity: 0.2, transparent: true });
         let grXZ = new THREE.LineSegments(gXZ, mXZ);
         grXZ.scale.set(size, size, 1);
         grXZ.rotation.x = Math.PI * -0.5;
@@ -42,7 +43,7 @@ export default class Grid {
 
         let gYZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gYZ);
-        let mYZ = new THREE.LineBasicMaterial({ color: 0x408c9c, opacity: 0.2, transparent: true });
+        let mYZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.YZ, opacity: 0.2, transparent: true });
         let grYZ = new THREE.LineSegments(gYZ, mYZ);
         grYZ.scale.set(size,size, 1);
         grYZ.rotation.y = Math.PI * -0.5;

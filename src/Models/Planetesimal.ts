@@ -5,7 +5,7 @@ import Config from "../Enums/Config";
 
 export default class Planetesimal extends Body {
     constructor(scene: THREE.Scene, mass: number, r: THREE.Vector3, v: THREE.Vector3) {
-        let color = new THREE.Color(Config.planetesimal.color);
+        let color = new THREE.Color(Config.colors.planetesimal);
         super(scene, mass, r, v, BodyType.planetesimal, color);
     }
 }

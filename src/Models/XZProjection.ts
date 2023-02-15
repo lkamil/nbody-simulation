@@ -60,7 +60,7 @@ export class XZProjection {
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(this.linePositions, 3));
         const material = new THREE.LineBasicMaterial({
-            color: Config.viewPortColors.orbitColor,
+            color: Config.colors.orbitColor,
             opacity: this.opacity,
             transparent: true
         });
@@ -93,7 +93,7 @@ export class XZProjection {
 
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const material = new THREE.LineBasicMaterial({
-            color: Config.viewPortColors.orbitColor,
+            color: Config.colors.orbitColor,
             opacity: this.opacity,
             transparent: true,
         });

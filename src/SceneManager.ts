@@ -190,7 +190,7 @@ export default class SceneManager {
     }
 
     private addPointLight(scene: THREE.Scene) {
-        const light = new THREE.PointLight(Config.star.color, 10, 1000);
+        const light = new THREE.PointLight(Config.colors.starLight, 10, 1000);
         light.position.set(0, 0, 0);
         scene.add(light);
     }

@@ -1,6 +1,7 @@
 
 import * as THREE from 'three';
 import { BufferAttribute } from 'three';
+import Config from '../Enums/Config';
 
 export default class Trajectory {
 
@@ -72,9 +73,9 @@ export default class Trajectory {
 
         const colors = new Float32Array(this.maxPoints * 4);
         for (let i = 0; i < colors.length - 3; i += 4) {
-            colors[i] = 1; // r
-            colors[i + 1] = 1;  // g
-            colors[i + 2] = 1; // b
+            colors[i] = Config.colors.trajectory.r; // r
+            colors[i + 1] = Config.colors.trajectory.g;  // g
+            colors[i + 2] = Config.colors.trajectory.b; // b
             colors[i + 3] = 1 - dec; // alpha
 
             dec += step;

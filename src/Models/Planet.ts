@@ -17,7 +17,7 @@ export default class Planet extends Body {
     state: ObjectState;
 
     constructor(scene: THREE.Scene, r: THREE.Vector3, v: THREE.Vector3, name: string = "") {
-        let color = new THREE.Color(Config.planet.color);
+        let color = new THREE.Color(Config.colors.planet);
         let mass = randomFromInterval(Config.planet.minMass, Config.planet.maxMass);
         super(scene, mass, r, v, BodyType.planet, color);
         

@@ -7,7 +7,7 @@ export default class Star extends Body {
     constructor(scene: THREE.Scene) {
         let r = new THREE.Vector3(0, 0, 0);
         let v = new THREE.Vector3(0, 0, 0);
-        let color = new THREE.Color(Config.star.color)
+        let color = new THREE.Color(Config.colors.star);
         super(scene, Config.star.mass, r, v, BodyType.star, color);
 
         this.setLabelText("star");
