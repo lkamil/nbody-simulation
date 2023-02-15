@@ -29,9 +29,8 @@ export default class NBodySimulation {
         this.planets = this.createPlanets(scene);
         this.planetesimals = this.createPlanetesimals(scene);
 
-        
-        let planetsEvent: Init = {kind: 'initPlanets', count: this.planets.length};
-        this.events.current = EventDescription.getDescriptionOf(planetsEvent);
+        // let planetsEvent: Init = {kind: 'initPlanets', count: this.planets.length};
+        // this.events.current = EventDescription.getDescriptionOf(planetsEvent);
 
         let simulationInit: Init = {kind: 'initSimulation', count: 0};
         this.events.current = EventDescription.getDescriptionOf(simulationInit);
