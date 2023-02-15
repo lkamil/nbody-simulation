@@ -6,7 +6,7 @@ export default abstract class Config {
     // Simulation Settings
     static readonly numberOfPlanets = 10;
     static readonly numberOfPlanetesimals = 95;
-    static readonly runTime = 90;
+    static readonly runTime = 120;
     static readonly outOfSystemThreshold = 1500;
 
     // Inital Planet Positioning
@@ -14,8 +14,8 @@ export default abstract class Config {
     static readonly maxHorizontalAngle = 0;
     static readonly minPolarAngle = 0;
     static readonly maxPolarAngle = 360;
-    static readonly minDistanceToStar = 100;
-    static readonly maxDistanceToStar = 300;
+    static readonly minDistanceToStar = 130;
+    static readonly maxDistanceToStar = 330;
     static readonly distanceBetweenPlanets = 20;
 
     // Initial Planetesimal Positioning
