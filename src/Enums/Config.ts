@@ -46,13 +46,13 @@ export default abstract class Config {
             YZ: new THREE.Color(0x408c9c),
         },
         orbitColor: new THREE.Color(0x1257af),
-        planet: new THREE.Color(0x00c284),
+        planet: new THREE.Color(0xa3a3a3),
         star: new THREE.Color(0xffffe0),
         starLight: new THREE.Color(0xffffff),
         trajectory: {
-            r: 0,
-            g: 0.76,
-            b: 0.52
+            r: 0.9,
+            g: 0.9,
+            b: 0.9
             // 00c284
         },
         planetesimal: new THREE.Color(0x95af9b), // 3e3e3e
@@ -61,6 +61,6 @@ export default abstract class Config {
         miniBackground: new THREE.Color(0x3d3c41),
         topOrbitsBackground: new THREE.Color(0x313235),
         topTrajectoriesBackground: new THREE.Color(0x57565e),
-        sideOrbitsBackground: new THREE.Color(0x9292b7)
+        sideOrbitsBackground: new THREE.Color(0x727297) // 0x9292b7, 0x727297
     }
 }

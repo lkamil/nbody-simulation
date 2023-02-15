@@ -6,7 +6,8 @@
 :root {
 	--grey: #727679;
 	--white: #ffffff;
-	--background: 9, 9, 9;
+	--background: #121011;
+	--textBackground: #232828;
 }
 
 body {
@@ -20,23 +21,14 @@ body {
 
 	margin: 0;
 	padding: 0;
-	text-shadow: 0px 0px 5px rgba(118, 139, 154, 0.57);
+	text-shadow: 0px 0px 5px rgba(134, 135, 134, 0.57);
 }
 
 h1 {
 	position: fixed;
 	font-size: 16px;
 	color: #889b94;
-	background-color: rgba(var(--background));
-}
-
-.line {
-	position: fixed;
-	width: 100%;
-	left: 0;
-	bottom: 5px;
-	height: 2px;
-	background-color:#357d5b;
+	background-color: var(--textBackground);
 }
 
 .label {
@@ -50,7 +42,7 @@ h1 {
 	right: 20px;
 	bottom: 10px;
 	width: 160px;
-	background-color: rgba(var(--background));
+	background-color: (var(--textBackground));
 }
 
 #gui {
@@ -65,6 +57,7 @@ h1 {
 	right: 0;
 	bottom: 0;
 	height: 45%;
+	background-color: var(--background);
 }
 
 #data-table {
@@ -93,7 +86,7 @@ h1 {
 table, th, td {
 	padding: 3px 5px;
 	border-collapse: collapse;
-	background-color: rgba(var(--background), 0.3);
+	// background-color: rgba(var(--background), 1);
 }
 
 table {
