@@ -30,12 +30,13 @@ export default abstract class Config {
     static readonly DT = 1;
 
     static star = {
-        mass: 300
+        minMass: 150,
+        maxMass: 400,
     }
 
     static planet = {
         minMass: 1,
-        maxMass: 5
+        maxMass: 10
     }
 
     static colors = {
