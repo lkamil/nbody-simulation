@@ -268,12 +268,15 @@ export default class SceneManager {
 
         let data = this.simulation.getObjectData();
 
+        // sort by distance
+        data.sort((a, b) => (a.Distance > b.Distance) ? 1 : ((b.Distance > a.Distance) ? -1 : 0));
+
         const tableData = data.map(value => {
             return (
                 `<tr>
                     <td>${value.Object}</td>
-                    <td>${value.Mass}</td>
-                    <td>${value.Distance}</td>
+                    <td>${value.Mass.toFixed(0)}</td>
+                    <td>${value.Distance.toFixed(0)}</td>
                 </tr>`
             );
         }).join('');

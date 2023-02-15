@@ -66,11 +66,11 @@ export default class NBodySimulation {
     getObjectData() {
 
         let data = []
-        let entry = { Object: "Star", Mass: Config.star.mass, Distance: "0" }
+        let entry = { Object: "Star", Mass: Config.star.mass, Distance: 0 }
         data.push(entry);
 
         for (let planet of this.planets) {
-            let entry = { Object: planet.label.element.innerHTML, Mass: planet.mass.toFixed(2), Distance: planet.r.distanceTo(this.star.r).toFixed(0)}
+            let entry = { Object: planet.label.element.innerHTML, Mass: planet.mass, Distance: planet.r.distanceTo(this.star.r)}
             data.push(entry);
         }  
 
