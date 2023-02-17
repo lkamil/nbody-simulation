@@ -17,6 +17,7 @@ import texture from '../assets/images/stars.jpg';
 import Config from './Enums/Config';
 import Grid from './Models/Grid';
 import { views, ViewSetting, ViewType } from './Enums/Viewports';
+import { RAND} from './Utility/Randomizer';
 
 export default class SceneManager {
 
@@ -144,6 +145,7 @@ export default class SceneManager {
 
         if (this.timeController.timer.getElapsed() > Config.runTime) {
             console.log("RESET");
+            RAND.reset();
             this.timeController.timer.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
 
