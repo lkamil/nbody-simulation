@@ -37,7 +37,7 @@ export default class Body {
         this.mass = mass;
 
         this.mesh = this.setupMesh(color);
-        this.mesh.castShadow = true
+        // this.mesh.castShadow = true
         this.mesh.receiveShadow = true
         scene.add(this.mesh);
 
