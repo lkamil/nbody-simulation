@@ -46,9 +46,9 @@ export const views: ViewSetting[] = [
             fov: 45,
             lookAt: new THREE.Vector3(0,0,0)
         },
-        left: 0,
+        left: 0.1,
         bottom: 0,
-        width: 0.72,
+        width: 0.8,
         height: 1,
         updateCamera: function (camera: THREE.PerspectiveCamera,  elapsedTime: number): void {
             let speed = elapsedTime * 0.1;
@@ -59,7 +59,7 @@ export const views: ViewSetting[] = [
             camera.lookAt(this.cameraSettings.lookAt);
         },
         showTrajectories: true,
-        showOrbits: false,
+        showOrbits: true,
         showGrid: false
     },
     {
@@ -74,10 +74,10 @@ export const views: ViewSetting[] = [
             fov: 20,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.58,
-        width: 0.14,
-        bottom: 0,
-        height: 0.2,
+        left: 0.8,
+        width: 0.2,
+        bottom: 0.67,
+        height: 0.34,
         // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
@@ -94,14 +94,14 @@ export const views: ViewSetting[] = [
             near: 0.001,
             far: 8000,
             phi: degToRad(90),
-            theta: degToRad(90),
+            theta: degToRad(270),
             fov: 45,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.72,
-        width: 0.28,
-        bottom: 0.45,
-        height: 0.55,
+        left: 0.8,
+        width: 0.2,
+        bottom: 0.34,
+        height: 0.34,
         // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
@@ -122,10 +122,10 @@ export const views: ViewSetting[] = [
             fov: 20,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.44,
-        width: 0.14,
+        left: 0.8,
+        width: 0.2,
         bottom: 0,
-        height: 0.2,
+        height: 0.34,
         // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
@@ -146,8 +146,8 @@ export const views: ViewSetting[] = [
             fov: 45,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.01,
-        bottom: 0,
+        left: 0.22,
+        bottom: 0.01,
         width: 0.14,
         height: 0.25,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number): void {

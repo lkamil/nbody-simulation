@@ -143,6 +143,7 @@ export default class Body {
 
         if (this.bodytype == BodyType.star) {
             let scale = 0.02;
+            material.emissive = new THREE.Color(Config.colors.starLight);
             geometry.scale(this.mass * scale, this.mass * scale, this.mass * scale);
         } else if (this.bodytype == BodyType.planetesimal) {
             let scale = 15;

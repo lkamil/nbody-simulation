@@ -4,9 +4,9 @@
 }
 
 :root {
-	--grey: #909598;
+	--grey: #533C33;
 	--white: #ffffff;
-	--background: #121011;
+	--background: #E9E7E2;
 	--textBackground: #232828;
 }
 
@@ -15,35 +15,30 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	
-	font-size: 12px;
+	font-size: 13px;
+	line-height: 13px;
 	color: var(--grey);
 	// color: #727679;
 
 	margin: 0;
 	padding: 0;
-	text-shadow: 0px 0px 5px rgba(134, 135, 134, 0.57);
+	// text-shadow: 0px 0px 5px rgba(170, 144, 112, 0.385);
 }
 
 h1 {
-	position: fixed;
-	padding-left: 5px;
-	font-size: 16px;
-	color: #889b94;
-	background-color: var(--textBackground);
+	font-size: 15px;
+	color: var(--grey);
 }
 
 .label {
 	text-align: center;
-	color: var(--white);
+	color: var(--grey);
 }
 
 #time-container {
 	position: fixed;
-	color: var(--white);
-	right: 20px;
 	bottom: 10px;
 	width: 160px;
-	background-color: (var(--textBackground));
 }
 
 #gui {
@@ -53,41 +48,31 @@ h1 {
 }
 
 #tables {
+	padding-left: 10px;
 	position: fixed;
-	width: 28%;
-	right: 0;
-	bottom: 0;
-	height: 45%;
+	width: 20%;
+	left: 0;
+	top: 0;
+	height: 100%;
 	background-color: var(--background);
 }
 
 #data-table {
-	// top: 1%;
 	margin-top: 2%;
 	right: 0%;
-	margin-left: 2%;
-	width: 94%;
-	// width: 28%;
-	// height: 50%;
-	// max-width: 300px;
-	// display: none;
+	width: 97%;
 }
 
 #console {
 	right: 0%;
-	// top: 50%;
+	margin-top: 20px;
 	bottom: 0;
-	margin-left: 2%;
-	width: 94%;
-	// width: 28%;
-	// height: 24%;
-	// max-width: 380px;
+	width: 97%;
 }
 
 table, th, td {
 	padding: 3px 5px;
 	border-collapse: collapse;
-	// background-color: rgba(var(--background), 1);
 }
 
 table {

@@ -3,11 +3,11 @@ import Config from '../Enums/Config';
 
 export default class Grid {
 
-    readonly size = 8000;
+    readonly size = 600;
     gridMesh: THREE.Group
 
     constructor(scene: THREE.Scene) {
-        // this.initAxes(scene);
+        this.initAxes(scene);
         this.gridMesh = this.addGrid(scene);
     }
 
@@ -22,11 +22,11 @@ export default class Grid {
     private addGrid(scene: THREE.Scene): THREE.Group {
         let gridMeshes = new THREE.Group();
 
-        let size = 800;
+        let size = 605;
 
         let gXY = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gXY);
-        let mXY = new THREE.LineBasicMaterial({ color: Config.colors.grid.XY, opacity: 0.2, transparent: true });
+        let mXY = new THREE.LineBasicMaterial({ color: Config.colors.grid.XY, opacity: 0.4, transparent: true });
         let grXY = new THREE.LineSegments(gXY, mXY);
         grXY.scale.set(size, size, 1);
         grXY.position.set(0, 0, size / 2);
@@ -34,7 +34,7 @@ export default class Grid {
 
         let gXZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gXZ);
-        let mXZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.XZ, opacity: 0.2, transparent: true });
+        let mXZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.XZ, opacity: 0.4, transparent: true });
         let grXZ = new THREE.LineSegments(gXZ, mXZ);
         grXZ.scale.set(size, size, 1);
         grXZ.rotation.x = Math.PI * -0.5;
@@ -43,7 +43,7 @@ export default class Grid {
 
         let gYZ = new THREE.PlaneGeometry(1, 1, 10, 10);
         this.toQuads(gYZ);
-        let mYZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.YZ, opacity: 0.2, transparent: true });
+        let mYZ = new THREE.LineBasicMaterial({ color: Config.colors.grid.YZ, opacity: 0.4, transparent: true });
         let grYZ = new THREE.LineSegments(gYZ, mYZ);
         grYZ.scale.set(size,size, 1);
         grYZ.rotation.y = Math.PI * -0.5;
@@ -88,27 +88,44 @@ export default class Grid {
         const p1 = new THREE.Vector3(0, 0, -this.size / 2);
         const p2 = new THREE.Vector3(0, 0, this.size / 2);
         const axis1Geometry = new THREE.BufferGeometry().setFromPoints([p1, p2]);
-        const axis1Material = new THREE.LineBasicMaterial({ color: 0x676767 });
+        const axis1Material = new THREE.LineBasicMaterial({ color: 0xffffff });
         const axis1 = new THREE.Line(axis1Geometry, axis1Material);
+        axis1.visible = false;
         axes.add(axis1);
 
         // y axis
         const p3 = new THREE.Vector3(0, -(this.size / 2) , 0);
         const p4 = new THREE.Vector3(0, (this.size / 2) , 0);
         const axis2Geometry = new THREE.BufferGeometry().setFromPoints([p3, p4]);
-        const axis2Material = new THREE.LineBasicMaterial({ color: 0x676767, opacity: 0.1 });
+        const axis2Material = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.1 });
         const axis2 = new THREE.Line(axis2Geometry, axis2Material);
+        axis2.visible = false;
         axes.add(axis2);
 
         // x axis
         const p5 = new THREE.Vector3(-(this.size / 2), 0, 0);
         const p6 = new THREE.Vector3((this.size / 2), 0, 0);
         const axis3Geometry = new THREE.BufferGeometry().setFromPoints([p5, p6]);
-        const axis3Material = new THREE.LineBasicMaterial({ color: 0x676767 });
+        const axis3Material = new THREE.LineBasicMaterial({ color: 0xffffff });
         const axis3 = new THREE.Line(axis3Geometry, axis3Material);
+        axis3.visible = false
         axes.add(axis3);
 
+        // oultline
+        // const po1 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
+        // const po2 = new THREE.Vector3(-this.size / 2, 0, -this.size / 2);
+        // const po3 = new THREE.Vector3(this.size / 2, 0, -this.size / 2);
+        // const po4 = new THREE.Vector3(this.size / 2, 0, this.size / 2);
+        // const po5 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
+        // const axisOGeometry = new THREE.BufferGeometry().setFromPoints([po1, po2, po3, po4, po5]);
+        // const axisOMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.1 });
+        // const axis0 = new THREE.Line(axisOGeometry, axisOMaterial);
+        // axes.add(axis0);
+
         scene.add(axes);
+
+        const box = new THREE.BoxHelper(axes, 0xffffff);
+        scene.add(box);
 
         return axes;
     }

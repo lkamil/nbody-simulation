@@ -45,22 +45,40 @@ export default abstract class Config {
             XZ: new THREE.Color(0x9f84ec),
             YZ: new THREE.Color(0x408c9c),
         },
-        orbitColor: new THREE.Color(0x1257af),
+        orbitColor: new THREE.Color(0x9f84ec), // 0x0E00FC, 0xebcd9c
         planet: new THREE.Color(0xa3a3a3),
-        star: new THREE.Color(0xffffe0),
+        star: new THREE.Color(0xffffff),
         starLight: new THREE.Color(0xffffff),
         trajectory: {
-            r: 0.9,
-            g: 0.9,
-            b: 0.9
-            // 00c284
+            r: 0.05,
+            g: 0,
+            b: 0.98
         },
         planetesimal: new THREE.Color(0x95af9b), // 3e3e3e
         // Backgrounds
-        mainBackground: new THREE.Color(0x514e5a),
-        miniBackground: new THREE.Color(0x514e5a),
-        topOrbitsBackground: new THREE.Color(0x38383a),
-        topTrajectoriesBackground: new THREE.Color(0x434259),
-        sideOrbitsBackground: new THREE.Color(0x9292b7) // 0x9292b7, 0x727297
+        mainBackground: new THREE.Color(0xE1E0DC),
+        miniBackground: new THREE.Color(0xDEDCD6),
+        topOrbitsBackground: new THREE.Color(0xEFEEE7),
+        topTrajectoriesBackground: new THREE.Color(0xC7C7C1),
+        sideOrbitsBackground: new THREE.Color(0xDEDCD6)
     }
 }
+
+// red / organge:
+// r: 0.92,
+// g: 0.41,
+// b: 0.2
+
+// orange
+// r: 0.97,
+// g: 0.54,
+// b: 0.27 
+
+ //red: 0.97,  grey: 86 => 0.33,
+ //red: 0.27, // grey: 80 => 0.31,
+  // red: 0.26 // grey: 76 => 0.29,
+
+// blue
+// r: 0.05,
+// g: 0,
+// b: 0.98

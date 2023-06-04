@@ -157,7 +157,7 @@ export default class SceneManager {
 
     private setupScene(): THREE.Scene {
         const scene = new THREE.Scene();
-        this.setBackgroundTexture(scene);
+        // this.setBackgroundTexture(scene);
 
         // scene.fog = new THREE.Fog(0x333333, 700, 1300); 
 
@@ -185,7 +185,7 @@ export default class SceneManager {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(0.5);
+        renderer.setPixelRatio(1);
         document.body.appendChild(renderer.domElement);
 
         return renderer
@@ -202,6 +202,7 @@ export default class SceneManager {
         labelRenderer.setSize(window.innerWidth, window.innerHeight);
         labelRenderer.domElement.style.position = 'absolute';
         labelRenderer.domElement.style.top = '-12px';
+        labelRenderer.domElement.style.left = '10%';
         labelRenderer.domElement.style.pointerEvents = 'none';
         labelRenderer.domElement.id = "label-renderer";
         document.body.appendChild(labelRenderer.domElement);
