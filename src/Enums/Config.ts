@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 export default abstract class Config {
 
-    static readonly framerate = 40;
+    static readonly framerate = 30;
     // Simulation Settings
     static readonly numberOfPlanets = 10;
     static readonly numberOfPlanetesimals = 50;

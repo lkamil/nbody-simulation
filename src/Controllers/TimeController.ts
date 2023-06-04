@@ -1,27 +1,31 @@
+import Config from '../Enums/Config';
 import { Timer } from '../js/Timer/Timer';
 
 export default class TimeController {
 
-    timer;
-    private baseFixedDelta: number;
+    private timer;
 
     constructor() {
-        // this.timer = new THREE.Clock();
         this.timer = new Timer();
         this.timer.enableFixedDelta();
-        this.baseFixedDelta = 0.01667;
+        this.timer.setFixedDelta(1 / Config.framerate);
     }
 
-    setSpeedFactor(newFactor: number) {
-        this.timer.setFixedDelta(this.baseFixedDelta * newFactor);
+    // PUBLIC
+
+    public getElapsed(): number {
+        return this.timer.getElapsed();
     }
 
-    getDelta() {
+    public hardReset(): void {
+        this.timer.hardReset();
+    }
+
+    public update(): void {
+        this.timer.update();
+    }
+
+    public getDelta(): number {
         return this.timer.getDelta();
-    }
-
-    dt() {
-        const elapsed = this.timer.getElapsed();
-        return elapsed;
     }
 }

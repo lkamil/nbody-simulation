@@ -77,7 +77,7 @@ export default class Body {
         let newPosition = this.r.clone().add(velocity.clone().multiplyScalar(Config.DT));
 
         // Acceleration
-        let acc = this.getAcceleration(bodies, newPosition)
+        let acc = this.getAcceleration(bodies, newPosition);
         let acceleration = acc[0];
         let events = acc[1];
 

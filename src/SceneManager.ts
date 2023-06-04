@@ -35,6 +35,9 @@ export default class SceneManager {
 
     private simulation: NBodySimulation;
 
+    // TIME
+    private delta = 0;
+
     constructor() {
         this.scene = this.setupScene();
         this.renderer = this.setupRenderer();
@@ -58,11 +61,12 @@ export default class SceneManager {
     }
 
     update() {
-        this.timeController.timer.update();
+        // this.delta += this.timeController.getElapsed
+        this.timeController.update();
         // this.composer.render();
         // this.cameraController.update(this.timeController.timer.getElapsed());
         // this.labelRenderer.render(this.scene, this.cameraController.camera);
-        this.displayTime(this.timeController.timer.getElapsed());
+        this.displayTime(this.timeController.getElapsed());
         this.simulation.update();
         this.setDataTable();
         this.logEvents();
@@ -79,7 +83,7 @@ export default class SceneManager {
 
             const camera = view.camera;
             if (camera != undefined) {
-                view.updateCamera(camera, this.timeController.timer.getElapsed());
+                view.updateCamera(camera, this.timeController.getElapsed());
 
                 let w = window.innerWidth;
                 let h = window.innerHeight;
@@ -143,10 +147,10 @@ export default class SceneManager {
 
     private checkTime() {
 
-        if (this.timeController.timer.getElapsed() > Config.runTime) {
+        if (this.timeController.getElapsed() > Config.runTime) {
             console.log("RESET");
             RAND.reset();
-            this.timeController.timer.hardReset();
+            this.timeController.hardReset();
             this.simulation.removeObjectsFrom(this.scene);
 
             this.simulation = new NBodySimulation(this.scene);

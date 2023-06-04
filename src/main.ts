@@ -1,7 +1,11 @@
 import './style.scss';
 import SceneManager from './SceneManager';
+import Config from './Enums/Config';
 
 let sceneManager: SceneManager;
+
+const interval = 1000 / Config.framerate;
+let now, delta, then = Date.now();
 
 window.addEventListener('DOMContentLoaded', () => {
 	
@@ -11,8 +15,16 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function render() {
+
+	now = Date.now();
+	delta = now - then;
+
+	if (delta > interval) {
+		sceneManager.update();
+		then = now - (delta % interval);
+	}
+
 	requestAnimationFrame(render);
-	sceneManager.update();
 }
 
 // Event listener

@@ -40,6 +40,7 @@ export default class CameraController {
         }
     }
 
+    // Gets overwritten by viewport property
     update(elapsedTime: number) {
         let speed = elapsedTime * 0.1;
         this.camera.position.x = this.radius * 3 * Math.cos(speed);
