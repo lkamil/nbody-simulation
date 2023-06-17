@@ -18,6 +18,7 @@ import Config from './Enums/Config';
 import Grid from './Models/Grid';
 import { views, ViewSetting, ViewType } from './Enums/Viewports';
 import { RAND} from './Utility/Randomizer';
+import { radToDeg } from 'three/src/math/MathUtils';
 
 export default class SceneManager {
 
@@ -287,6 +288,7 @@ export default class SceneManager {
                     <td>${value.Object}</td>
                     <td>${value.Mass.toFixed(0)}</td>
                     <td>${value.Distance.toFixed(0)}</td>
+                    <td>${radToDeg(value.OrbitalPeriod).toFixed(2)}</td>
                 </tr>`
             );
         }).join('');

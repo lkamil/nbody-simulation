@@ -16,6 +16,10 @@ export default class Planet extends Body {
 
     state: ObjectState;
 
+    lastPass: number;
+    previousAngle: number;
+    orbitalPeriod: number;
+
     constructor(scene: THREE.Scene, r: THREE.Vector3, v: THREE.Vector3, name: string = "") {
         let color = new THREE.Color(Config.colors.planet);
         let mass = randomFromInterval(Config.planet.minMass, Config.planet.maxMass);
@@ -27,6 +31,9 @@ export default class Planet extends Body {
         this.xzProjection = new XZProjection(scene);
 
         this.state = ObjectState.default
+        this.lastPass = Date.now();
+        this.orbitalPeriod = 0;
+        this.previousAngle = 0;
         this.setLabelText(name);
     }
 
@@ -80,6 +87,28 @@ export default class Planet extends Body {
             let event: DistanceEvent = { object: this, kind: "reentered" }
             this.events.unshift(event);
         }
+    }
+
+    getOrbitalPeriod(): number {
+        let now = Date.now();
+        
+        let currentAngle = new THREE.Spherical().setFromVector3(this.r).theta;
+        let currentOrbitalPeriod = now - this.lastPass;
+        
+        // angle has to be positiv -> planet passed reference 
+        // previous angle has to be negative -> planet did not pass reference before
+        if (currentAngle > 0 && this.previousAngle < 0) {
+            this.orbitalPeriod = currentOrbitalPeriod;
+            this.lastPass = now;
+        }
+
+        if (currentOrbitalPeriod > this.orbitalPeriod) {
+            this.orbitalPeriod = currentOrbitalPeriod;
+        }
+
+        this.previousAngle = currentAngle;
+
+        return this.orbitalPeriod / 100000;
     }
 
     /* -------------- PRIVATE METHODS ------------- */

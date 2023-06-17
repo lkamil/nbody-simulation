@@ -51,7 +51,7 @@ export const views: ViewSetting[] = [
         width: 0.8,
         height: 1,
         updateCamera: function (camera: THREE.PerspectiveCamera,  elapsedTime: number): void {
-            let speed = elapsedTime * 0.1;
+            let speed = elapsedTime * 0.05;
             camera.position.x = this.cameraSettings.distance * 3 * Math.cos(speed);
             camera.position.z = this.cameraSettings.distance * Math.sin(speed);
             camera.position.y = (this.cameraSettings.distance * 3 * Math.sin(speed) * 0.3) + 100;
@@ -151,7 +151,7 @@ export const views: ViewSetting[] = [
         width: 0.14,
         height: 0.25,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number): void {
-            let speed = elapsedTime * 0.1;
+            let speed = elapsedTime * 0.05;
             camera.position.x = this.cameraSettings.distance * 3 * Math.cos(speed);
             camera.position.z = this.cameraSettings.distance * Math.sin(speed);
             camera.position.y = (this.cameraSettings.distance * 3 * Math.sin(speed) * 0.3) + 100;

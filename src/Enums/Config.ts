@@ -4,7 +4,7 @@ export default abstract class Config {
 
     static readonly framerate = 30;
     // Simulation Settings
-    static readonly numberOfPlanets = 10;
+    static readonly numberOfPlanets = 1;
     static readonly numberOfPlanetesimals = 50;
     static readonly runTime = 100;
     static readonly outOfSystemThreshold = 1500;
@@ -27,7 +27,7 @@ export default abstract class Config {
     static readonly G = 1;
 
     // Time Passing Speed
-    static readonly DT = 1;
+    static readonly DT = 1.665;
 
     static star = {
         minMass: 150,

@@ -84,13 +84,18 @@ export default class Grid {
     private initAxes(scene: THREE.Scene) {
         let axes = new THREE.Group();
 
+        // TODO: move to config?
+        const showAxes = false;
+        const showPlaneOutline = false;
+        const showReferenceAxis = true;
+
         // z axis
         const p1 = new THREE.Vector3(0, 0, -this.size / 2);
         const p2 = new THREE.Vector3(0, 0, this.size / 2);
         const axis1Geometry = new THREE.BufferGeometry().setFromPoints([p1, p2]);
         const axis1Material = new THREE.LineBasicMaterial({ color: 0xffffff });
         const axis1 = new THREE.Line(axis1Geometry, axis1Material);
-        axis1.visible = false;
+        axis1.visible = showAxes;
         axes.add(axis1);
 
         // y axis
@@ -99,28 +104,38 @@ export default class Grid {
         const axis2Geometry = new THREE.BufferGeometry().setFromPoints([p3, p4]);
         const axis2Material = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.1 });
         const axis2 = new THREE.Line(axis2Geometry, axis2Material);
-        axis2.visible = false;
+        axis2.visible = showAxes;
         axes.add(axis2);
 
-        // x axis
+        // x axis -> Referenzachse
         const p5 = new THREE.Vector3(-(this.size / 2), 0, 0);
         const p6 = new THREE.Vector3((this.size / 2), 0, 0);
         const axis3Geometry = new THREE.BufferGeometry().setFromPoints([p5, p6]);
         const axis3Material = new THREE.LineBasicMaterial({ color: 0xffffff });
         const axis3 = new THREE.Line(axis3Geometry, axis3Material);
-        axis3.visible = false
+        axis3.visible = showAxes;
         axes.add(axis3);
 
+        // Referenzachse
+        const r1 = new THREE.Vector3(0, 0, 0);
+        const r2 = new THREE.Vector3(0, 0, this.size / 2);
+        const axisRGeometry = new THREE.BufferGeometry().setFromPoints([r1, r2]);
+        const axisRMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const axisR = new THREE.Line(axisRGeometry, axisRMaterial);
+        axisR.visible = showReferenceAxis;
+        axes.add(axisR);
+
         // oultline
-        // const po1 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
-        // const po2 = new THREE.Vector3(-this.size / 2, 0, -this.size / 2);
-        // const po3 = new THREE.Vector3(this.size / 2, 0, -this.size / 2);
-        // const po4 = new THREE.Vector3(this.size / 2, 0, this.size / 2);
-        // const po5 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
-        // const axisOGeometry = new THREE.BufferGeometry().setFromPoints([po1, po2, po3, po4, po5]);
-        // const axisOMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.1 });
-        // const axis0 = new THREE.Line(axisOGeometry, axisOMaterial);
-        // axes.add(axis0);
+        const po1 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
+        const po2 = new THREE.Vector3(-this.size / 2, 0, -this.size / 2);
+        const po3 = new THREE.Vector3(this.size / 2, 0, -this.size / 2);
+        const po4 = new THREE.Vector3(this.size / 2, 0, this.size / 2);
+        const po5 = new THREE.Vector3(-this.size / 2, 0, this.size / 2);
+        const axisOGeometry = new THREE.BufferGeometry().setFromPoints([po1, po2, po3, po4, po5]);
+        const axisOMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.1 });
+        const axis0 = new THREE.Line(axisOGeometry, axisOMaterial);
+        axis0.visible = showPlaneOutline;
+        axes.add(axis0);
 
         scene.add(axes);
 
