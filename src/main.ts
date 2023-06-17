@@ -37,11 +37,15 @@ function toggleCPUMonitor(e: KeyboardEvent) {
 	if (e.key == "c") {
 		let cpuMonitor = document.getElementById("cpu");
 
+		console.log(cpuMonitor?.style.display);
+
 		if (cpuMonitor == undefined) {
 			return
 		}
 
-		if (cpuMonitor.style.display == "none") {
+		let cpuDisplay = cpuMonitor.style.display;
+
+		if (cpuDisplay == "none" || cpuDisplay == "") {
 			cpuMonitor.style.display = "block";
 		} else {
 			cpuMonitor.style.display = "none";
