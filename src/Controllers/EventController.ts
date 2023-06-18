@@ -9,13 +9,14 @@ export default class EventController {
     }
 
     update(logs: string[]) {
+        this.dotAnimation.update();
         this.logEvents(logs);
     }
 
     private logEvents(logs: string[]) {
 
         logs = logs.filter(log => log != "[>] ...");
-        logs.push("[*] " + this.dotAnimation.generateDots());
+        logs.push("[*] " + this.dotAnimation.dots);
 
         while (logs.length > 5) {
             logs.shift();

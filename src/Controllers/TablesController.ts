@@ -1,3 +1,4 @@
+import DotAnimation from "../Utility/DotAnimation";
 
 
 export interface ObjectData {
@@ -16,12 +17,14 @@ export interface OrbitalData {
 
 export default class TablesController {
 
+    private dotAnimation: DotAnimation;
 
     constructor() {
-
+        this.dotAnimation = new DotAnimation();
     }
 
     update(objectData: ObjectData[], orbitalData: OrbitalData[]) {
+        this.dotAnimation.update()
         this.setDataTable(objectData);
         this.setOrbitsTable(orbitalData);
     }
@@ -55,9 +58,9 @@ export default class TablesController {
                 `<tr>
                     <td>${value.name}</td>
                     <td>${value.orbitalPeriod.toFixed(2)}</td>
-                    <td>${value.previousOrbitalPeriods.map(ob => ob.toFixed(2)).toString()}</td>
-                    <td>${value.deviation?.toFixed(2) ?? ""}</td>
-                    <td>${value.stabilityScore.toFixed(2)}</td>
+                    <td>${this.previousOrbitalPeriods(value.previousOrbitalPeriods)}</td>
+                    <td>${value.deviation?.toFixed(2) ?? this.dotAnimation.dots}</td>
+                    <td>${this.determineStabilityScore(value.deviation)}</td>
                 </tr>`
             );
         }).join('');
@@ -68,5 +71,34 @@ export default class TablesController {
         let stabilityContainer = document.getElementById("stability")!;
         let stabilityPercentages = data.map(value => { return value.stabilityScore });
         stabilityContainer.innerHTML = (stabilityPercentages.average() / 10).toFixed(2);
+    }
+
+    private previousOrbitalPeriods(orbitalPeriods: number[]): string {
+        let str = orbitalPeriods.map(ob => ob.toFixed(2)).toString();
+        if (str.length == 0) {
+            str = this.dotAnimation.dots;
+        }
+
+        return str;
+    }
+
+
+    private determineStabilityScore(deviation: number | undefined): string {
+        let stabilityScore = "";
+
+        switch (deviation) {
+            case undefined:
+                stabilityScore = this.dotAnimation.dots;
+                break;
+
+            default:
+                if (deviation != undefined && deviation < 0) {
+                    stabilityScore = "0";
+                } else if (deviation != undefined) {
+                    stabilityScore = ((100 - deviation) / 10).toFixed(2);
+                }
+        }
+
+        return stabilityScore;
     }
 }

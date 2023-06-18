@@ -5,10 +5,9 @@ export default class DotAnimation {
     private dotAmount = 0;
     private maxDots = 3;
     private frameCount = 0;
-    private dots = "";
+    dots = "";
 
-    generateDots(): string {
-
+    update() {
         if (this.frameCount > Config.framerate) {
             this.frameCount = 0;
             if (this.dotAmount > this.maxDots) {

@@ -92,6 +92,7 @@ export default class NBodySimulation {
                 deviation: deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]),
                 stabilityScore: 100 - (deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]) ?? 100)
             }
+
             data.push(entry);
         }
 
