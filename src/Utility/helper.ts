@@ -54,6 +54,10 @@ function deviation(currentValue: number, previousValue: number | undefined): num
     return (diff / previousValue) * 100;
 }
 
+function threeDotsAnimation() {
+    
+}
+
 export {
     deviation,
     msToSeconds,

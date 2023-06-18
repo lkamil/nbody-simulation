@@ -19,6 +19,8 @@ import Grid from './Models/Grid';
 import { views, ViewSetting, ViewType } from './Enums/Viewports';
 import { RAND} from './Utility/Randomizer';
 import './Utility/extensions';
+import TablesController from './Controllers/TablesController';
+import EventController from './Controllers/EventController';
 
 export default class SceneManager {
 
@@ -28,6 +30,8 @@ export default class SceneManager {
     private timeController: TimeController;
     // private orbitControls: OrbitControls;
     cameraController: CameraController;
+    private tablesController: TablesController;
+    private eventController: EventController;
     private stats: Stats
     private grid: Grid;
     
@@ -36,8 +40,6 @@ export default class SceneManager {
 
     private simulation: NBodySimulation;
 
-    // TIME
-    private delta = 0;
 
     constructor() {
         this.scene = this.setupScene();
@@ -45,6 +47,8 @@ export default class SceneManager {
         this.addPointLight(this.scene);
         this.labelRenderer = this.setupLabelRenderer();
         this.cameraController = new CameraController(this.scene);
+        this.tablesController = new TablesController();
+        this.eventController = new EventController();
         this.setupOrbitControls(this.cameraController.camera, this.renderer.domElement);
         this.bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2, 0.5, 0);
         // this.composer = this.setupComposer(this.renderer, this.scene, this.cameraController.camera);
@@ -62,16 +66,15 @@ export default class SceneManager {
     }
 
     update() {
-        // this.delta += this.timeController.getElapsed
+
         this.timeController.update();
         // this.composer.render();
         // this.cameraController.update(this.timeController.timer.getElapsed());
         // this.labelRenderer.render(this.scene, this.cameraController.camera);
         this.displayTime(this.timeController.getElapsed());
         this.simulation.update();
-        this.setDataTable();
-        this.setOrbitsTable();
-        this.logEvents();
+        this.tablesController.update(this.simulation.getObjectData(), this.simulation.getOrbitsData());
+        this.eventController.update(this.simulation.events.log);
         this.stats.update();
         this.renderViewports();
         this.checkTime();
@@ -272,108 +275,8 @@ export default class SceneManager {
         return gui
     }
 
-    private setDataTable() {
-
-        let data = this.simulation.getObjectData();
-
-        // sort by distance
-        // data.sort((a, b) => (a.Distance > b.Distance) ? 1 : ((b.Distance > a.Distance) ? -1 : 0));
-
-        // sort by mass
-        // data.sort((a, b) => (a.Mass < b.Mass) ? 1 : ((b.Mass < a.Mass) ? -1 : 0));
-
-        const tableData = data.map(value => {
-            return (
-                `<tr>
-                    <td>${value.Object}</td>
-                    <td>${value.Mass.toFixed(0)}</td>
-                    <td>${value.Distance.toFixed(0)}</td>
-                    <td>${value.OrbitalPeriod.toFixed(2)}</td>
-                </tr>`
-            );
-        }).join('');
-
-        const tableBody = document.querySelector("#data-table-body")!;
-        tableBody.innerHTML = tableData;
-    }
-
-    private setOrbitsTable() {
-        let data = this.simulation.getOrbitsData();
-
-        const tableData = data.map(value => {
-            return (
-                `<tr>
-                    <td>${value.Object}</td>
-                    <td>${value.OrbitalPeriods.toFixed(2)}</td>
-                    <td>${value.PreviousOrbitalPeriod.map( ob => ob.toFixed(2)).toString() }</td>
-                    <td>${value.Deviation?.toFixed(2) ?? ""}</td>
-                    <td>${value.StabilityScore.toFixed(2)}</td>
-                </tr>`
-            );
-        }).join('');
-
-        const tableBody = document.querySelector("#orbits-table-body")!;
-        tableBody.innerHTML = tableData;
-
-        let stabilityContainer = document.getElementById("stability")!;
-        let stabilityPercentages = data.map(value => {return value.StabilityScore });
-        stabilityContainer.innerHTML = (stabilityPercentages.average() / 10).toFixed(2);
-    }
-
     private displayTime(elapsed: number) {
         let timeContainer = document.getElementById("time")!;
         timeContainer.innerHTML = elapsed.toFixed(2);
-    }
-
-    
-
-    private logEvents() {
-        let logs = this.simulation.events.log;
-
-        logs = logs.filter(log => log != "[>] ...");
-        logs.push("[*] " + this.generateDots());
-        
-        while (logs.length > 5) {
-            logs.shift();
-        }
-        // logs.splice(5, 10);
-
-        const consoleData = logs.map(event => {
-            return (
-                `<tr>
-                    <td>${event}</td>
-                 </tr>`
-            );
-        }).join('');
-        const consoleBody = document.querySelector("#console-body")!;
-        consoleBody.innerHTML = consoleData;
-    }
-
-    private dotAmount = 0;
-    private maxDots = 3;
-    private frameCount = 0;
-    private dots = "";
-
-    private generateDots(): string {
-
-        if (this.frameCount > Config.framerate) {
-            this.frameCount = 0;
-            if (this.dotAmount > this.maxDots) {
-                this.dotAmount = 0;
-            }
-
-            this.dots = "";
-            for (let i = 0; i < this.dotAmount; i++) {
-                this.dots = this.dots.concat(".");
-            }
-
-            this.dotAmount += 1;
-
-        }
-
-
-        this.frameCount += 1;
-
-        return this.dots;
     }
 }

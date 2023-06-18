@@ -8,6 +8,7 @@ import Star from './Models/Star';
 import Planetesimal from './Models/Planetesimal';
 import { Init } from './Enums/SimulationEvent';
 import EventDescription from './Enums/EventDescriptions';
+import { ObjectData, OrbitalData } from './Controllers/TablesController';
 
 export default class NBodySimulation {
 
@@ -62,18 +63,17 @@ export default class NBodySimulation {
         }
     }
 
-    getObjectData() {
+    getObjectData(): ObjectData[] {
 
         let data = [];
-        let entry = { Object: "Star", Mass: this.star.mass, Distance: 0, OrbitalPeriod: 0 }
+        let entry = { name: "Star", mass: this.star.mass, distance: 0 }
         data.push(entry);
 
         for (let planet of this.planets) {
             let entry = { 
-                Object: planet.label.element.innerHTML, 
-                Mass: planet.mass, 
-                Distance: planet.r.distanceTo(this.star.r),
-                OrbitalPeriod: planet.getOrbitalPeriod()
+                name: planet.label.element.innerHTML, 
+                mass: planet.mass, 
+                distance: planet.r.distanceTo(this.star.r),
             }
             data.push(entry);
         }  
@@ -81,16 +81,16 @@ export default class NBodySimulation {
         return data
     }
 
-    getOrbitsData() {
+    getOrbitsData(): OrbitalData[] {
         let data = [];
 
         for (let planet of this.planets) {
             let entry = {
-                Object: planet.label.element.innerHTML,
-                OrbitalPeriods: planet.getOrbitalPeriod(),
-                PreviousOrbitalPeriod: planet.orbitalData.previousOrbitalPeriods,
-                Deviation: deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]),
-                StabilityScore: 100 - (deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]) ?? 100)
+                name: planet.label.element.innerHTML,
+                orbitalPeriod: planet.getOrbitalPeriod(),
+                previousOrbitalPeriods: planet.orbitalData.previousOrbitalPeriods,
+                deviation: deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]),
+                stabilityScore: 100 - (deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]) ?? 100)
             }
             data.push(entry);
         }
