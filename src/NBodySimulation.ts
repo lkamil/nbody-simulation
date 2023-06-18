@@ -2,7 +2,7 @@ import { degToRad } from 'three/src/math/MathUtils';
 import * as THREE from 'three';
 import Body from './Models/Body';
 import Config from './Enums/Config';
-import { randomFromInterval, perpendicularOf, vectorFromSphericalCoords } from './Utility/helper';
+import { randomFromInterval, perpendicularOf, vectorFromSphericalCoords, deviation } from './Utility/helper';
 import Planet from './Models/Planet';
 import Star from './Models/Star';
 import Planetesimal from './Models/Planetesimal';
@@ -64,7 +64,7 @@ export default class NBodySimulation {
 
     getObjectData() {
 
-        let data = []
+        let data = [];
         let entry = { Object: "Star", Mass: this.star.mass, Distance: 0, OrbitalPeriod: 0 }
         data.push(entry);
 
@@ -77,6 +77,23 @@ export default class NBodySimulation {
             }
             data.push(entry);
         }  
+
+        return data
+    }
+
+    getOrbitsData() {
+        let data = [];
+
+        for (let planet of this.planets) {
+            let entry = {
+                Object: planet.label.element.innerHTML,
+                OrbitalPeriods: planet.getOrbitalPeriod(),
+                PreviousOrbitalPeriod: planet.orbitalData.previousOrbitalPeriods,
+                Deviation: deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]),
+                StabilityScore: 100 - (deviation(planet.orbitalData.orbitalPeriod, planet.orbitalData.previousOrbitalPeriods[0]) ?? 100)
+            }
+            data.push(entry);
+        }
 
         return data
     }

@@ -5,8 +5,16 @@ import * as THREE from 'three';
 import { ObjectState } from "../Enums/ObjectState";
 import { SimulationEvent, DistanceEvent } from "../Enums/SimulationEvent";
 import { BodyType } from "../Enums/BodyType";
-import { randomFromInterval } from "../Utility/helper";
+import { msToSeconds, randomFromInterval } from "../Utility/helper";
 import { XZProjection } from "./XZProjection";
+
+interface OrbitalData {
+    lastPass: number; // timestamp, when the planet last passed the reference line
+    orbitalPeriod: number;
+    orbitalCount: number;
+    previousAngle: number;
+    previousOrbitalPeriods: number[];
+}
 
 export default class Planet extends Body {
 
@@ -16,9 +24,7 @@ export default class Planet extends Body {
 
     state: ObjectState;
 
-    lastPass: number;
-    previousAngle: number;
-    orbitalPeriod: number;
+    orbitalData: OrbitalData;
 
     constructor(scene: THREE.Scene, r: THREE.Vector3, v: THREE.Vector3, name: string = "") {
         let color = new THREE.Color(Config.colors.planet);
@@ -31,9 +37,13 @@ export default class Planet extends Body {
         this.xzProjection = new XZProjection(scene);
 
         this.state = ObjectState.default
-        this.lastPass = Date.now();
-        this.orbitalPeriod = 0;
-        this.previousAngle = 0;
+        this.orbitalData = {
+            lastPass: Date.now(),
+            orbitalPeriod: 0,
+            orbitalCount: 0,
+            previousAngle: 0,
+            previousOrbitalPeriods: []
+        }
         this.setLabelText(name);
     }
 
@@ -93,22 +103,26 @@ export default class Planet extends Body {
         let now = Date.now();
         
         let currentAngle = new THREE.Spherical().setFromVector3(this.r).theta;
-        let currentOrbitalPeriod = now - this.lastPass;
+        let currentOrbitalPeriod = msToSeconds(now - this.orbitalData.lastPass);
         
         // angle has to be positiv -> planet passed reference 
         // previous angle has to be negative -> planet did not pass reference before
-        if (currentAngle > 0 && this.previousAngle < 0) {
-            this.orbitalPeriod = currentOrbitalPeriod;
-            this.lastPass = now;
+        if (currentAngle > 0 && this.orbitalData.previousAngle < 0) {
+            if (this.orbitalData.orbitalCount > 0) {
+
+                if (this.orbitalData.orbitalPeriod > 0) {
+                    this.orbitalData.previousOrbitalPeriods.unshift(this.orbitalData.orbitalPeriod);
+                    this.orbitalData.previousOrbitalPeriods.splice(2);
+                }
+                this.orbitalData.orbitalPeriod = currentOrbitalPeriod;
+            }
+            this.orbitalData.lastPass = now;
+            this.orbitalData.orbitalCount += 1;
         }
 
-        if (currentOrbitalPeriod > this.orbitalPeriod) {
-            this.orbitalPeriod = currentOrbitalPeriod;
-        }
+        this.orbitalData.previousAngle = currentAngle;
 
-        this.previousAngle = currentAngle;
-
-        return this.orbitalPeriod / 100000;
+        return this.orbitalData.orbitalPeriod;
     }
 
     /* -------------- PRIVATE METHODS ------------- */

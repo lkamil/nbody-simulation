@@ -27,7 +27,7 @@ export default abstract class Config {
     static readonly G = 1;
 
     // Time Passing Speed
-    static readonly DT = 1.665;
+    static readonly DT = 1.665 * 2;
 
     static star = {
         minMass: 150,

@@ -27,6 +27,21 @@
 				</table>
 			</div>
 
+			<div class="card orbits-table">
+				<table id="orbits-table">
+					<thead>
+						<tr>
+							<th scope="col">Planet</th>
+							<th scope="col">Current Orbital Period</th>
+							<th scope="col">Previous Orbital Periods</th>
+							<th scope="col">Deviation</th>
+							<th scope="col">Stability Score</th>
+						</tr>
+					</thead>
+					<tbody id="orbits-table-body"></tbody>
+				</table>
+			</div>
+
 			<div class="card console">
 				<table id="console">
 					<thead>
@@ -42,6 +57,12 @@
 			<div class="card slim time-container">
 				<div id="time-container">
 					Elapsed Time: <span id="time"></span>
+				</div>
+			</div>
+
+			<div class="card slim stability">
+				<div id="stability-container">
+					Stability Score: <span id="stability"></span> / 10
 				</div>
 			</div>
 

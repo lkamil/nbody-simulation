@@ -41,7 +41,22 @@ function printVector(v: THREE.Vector3) {
     console.log("x: " + v.x + ", y: " + v.y + ", z: " + v.z);
 }
 
+function msToSeconds(ms: number): number {
+    return ms / 1000;
+}
+
+function deviation(currentValue: number, previousValue: number | undefined): number | undefined {
+    if (previousValue == undefined) {
+        return undefined;
+    }
+    const diff = Math.abs(previousValue - currentValue);
+
+    return (diff / previousValue) * 100;
+}
+
 export {
+    deviation,
+    msToSeconds,
     randomFromInterval,
     perpendicularOf,
     printVector,

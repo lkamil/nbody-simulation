@@ -18,7 +18,7 @@ import Config from './Enums/Config';
 import Grid from './Models/Grid';
 import { views, ViewSetting, ViewType } from './Enums/Viewports';
 import { RAND} from './Utility/Randomizer';
-import { radToDeg } from 'three/src/math/MathUtils';
+import './Utility/extensions';
 
 export default class SceneManager {
 
@@ -70,6 +70,7 @@ export default class SceneManager {
         this.displayTime(this.timeController.getElapsed());
         this.simulation.update();
         this.setDataTable();
+        this.setOrbitsTable();
         this.logEvents();
         this.stats.update();
         this.renderViewports();
@@ -287,13 +288,36 @@ export default class SceneManager {
                     <td>${value.Object}</td>
                     <td>${value.Mass.toFixed(0)}</td>
                     <td>${value.Distance.toFixed(0)}</td>
-                    <td>${radToDeg(value.OrbitalPeriod).toFixed(2)}</td>
+                    <td>${value.OrbitalPeriod.toFixed(2)}</td>
                 </tr>`
             );
         }).join('');
 
         const tableBody = document.querySelector("#data-table-body")!;
         tableBody.innerHTML = tableData;
+    }
+
+    private setOrbitsTable() {
+        let data = this.simulation.getOrbitsData();
+
+        const tableData = data.map(value => {
+            return (
+                `<tr>
+                    <td>${value.Object}</td>
+                    <td>${value.OrbitalPeriods.toFixed(2)}</td>
+                    <td>${value.PreviousOrbitalPeriod.map( ob => ob.toFixed(2)).toString() }</td>
+                    <td>${value.Deviation?.toFixed(2) ?? ""}</td>
+                    <td>${value.StabilityScore.toFixed(2)}</td>
+                </tr>`
+            );
+        }).join('');
+
+        const tableBody = document.querySelector("#orbits-table-body")!;
+        tableBody.innerHTML = tableData;
+
+        let stabilityContainer = document.getElementById("stability")!;
+        let stabilityPercentages = data.map(value => {return value.StabilityScore });
+        stabilityContainer.innerHTML = (stabilityPercentages.average() / 10).toFixed(2);
     }
 
     private displayTime(elapsed: number) {
