@@ -29,8 +29,7 @@ export interface ViewSetting {
 
 export enum ViewType {
     main,
-    top,
-    test
+    sub
 }
 
 export const views: ViewSetting[] = [
@@ -63,7 +62,7 @@ export const views: ViewSetting[] = [
         showGrid: false
     },
     {
-        type: ViewType.top,
+        type: ViewType.sub,
         background: Config.colors.topTrajectoriesBackground,
         cameraSettings: {
             distance: 1000,
@@ -87,7 +86,7 @@ export const views: ViewSetting[] = [
         showOrbits: false
     },
     {
-        type: ViewType.test,
+        type: ViewType.sub,
         background: Config.colors.sideOrbitsBackground,
         cameraSettings: {
             distance: 1000,
@@ -111,7 +110,7 @@ export const views: ViewSetting[] = [
         showOrbits: true
     },
     {
-        type: ViewType.top,
+        type: ViewType.sub,
         background: Config.colors.miniBackground,
         cameraSettings: {
             distance: 800,
