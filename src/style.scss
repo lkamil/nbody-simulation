@@ -6,8 +6,16 @@
 :root {
 	--grey: #533C33;
 	--white: #ffffff;
-	--background: #E9E7E2;
+	// --background: #E9E7E2;
 	--textBackground: #232828;
+
+	--background: #E1E0DC;
+	--backgroundD1: #E3E1D7;
+	--backgroundD2: #E1DBCD;
+	--backgroundL1: #E9E7E2;
+	--backgroundL2: #F2EFE6;
+	--backgroundL3: #EFEEE7;
+
 }
 
 body {
@@ -28,6 +36,67 @@ body {
 h1 {
 	font-size: 15px;
 	color: var(--grey);
+	margin: 0;
+}
+
+.card {
+	position: absolute;
+	padding: 1%;
+	border-radius: 2px;
+	box-shadow: 1px 1px 7px rgba(137, 125, 111, 0.448);;
+}
+
+.slim {
+	padding: 0.5% 1%;
+}
+
+.view {
+	padding: 0;
+}
+
+.card.data-table {
+	left: 20px;
+	top: 60px;
+	background-color: var(--backgroundL2);
+}
+
+.card.seed {
+	left: 10px;
+	top: 10px;
+	background: var(--backgroundL1);
+}
+
+.card.console {
+	left: 10px;
+	bottom: 30px;
+	background: var(--backgroundL3);
+}
+
+.card.top-view {
+	left: 78vw;
+	bottom: 68vh;
+	width: 16vw;
+	height: 30vh;
+}
+
+.card.side-view {
+	left: 83%;
+	bottom: 34%;
+	width: 16vw;
+	height: 30vh;
+}
+
+.card.mini-view {
+	left: 22%;
+	bottom: 1%;
+	width: 12%;
+	height: 21%;
+}
+
+.card.time-container {
+	top: 4px;
+	left: 170px;
+	background-color: var(--backgroundD1);
 }
 
 .label {
@@ -36,7 +105,7 @@ h1 {
 }
 
 #time-container {
-	position: fixed;
+	// position: fixed;
 	bottom: 10px;
 	width: 160px;
 }
@@ -47,27 +116,22 @@ h1 {
 	right: 0px
 }
 
-#tables {
-	padding-left: 10px;
-	position: fixed;
-	width: 23%;
-	left: 0;
-	top: 0;
-	height: 100%;
-	background-color: var(--background);
-}
-
-#data-table {
-	margin-top: 2%;
-	right: 0%;
-	width: 97%;
-}
+// #tables {
+// 	padding-left: 10px;
+// 	position: fixed;
+// 	width: 23%;
+// 	left: 0;
+// 	top: 0;
+// 	height: 100%;
+// 	background-color: var(--background);
+// }
 
 #console {
-	right: 0%;
-	margin-top: 20px;
-	bottom: 0;
-	width: 97%;
+	// right: 0%;
+	// margin-top: 20px;
+	// bottom: 0;
+	// width: 97%;
+	width: 300px;
 }
 
 table, th, td {

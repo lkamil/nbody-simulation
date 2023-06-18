@@ -38,7 +38,7 @@ export const views: ViewSetting[] = [
         type: ViewType.main,
         background: Config.colors.mainBackground,
         cameraSettings: {
-            distance: 400,
+            distance: 500,
             near: 0.001,
             far: 8000,
             phi: 30,
@@ -46,9 +46,9 @@ export const views: ViewSetting[] = [
             fov: 45,
             lookAt: new THREE.Vector3(0,0,0)
         },
-        left: 0.1,
+        left: 0,
         bottom: 0,
-        width: 0.8,
+        width: 1,
         height: 1,
         updateCamera: function (camera: THREE.PerspectiveCamera,  elapsedTime: number): void {
             let speed = elapsedTime * 0.05;
@@ -66,18 +66,18 @@ export const views: ViewSetting[] = [
         type: ViewType.top,
         background: Config.colors.topTrajectoriesBackground,
         cameraSettings: {
-            distance: 2000,
+            distance: 1000,
             near: 0.001,
             far: 8000,
-            phi: 0,
-            theta: 0,
-            fov: 20,
+            phi: degToRad(360),
+            theta: degToRad(270),
+            fov: 45,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.8,
-        width: 0.2,
-        bottom: 0.67,
-        height: 0.34,
+        left: 0.78,
+        width: 0.16,
+        bottom: 0.68,
+        height: 0.3,
         // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
@@ -94,44 +94,20 @@ export const views: ViewSetting[] = [
             near: 0.001,
             far: 8000,
             phi: degToRad(90),
-            theta: degToRad(270),
+            theta: degToRad(90),
             fov: 45,
             lookAt: new THREE.Vector3(0, 0, 0)
         },
-        left: 0.8,
-        width: 0.2,
+        left: 0.83,
+        width: 0.16,
         bottom: 0.34,
-        height: 0.34,
+        height: 0.3,
         // @ts-ignore
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
             camera.lookAt(this.cameraSettings.lookAt);
         },
         showTrajectories: false,
-        showGrid: true,
-        showOrbits: true
-    },
-    {
-        type: ViewType.test,
-        background: Config.colors.topOrbitsBackground,
-        cameraSettings: {
-            distance: 2000,
-            near: 0.001,
-            far: 8000,
-            phi: 0,
-            theta: 0,
-            fov: 20,
-            lookAt: new THREE.Vector3(0, 0, 0)
-        },
-        left: 0.8,
-        width: 0.2,
-        bottom: 0,
-        height: 0.34,
-        // @ts-ignore
-        updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number) {
-            camera.lookAt(this.cameraSettings.lookAt);
-        },
-        showTrajectories: false,
-        showGrid: true,
+        showGrid: false,
         showOrbits: true
     },
     {
@@ -148,8 +124,8 @@ export const views: ViewSetting[] = [
         },
         left: 0.22,
         bottom: 0.01,
-        width: 0.14,
-        height: 0.25,
+        width: 0.12,
+        height: 0.21,
         updateCamera: function (camera: THREE.PerspectiveCamera, elapsedTime: number): void {
             let speed = elapsedTime * 0.05;
             camera.position.x = this.cameraSettings.distance * 3 * Math.cos(speed);

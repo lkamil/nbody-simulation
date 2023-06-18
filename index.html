@@ -8,34 +8,46 @@
 	</head>
 	<body>
 		<div id="tables">
-			<h1 id="seed">seed 71798</h1>
-			<table id="data-table">
-				<thead>
-					<tr>
-						<th scope="col">Object</th>
-						<th scope="col">Mass</th>
-						<th scope="col">Distance</th>
-						<th scope="col">Orbital Period</th>
-					</tr>
-				</thead>
-				<tbody id="data-table-body">
-
-				</tbody>
-			</table>
-
-			<table id="console">
-				<thead>
-					<tr>
-						<th>Logs</th>
-					</tr>
-				</thead>
-				<tbody id="console-body">
-				</tbody>
-			</table>
-
-			<div id="time-container">
-				Elapsed Time: <span id="time"></span>
+			<div class="card slim seed">
+				<h1 id="seed">seed 71798</h1>
 			</div>
+			
+
+			<div class="card data-table">
+				<table id="data-table">
+					<thead>
+						<tr>
+							<th scope="col">Object</th>
+							<th scope="col">Mass</th>
+							<th scope="col">Distance</th>
+							<th scope="col">Orbital Period</th>
+						</tr>
+					</thead>
+					<tbody id="data-table-body"></tbody>
+				</table>
+			</div>
+
+			<div class="card console">
+				<table id="console">
+					<thead>
+						<tr>
+							<th>Logs</th>
+						</tr>
+					</thead>
+					<tbody id="console-body">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="card slim time-container">
+				<div id="time-container">
+					Elapsed Time: <span id="time"></span>
+				</div>
+			</div>
+
+			<div class="card view top-view"></div>
+			<div class="card view side-view"></div>
+			<div class="card view mini-view"></div>
 		</div>
 		
 

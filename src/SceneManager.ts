@@ -207,7 +207,6 @@ export default class SceneManager {
         labelRenderer.setSize(window.innerWidth, window.innerHeight);
         labelRenderer.domElement.style.position = 'absolute';
         labelRenderer.domElement.style.top = '-12px';
-        labelRenderer.domElement.style.left = '10%';
         labelRenderer.domElement.style.pointerEvents = 'none';
         labelRenderer.domElement.id = "label-renderer";
         document.body.appendChild(labelRenderer.domElement);
