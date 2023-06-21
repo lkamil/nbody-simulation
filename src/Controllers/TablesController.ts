@@ -92,9 +92,9 @@ export default class TablesController {
                 break;
 
             default:
-                if (deviation != undefined && deviation < 0) {
+                if (deviation < 0 || deviation > 100) {
                     stabilityScore = "0";
-                } else if (deviation != undefined) {
+                } else {
                     stabilityScore = ((100 - deviation) / 10).toFixed(2);
                 }
         }
