@@ -100,6 +100,11 @@ export default class Planet extends Body {
     }
 
     getOrbitalPeriod(): number | undefined {
+
+        if (this.state == ObjectState.crashed) {
+            return 0;
+        }
+
         let now = Date.now();
         
         let currentAngle = new THREE.Spherical().setFromVector3(this.r).theta;
@@ -162,5 +167,7 @@ export default class Planet extends Body {
     private halt() {
         super.v = new THREE.Vector3();
         super.a = new THREE.Vector3();
+
+
     }
 }
