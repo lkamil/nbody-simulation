@@ -101,7 +101,7 @@ export default class Planet extends Body {
 
     getOrbitalPeriod(): number | undefined {
 
-        if (this.state == ObjectState.crashed) {
+        if (this.state == ObjectState.crashed || this.state == ObjectState.away) {
             return 0;
         }
 
