@@ -12,7 +12,7 @@ class Random {
 
         
         const seed = document.querySelector("#seed")!;
-        seed.innerHTML = "seed " + this.seed;
+        seed.innerHTML = this.seed.toString();
     }
 
     number(): number {

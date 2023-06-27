@@ -63,6 +63,8 @@ export default class SceneManager {
 
         this.grid = new Grid(this.scene);
         document.body.appendChild(this.stats.dom);
+
+        this.fillGeneralInfo();
     }
 
     update() {
@@ -79,6 +81,19 @@ export default class SceneManager {
         this.renderViewports();
         this.checkTime();
     }
+
+    private fillGeneralInfo() {
+
+        let numberOfStars = document.getElementById("numberOfStars")!;
+        numberOfStars.innerHTML = "1";
+
+        let numberOfPlanets = document.getElementById("numberOfPlanets")!;
+        numberOfPlanets.innerHTML = Config.numberOfPlanets.toString();
+
+        let numberOfPlanetesimals = document.getElementById("numberOfPlanetesimals")!;
+        numberOfPlanetesimals.innerHTML = Config.numberOfPlanetesimals.toString();
+
+    }   
 
     private renderViewports() {
 
