@@ -9,10 +9,9 @@ export interface ObjectData {
 
 export interface OrbitalData {
     name: string,
-    orbitalPeriod: number,
+    orbitalPeriod: number | undefined,
     previousOrbitalPeriods: number[],
-    deviation: number | undefined,
-    stabilityScore: number
+    deviation: number | undefined
 }
 
 export default class TablesController {
@@ -27,6 +26,21 @@ export default class TablesController {
         this.dotAnimation.update()
         this.setDataTable(objectData);
         this.setOrbitsTable(orbitalData);
+        let deviations = orbitalData.map(value => {return value.deviation});
+        this.setStabilityLabel(deviations);
+    }
+
+    private setStabilityLabel(deviations: (number | undefined)[]) {
+        let stabilityContainer = document.getElementById("stability")!;
+        let stabilityScores = deviations.map(value => {
+            let stabilityScore = this.determineStabilityScore(value);
+            if (stabilityScore == undefined) {
+                return 0;
+            }
+            return stabilityScore;
+        });
+        let stabilityAverage = stabilityScores.average();
+        stabilityContainer.innerHTML = stabilityAverage?.toFixed(2) ?? this.dotAnimation.dots;
     }
 
     private setDataTable(data: ObjectData[]) {
@@ -57,20 +71,16 @@ export default class TablesController {
             return (
                 `<tr>
                     <td>${value.name}</td>
-                    <td>${value.orbitalPeriod.toFixed(2)}</td>
+                    <td>${value.orbitalPeriod?.toFixed(2) ?? this.dotAnimation.dots}</td>
                     <td>${this.previousOrbitalPeriods(value.previousOrbitalPeriods)}</td>
                     <td>${value.deviation?.toFixed(2) ?? this.dotAnimation.dots}</td>
-                    <td>${this.determineStabilityScore(value.deviation)}</td>
+                    <td>${this.determineStabilityScore(value.deviation)?.toFixed(2) ?? this.dotAnimation.dots}</td>
                 </tr>`
             );
         }).join('');
 
         const tableBody = document.querySelector("#orbits-table-body")!;
         tableBody.innerHTML = tableData;
-
-        let stabilityContainer = document.getElementById("stability")!;
-        let stabilityPercentages = data.map(value => { return value.stabilityScore });
-        stabilityContainer.innerHTML = (stabilityPercentages.average() / 10).toFixed(2);
     }
 
     private previousOrbitalPeriods(orbitalPeriods: number[]): string {
@@ -82,20 +92,18 @@ export default class TablesController {
         return str;
     }
 
-
-    private determineStabilityScore(deviation: number | undefined): string {
-        let stabilityScore = "";
+    private determineStabilityScore(deviation: number | undefined): number | undefined {
+        let stabilityScore = 0;
 
         switch (deviation) {
             case undefined:
-                stabilityScore = this.dotAnimation.dots;
-                break;
+                return undefined;
 
             default:
                 if (deviation < 0 || deviation > 100) {
-                    stabilityScore = "0";
+                    stabilityScore = 0;
                 } else {
-                    stabilityScore = ((100 - deviation) / 10).toFixed(2);
+                    stabilityScore = ((100 - deviation) / 10);
                 }
         }
 

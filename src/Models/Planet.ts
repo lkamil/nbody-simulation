@@ -10,7 +10,7 @@ import { XZProjection } from "./XZProjection";
 
 interface OrbitalData {
     lastPass: number; // timestamp, when the planet last passed the reference line
-    orbitalPeriod: number;
+    orbitalPeriod: number | undefined;
     orbitalCount: number;
     previousAngle: number;
     previousOrbitalPeriods: number[];
@@ -39,7 +39,7 @@ export default class Planet extends Body {
         this.state = ObjectState.default
         this.orbitalData = {
             lastPass: Date.now(),
-            orbitalPeriod: 0,
+            orbitalPeriod: undefined,
             orbitalCount: 0,
             previousAngle: 0,
             previousOrbitalPeriods: []
@@ -99,7 +99,7 @@ export default class Planet extends Body {
         }
     }
 
-    getOrbitalPeriod(): number {
+    getOrbitalPeriod(): number | undefined {
         let now = Date.now();
         
         let currentAngle = new THREE.Spherical().setFromVector3(this.r).theta;
@@ -110,7 +110,7 @@ export default class Planet extends Body {
         if (currentAngle > 0 && this.orbitalData.previousAngle < 0) {
             if (this.orbitalData.orbitalCount > 0) {
 
-                if (this.orbitalData.orbitalPeriod > 0) {
+                if (this.orbitalData.orbitalPeriod != undefined) {
                     this.orbitalData.previousOrbitalPeriods.unshift(this.orbitalData.orbitalPeriod);
                     this.orbitalData.previousOrbitalPeriods.splice(2);
                 }

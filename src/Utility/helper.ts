@@ -45,17 +45,13 @@ function msToSeconds(ms: number): number {
     return ms / 1000;
 }
 
-function deviation(currentValue: number, previousValue: number | undefined): number | undefined {
-    if (previousValue == undefined) {
+function deviation(currentValue: number | undefined, previousValue: number | undefined): number | undefined {
+    if (previousValue == undefined || currentValue == undefined) {
         return undefined;
     }
     const diff = Math.abs(previousValue - currentValue);
 
     return (diff / previousValue) * 100;
-}
-
-function threeDotsAnimation() {
-    
 }
 
 export {
