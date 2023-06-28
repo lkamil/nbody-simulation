@@ -44,6 +44,11 @@ export default class TablesController {
         });
         let cleanScores = stabilityScores.filter(score => score != undefined);
         let stabilityAverage = cleanScores.average();
+        if (stabilityAverage != undefined && stabilityAverage > 8.5) {
+            stabilityContainer.classList.add("high-stability");
+        } else {
+            stabilityContainer.classList.remove("high-stability");
+        }
         stabilityContainer.innerHTML = stabilityAverage?.toFixed(2) ?? this.dotAnimation.dots;
     }
 
