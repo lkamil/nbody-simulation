@@ -139,10 +139,10 @@ export default class Planet extends Body {
                     this.state = ObjectState.crashed;
                     if (e.objectN.bodytype == BodyType.planet) {
                         let pn = e.objectN as Planet;
-                        pn.state = ObjectState.crashed
+                        pn.state = ObjectState.crashed;
                         pn.halt();
+                        
                     }
-                   
                     this.halt();
                     break
     
@@ -167,7 +167,5 @@ export default class Planet extends Body {
     private halt() {
         super.v = new THREE.Vector3();
         super.a = new THREE.Vector3();
-
-
     }
 }

@@ -87,7 +87,7 @@ export default class Grid {
         // TODO: move to config?
         const showAxes = false;
         const showPlaneOutline = false;
-        const showReferenceAxis = true;
+        const showReferenceAxis = false;
 
         // z axis
         const p1 = new THREE.Vector3(0, 0, -this.size / 2);
