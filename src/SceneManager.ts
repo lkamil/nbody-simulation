@@ -13,7 +13,7 @@ import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import TimeController from './Controllers/TimeController';
 import CameraController from './Controllers/CameraController';
-import texture from '../assets/images/stars.jpg';
+// import texture from '../assets/images/stars.jpg';
 import Config from './Enums/Config';
 import Grid from './Models/Grid';
 import { views, ViewSetting, ViewType } from './Enums/Viewports';
@@ -188,19 +188,19 @@ export default class SceneManager {
         return scene;
     }
 
-    private setBackgroundTexture(scene: THREE.Scene) {
-        let geometry = new THREE.SphereGeometry(8000, 16, 16);
-        geometry.scale(-1, 1, 1);
-        let material = new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load(texture),
-            transparent: true,
-            opacity: 0.8
-        });
-        let mesh = new THREE.Mesh(geometry, material);
-        mesh.name = "sceneTexture";
+    // private setBackgroundTexture(scene: THREE.Scene) {
+    //     let geometry = new THREE.SphereGeometry(8000, 16, 16);
+    //     geometry.scale(-1, 1, 1);
+    //     let material = new THREE.MeshBasicMaterial({
+    //         map: new THREE.TextureLoader().load(texture),
+    //         transparent: true,
+    //         opacity: 0.8
+    //     });
+    //     let mesh = new THREE.Mesh(geometry, material);
+    //     mesh.name = "sceneTexture";
 
-        scene.add(mesh);
-    }
+    //     scene.add(mesh);
+    // }
 
     private setupRenderer(): THREE.WebGLRenderer {
         let renderer = new THREE.WebGLRenderer();

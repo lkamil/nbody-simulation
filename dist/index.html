@@ -5,40 +5,79 @@
 		<link rel="icon" type="image/svg+xml" href="/assets/favicon.037b820c.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>✧ nbody ✧</title>
-		<script type="module" crossorigin src="/assets/index.e38b357f.js"></script>
-		<link rel="stylesheet" href="/assets/index.983257a4.css">
+		<script type="module" crossorigin src="/assets/index.f432795f.js"></script>
+		<link rel="stylesheet" href="/assets/index.9e9a8fb1.css">
 	</head>
 	<body>
-		<h1 id="seed">seed 71798</h1>
 		<div id="tables">
-			<table id="data-table">
-				<thead>
-					<tr>
-						<th scope="col">Object</th>
-						<th scope="col">Mass</th>
-						<th scope="col">Distance</th>
-					</tr>
-				</thead>
-				<tbody id="data-table-body">
 
-				</tbody>
-			</table>
+			<div class="card general">
+				random seed: <span id="seed"></span><br>
+				number of stars: <span id="numberOfStars"></span><br>
+				number of planets: <span id="numberOfPlanets"></span><br>
+				number of planetesimals: <span id="numberOfPlanetesimals"></span><br>
+			</div>
+			
 
-			<table id="console">
-				<thead>
-					<tr>
-						<th>Logs</th>
-					</tr>
-				</thead>
-				<tbody id="console-body">
-				</tbody>
-			</table>
+			<div class="card data-table">
+				<table id="data-table">
+					<thead>
+						<tr>
+							<th scope="col">Object</th>
+							<th scope="col">Mass</th>
+							<th scope="col">Distance</th>
+						</tr>
+					</thead>
+					<tbody id="data-table-body"></tbody>
+				</table>
+			</div>
+
+			<div class="card orbits-table">
+				<table id="orbits-table">
+					<thead>
+						<tr>
+							<th scope="col">Planet</th>
+							<th scope="col">Current Orbital Period</th>
+							<th scope="col">Previous Orbital Periods</th>
+							<th scope="col">Deviation (in %)</th>
+							<th scope="col">Stability Score</th>
+						</tr>
+					</thead>
+					<tbody id="orbits-table-body"></tbody>
+				</table>
+			</div>
+
+			<div class="card console">
+				<table id="console">
+					<thead>
+						<tr>
+							<th>Logs</th>
+						</tr>
+					</thead>
+					<tbody id="console-body">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="card slim time-container">
+				<div id="time-container">
+					Elapsed Time: <span id="time"></span>
+				</div>
+			</div>
+
+			<div class="card slim stability">
+				<div id="stability-container">
+					Stability Score: <span id="stability"></span> / 10
+				</div>
+			</div>
+
+			<div class="card view top-view"></div>
+			<div class="card view side-view"></div>
+			<div class="card view mini-view"></div>
 		</div>
 		
 
-		<div id="time-container">
-			Elapsed Time: <span id="time"></span>
-		</div>
+		
 		
 	</body>
 </html>

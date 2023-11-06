@@ -4,8 +4,8 @@ export default abstract class Config {
 
     static readonly framerate = 30;
     // Simulation Settings
-    static readonly numberOfPlanets = 4;
-    static readonly numberOfPlanetesimals = 50;
+    static readonly numberOfPlanets = 0;
+    static readonly numberOfPlanetesimals = 200;
     static readonly runTime = 180;
     static readonly outOfSystemThreshold = 1500;
 
@@ -54,7 +54,7 @@ export default abstract class Config {
             g: 0,
             b: 0.98
         },
-        planetesimal: new THREE.Color(0x95af9b), // 3e3e3e
+        planetesimal: new THREE.Color(0xC36A58), // 3e3e3e, 0x95af9b
         // Backgrounds
         mainBackground: new THREE.Color(0xE1E0DC),
         miniBackground: new THREE.Color(0xDEDCD6),
