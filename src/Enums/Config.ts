@@ -4,8 +4,8 @@ export default abstract class Config {
 
     static readonly framerate = 30;
     // Simulation Settings
-    static readonly numberOfPlanets = 0;
-    static readonly numberOfPlanetesimals = 200;
+    static readonly numberOfPlanets = 5;
+    static readonly numberOfPlanetesimals = 40;
     static readonly runTime = 180;
     static readonly outOfSystemThreshold = 1500;
 

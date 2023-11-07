@@ -168,13 +168,17 @@ export default class SceneManager {
     private checkTime() {
 
         if (this.timeController.getElapsed() > Config.runTime) {
-            console.log("RESET");
-            RAND.reset();
-            this.timeController.hardReset();
-            this.simulation.removeObjectsFrom(this.scene);
-
-            this.simulation = new NBodySimulation(this.scene);
+            this.reset();
         }
+    }
+
+    public reset() {
+        console.log("RESET");
+        RAND.reset();
+        this.timeController.hardReset();
+        this.simulation.removeObjectsFrom(this.scene);
+
+        this.simulation = new NBodySimulation(this.scene);
     }
 
     /* ------------------- SETUP ------------------ */

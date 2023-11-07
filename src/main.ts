@@ -51,6 +51,10 @@ function toggleCPUMonitor(e: KeyboardEvent) {
 			cpuMonitor.style.display = "none";
 		}
 	}
+
+	if (e.key == "r") {
+		sceneManager.reset();
+	}
 }
 
 function resizeScene() {
